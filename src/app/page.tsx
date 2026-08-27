@@ -17,8 +17,8 @@ const RESTAURANT = {
   priceRange: "₱500–2,000",
   pricePerPerson: 3,
   address: "173 Avenida Veteranos, Tacloban City, 6500 Leyte",
-  phone: "0945 841 9400",
-  phoneHref: "tel:+639458419400",
+  phone: "0931 970 4073",
+  phoneHref: "tel:+639319704073",
   mapsUrl: "https://maps.google.com/?q=173+Avenida+Veteranos+Tacloban+City+6500+Leyte",
 };
 
@@ -85,7 +85,7 @@ const PHOTOS = [
 ];
 
 // --- Tier 1 constants ---
-const WA_ORDER_URL = "https://wa.me/639458419400?text=Hi%20Giuseppe's!%20I'd%20like%20to%20order...";
+const WA_ORDER_URL = "https://wa.me/639319704073?text=Hi%20Giuseppe's!%20I'd%20like%20to%20order...";
 const GOOGLE_REVIEW_URL = "https://www.google.com/search?q=Giuseppe's+Tacloban+reviews";
 const QR_IMG = "https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://giusseppe.vercel.app";
 
@@ -173,7 +173,7 @@ export default function Home() {
     showToast("Review posted — thank you!");
   };
 
-  const waReserveUrl = `https://wa.me/639458419400?text=${encodeURIComponent(`Hi Giuseppe's! Table for ${bookingGuests} on ${bookingDate} ... Please confirm availability.`)}`;
+  const waReserveUrl = `https://wa.me/639319704073?text=${encodeURIComponent(`Hi Giuseppe's! Table for ${bookingGuests} on ${bookingDate} ... Please confirm availability.`)}`;
   const waOrderUrlWithContext = WA_ORDER_URL;
 
   const handleEventSubmit = (e: React.FormEvent) => {
@@ -184,7 +184,7 @@ export default function Home() {
     }
     const msg = `Hi Giuseppe's! Private Dining inquiry:%0AName: ${eventForm.name}%0APhone: ${eventForm.phone}%0ADate: ${eventForm.date || "Flexible"}%0AGuests: ${eventForm.guests}%0AEvent Type: ${eventForm.type}%0AMessage: ${eventForm.message || "-"}`;
     // encode already partially, but ensure proper:
-    const waUrl = `https://wa.me/639458419400?text=${encodeURIComponent(`Hi Giuseppe's! Private Dining inquiry:\nName: ${eventForm.name}\nPhone: ${eventForm.phone}\nDate: ${eventForm.date || "Flexible"}\nGuests: ${eventForm.guests}\nEvent Type: ${eventForm.type}\nMessage: ${eventForm.message || "-"}`)}`;
+    const waUrl = `https://wa.me/639319704073?text=${encodeURIComponent(`Hi Giuseppe's! Private Dining inquiry:\nName: ${eventForm.name}\nPhone: ${eventForm.phone}\nDate: ${eventForm.date || "Flexible"}\nGuests: ${eventForm.guests}\nEvent Type: ${eventForm.type}\nMessage: ${eventForm.message || "-"}`)}`;
     window.open(waUrl, "_blank");
     showToast("Inquiry sent — we'll call to confirm");
   };

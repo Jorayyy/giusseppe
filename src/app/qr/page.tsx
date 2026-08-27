@@ -12,7 +12,7 @@ export default function QrPage() {
 
   const menuUrl = origin ? `${origin}#menu` : "https://giusseppe.vercel.app#menu";
   const whatsappText = "Hi Giuseppe's, I'd like to order";
-  const whatsappUrl = `https://wa.me/639458419400?text=${encodeURIComponent(whatsappText)}`;
+  const whatsappUrl = `https://wa.me/639319704073?text=${encodeURIComponent(whatsappText)}`;
 
   const menuQr = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(menuUrl)}`;
   const waQr = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(whatsappUrl)}`;
@@ -112,7 +112,7 @@ export default function QrPage() {
           </div>
         </div>
 
-        <p className="mt-8 text-center text-xs text-stone-400 print:hidden">Giuseppe&apos;s · 173 Avenida Veteranos, Tacloban City · 0945 841 9400</p>
+        <p className="mt-8 text-center text-xs text-stone-400 print:hidden">Giuseppe&apos;s · 173 Avenida Veteranos, Tacloban City · 0931 970 4073</p>
       </main>
 
       <style>{`@media print { nav, button { display: none !important; } }`}</style>

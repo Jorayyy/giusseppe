@@ -58,7 +58,7 @@ const DEFAULT_PHOTOS = ["/photos/1.jpg", "/photos/2.jpg", "/photos/3.jpg", "/pho
 
 const DEFAULT_SETTINGS = {
   name: "Giuseppe's",
-  phone: "0945 841 9400",
+  phone: "0931 970 4073",
   address: "173 Avenida Veteranos, Tacloban City, 6500 Leyte",
   priceRange: "₱500–2,000",
 };
