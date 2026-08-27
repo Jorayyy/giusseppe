@@ -74,12 +74,13 @@ const REVIEWS = [
 ];
 
 const PHOTOS = [
-  "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
-  "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
-  "https://images.unsplash.com/photo-1517248135467-4c2edc7028ab?w=800&q=80",
-  "https://images.unsplash.com/photo-1498579150354-977bec7ea0af?w=800&q=80",
-  "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80",
-  "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&q=80",
+  // To use Giuseppe's real photos: put them in public/photos/ as 1.jpg, 2.jpg, etc. and replace these URLs with "/photos/1.jpg"
+  "https://images.unsplash.com/photo-1517248135467-4c2edc7028ab?w=1200&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&auto=format&fit=crop&q=80",
 ];
 
 export default function Home() {
@@ -165,7 +166,7 @@ export default function Home() {
         <div className="grid gap-4 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <div className="relative overflow-hidden rounded-2xl bg-stone-900">
-              <img src={PHOTOS[photoIdx]} alt="Giuseppe's" className="h-[360px] w-full object-cover opacity-90" />
+              <img src={PHOTOS[photoIdx]} alt="Giuseppe's" className="h-[360px] w-full object-cover opacity-90" onError={(e)=>{(e.target as HTMLImageElement).src = PHOTOS[0]}} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               <div className="absolute bottom-0 p-6 text-white">
                 <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-5xl">Giuseppe's</h1>
@@ -190,9 +191,9 @@ export default function Home() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-1">
-            <div className="overflow-hidden rounded-2xl"><img src={PHOTOS[1]} className="h-[172px] w-full object-cover" alt="" /></div>
+            <div className="overflow-hidden rounded-2xl"><img src={PHOTOS[1]} className="h-[172px] w-full object-cover" alt="" onError={(e)=>{(e.target as HTMLImageElement).style.display='none'}} /></div>
             <div className="relative overflow-hidden rounded-2xl">
-              <img src={PHOTOS[2]} className="h-[172px] w-full object-cover" alt="" />
+              <img src={PHOTOS[2]} className="h-[172px] w-full object-cover" alt="" onError={(e)=>{(e.target as HTMLImageElement).style.display='none'}} />
               <button onClick={()=>setShowLightbox(true)} className="absolute inset-0 flex items-center justify-center gap-1.5 bg-black/40 text-sm font-medium text-white opacity-0 transition hover:opacity-100">
                 <Camera className="h-4 w-4" /> See all photos
               </button>
@@ -439,7 +440,7 @@ export default function Home() {
       {showLightbox && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onClick={()=>setShowLightbox(false)}>
           <button onClick={()=>setShowLightbox(false)} className="absolute right-4 top-4 rounded-full bg-white/20 p-2 text-white hover:bg-white/30"><X className="h-5 w-5" /></button>
-          <img src={PHOTOS[photoIdx]} alt="" className="max-h-[80vh] max-w-4xl rounded-2xl object-contain" onClick={e=>e.stopPropagation()} />
+          <img src={PHOTOS[photoIdx]} alt="" className="max-h-[80vh] max-w-4xl rounded-2xl object-contain" onClick={e=>e.stopPropagation()} onError={(e)=>{(e.target as HTMLImageElement).style.display='none'}} />
         </div>
       )}
 
