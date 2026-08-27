@@ -74,13 +74,12 @@ const REVIEWS = [
 ];
 
 const PHOTOS = [
-  // To use Giuseppe's real photos: put them in public/photos/ as 1.jpg, 2.jpg, etc. and replace these URLs with "/photos/1.jpg"
-  "https://images.unsplash.com/photo-1517248135467-4c2edc7028ab?w=1200&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&auto=format&fit=crop&q=80",
+  "/photos/1.jpg",
+  "/photos/2.jpg",
+  "/photos/3.jpg",
+  "/photos/4.jpg",
+  "/photos/5.jpg",
+  "/photos/6.jpg",
 ];
 
 export default function Home() {
