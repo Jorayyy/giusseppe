@@ -398,17 +398,16 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-stone-200 bg-white p-6">
-              <h3 className="font-semibold">Add missing information</h3>
-              <div className="mt-3 space-y-2">
-                <button onClick={()=>showToast("Thanks — suggestion sent to owner")} className="flex w-full items-center justify-between rounded-xl border border-stone-200 p-3 text-left hover:bg-stone-50">
-                  <span className="text-sm font-medium">Add website</span><ChevronRight className="h-4 w-4 text-stone-400" />
-                </button>
-                <button onClick={()=>showToast("Edit suggestion sent")} className="flex w-full items-center justify-between rounded-xl border border-stone-200 p-3 text-left hover:bg-stone-50">
-                  <span className="text-sm font-medium">Suggest an edit</span><span className="text-xs text-stone-400">Own this business?</span>
-                </button>
+            <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-6">
+              <div className="flex items-center gap-2">
+                <Award className="h-5 w-5 text-amber-600" />
+                <h3 className="font-serif font-semibold text-amber-900">Tacloban's Favourite Italian</h3>
               </div>
-              <p className="mt-3 text-xs text-stone-400">Help improve this listing</p>
+              <p className="mt-1 text-sm leading-6 text-amber-800/80">Voted Best Date Night 2024 · Featured in Philippine Tatler Dining Guide. Join 2,000+ locals who made Giuseppe's their tradition.</p>
+              <div className="mt-4 flex gap-2">
+                <a href="https://instagram.com" target="_blank" className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-white px-3 py-2 text-xs font-medium text-zinc-900 shadow-sm hover:bg-stone-50"><Camera className="h-4 w-4" /> Instagram</a>
+                <a href="https://facebook.com" target="_blank" className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-zinc-900 px-3 py-2 text-xs font-medium text-white hover:bg-black"><ExternalLink className="h-4 w-4" /> Facebook</a>
+              </div>
             </div>
 
             <div className="rounded-2xl bg-zinc-900 p-6 text-white">
