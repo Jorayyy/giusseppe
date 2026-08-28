@@ -153,7 +153,7 @@ export default function HoursEditorPage() {
                         <select
                           value={h.open}
                           onChange={(e) => updateField(day, "open", e.target.value)}
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
                         >
                           <option value="">--</option>
                           {TIME_PRESETS.map((t) => (
@@ -166,7 +166,7 @@ export default function HoursEditorPage() {
                         <select
                           value={h.close}
                           onChange={(e) => updateField(day, "close", e.target.value)}
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
                         >
                           <option value="">--</option>
                           {TIME_PRESETS.map((t) => (
@@ -186,7 +186,7 @@ export default function HoursEditorPage() {
                         <select
                           value={h.open2}
                           onChange={(e) => updateField(day, "open2", e.target.value)}
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
                         >
                           <option value="">--</option>
                           {TIME_PRESETS.map((t) => (
@@ -199,7 +199,7 @@ export default function HoursEditorPage() {
                         <select
                           value={h.close2}
                           onChange={(e) => updateField(day, "close2", e.target.value)}
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
                         >
                           <option value="">--</option>
                           {TIME_PRESETS.map((t) => (

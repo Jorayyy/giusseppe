@@ -217,7 +217,7 @@ export default function PhotosEditorPage() {
                       onChange={(e) => setUrlInput(e.target.value)}
                       placeholder="https://example.com/photo.jpg"
                       autoFocus
-                      className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs outline-none focus:border-amber-400"
+                      className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs text-stone-900 outline-none focus:border-amber-400"
                       onKeyDown={(e) => e.key === "Enter" && setUrl(idx)}
                     />
                     <button

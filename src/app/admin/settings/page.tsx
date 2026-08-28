@@ -95,7 +95,7 @@ export default function SettingsEditorPage() {
             <input
               value={settings.name}
               onChange={(e) => updateField("name", e.target.value)}
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
             />
           </label>
           <label className="space-y-1.5">
@@ -106,7 +106,7 @@ export default function SettingsEditorPage() {
               value={settings.priceRange}
               onChange={(e) => updateField("priceRange", e.target.value)}
               placeholder="₱500–2,000"
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
             />
           </label>
           <label className="space-y-1.5 sm:col-span-2">
@@ -117,7 +117,7 @@ export default function SettingsEditorPage() {
               value={settings.tagline}
               onChange={(e) => updateField("tagline", e.target.value)}
               placeholder="Authentic Italian Cucina"
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
             />
           </label>
         </div>
@@ -143,7 +143,7 @@ export default function SettingsEditorPage() {
               value={settings.phone}
               onChange={(e) => updateField("phone", e.target.value)}
               placeholder="0931 970 4073"
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
             />
           </label>
           <label className="space-y-1.5 sm:col-span-2">
@@ -153,7 +153,7 @@ export default function SettingsEditorPage() {
             <input
               value={settings.address}
               onChange={(e) => updateField("address", e.target.value)}
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
             />
           </label>
         </div>
@@ -178,7 +178,7 @@ export default function SettingsEditorPage() {
             <input
               value={settings.mapsUrl}
               onChange={(e) => updateField("mapsUrl", e.target.value)}
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
             />
           </label>
           <label className="space-y-1.5">
@@ -188,7 +188,7 @@ export default function SettingsEditorPage() {
             <input
               value={settings.waOrderUrl}
               onChange={(e) => updateField("waOrderUrl", e.target.value)}
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
             />
           </label>
           <label className="space-y-1.5">
@@ -198,7 +198,7 @@ export default function SettingsEditorPage() {
             <input
               value={settings.googleReviewUrl}
               onChange={(e) => updateField("googleReviewUrl", e.target.value)}
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
             />
           </label>
         </div>

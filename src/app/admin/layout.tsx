@@ -79,7 +79,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
               autoFocus
             />
             {error && <p className="text-xs font-medium text-red-600">{error}</p>}
