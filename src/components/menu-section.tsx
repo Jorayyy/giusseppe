@@ -8,7 +8,7 @@ export default function MenuSection() {
   const [menuCat, setMenuCat] = useState<keyof typeof MENU>("Antipasti");
 
   return (
-    <section className="rounded-2xl border border-stone-200 bg-white p-6">
+    <section id="menu" className="rounded-2xl border border-stone-200 bg-white p-6 scroll-mt-20">
       <div className="flex items-center justify-between">
         <h2 className="font-serif text-xl font-semibold">Menu</h2>
         <button className="text-sm font-medium text-amber-600 hover:text-amber-700">View full menu →</button>
