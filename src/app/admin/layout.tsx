@@ -107,7 +107,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </button>
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-600 font-serif text-sm font-bold text-white">G</div>
-          <span className="font-serif text-lg font-semibold">Admin</span>
+          <span className="font-serif text-lg font-semibold text-stone-900">Admin</span>
         </div>
       </header>
 
@@ -123,7 +123,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="flex items-center gap-3 border-b border-stone-200 p-5">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-600 font-serif text-lg font-bold text-white">G</div>
               <div>
-                <h1 className="font-serif text-lg font-bold leading-none">Giuseppe&apos;s</h1>
+                <h1 className="font-serif text-lg font-bold leading-none text-stone-900">Giuseppe&apos;s</h1>
                 <p className="text-xs text-stone-500">Owner Dashboard</p>
               </div>
             </div>
