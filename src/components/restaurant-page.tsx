@@ -71,7 +71,7 @@ export default function RestaurantPage() {
           </div>
         </div>
 
-        <Roadmap onToast={showToast} />
+        {/* <Roadmap onToast={showToast} /> */}
       </main>
 
       <Footer />
