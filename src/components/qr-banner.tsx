@@ -23,7 +23,7 @@ export default function QrBanner() {
           </div>
         </div>
       </div>
-      <a href="/qr" className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-zinc-900 px-4 py-2 text-xs font-medium text-white hover:bg-black">
+      <a href="/qr" className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-medium text-white hover:bg-black">
         <QrCode className="h-4 w-4" /> View QR Menu
       </a>
     </div>

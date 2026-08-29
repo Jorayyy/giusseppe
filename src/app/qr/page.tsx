@@ -65,7 +65,7 @@ export default function QrPage() {
 
             <button
               onClick={() => window.print()}
-              className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-zinc-900 py-3 text-sm font-semibold text-white hover:bg-black print:hidden"
+              className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-primary py-3 text-sm font-semibold text-white hover:bg-black print:hidden"
             >
               <Printer className="h-4 w-4" /> Print this QR
             </button>

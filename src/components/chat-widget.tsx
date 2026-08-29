@@ -162,7 +162,7 @@ export default function ChatWidget() {
       </button>
 
       {open && (
-        <div className="fixed bottom-20 right-5 z-50 flex w-[calc(100vw-2.5rem)] max-w-[360px] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl animate-in slide-in-from-bottom-4 sm:bottom-20 sm:right-5 max-sm:inset-3 max-sm:bottom-16 max-sm:rounded-xl">
+        <div className="fixed bottom-20 right-5 z-50 flex w-[85vw] max-w-[340px] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl animate-in slide-in-from-bottom-4 sm:bottom-20 sm:right-5 sm:w-[340px]">
           <div className="flex items-center gap-2.5 bg-primary px-3 py-2 text-white">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-light font-serif text-xs font-bold">
               G
