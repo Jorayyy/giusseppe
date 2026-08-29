@@ -34,7 +34,7 @@ export default function EventForm({ onToast }: { onToast: (msg: string) => void 
   return (
     <section id="events" className="rounded-2xl border border-stone-200 bg-white p-6">
       <div className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface text-primary-light">
           <PartyPopper className="h-4 w-4" />
         </div>
         <h3 className="font-serif text-lg font-semibold">Private Dining & Catering</h3>
@@ -49,7 +49,7 @@ export default function EventForm({ onToast }: { onToast: (msg: string) => void 
               onChange={e => setEventForm({ ...eventForm, name: e.target.value })}
               placeholder="Juan Dela Cruz"
               required
-              className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+              className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
             />
           </div>
           <div>
@@ -59,7 +59,7 @@ export default function EventForm({ onToast }: { onToast: (msg: string) => void 
               onChange={e => setEventForm({ ...eventForm, phone: e.target.value })}
               placeholder="09xx xxx xxxx"
               required
-              className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+              className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
             />
           </div>
         </div>
@@ -70,7 +70,7 @@ export default function EventForm({ onToast }: { onToast: (msg: string) => void 
               type="date"
               value={eventForm.date}
               onChange={e => setEventForm({ ...eventForm, date: e.target.value })}
-              className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+              className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
             />
           </div>
           <div>
@@ -81,7 +81,7 @@ export default function EventForm({ onToast }: { onToast: (msg: string) => void 
               value={eventForm.guests}
               onChange={e => setEventForm({ ...eventForm, guests: e.target.value })}
               placeholder="20"
-              className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+              className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
             />
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function EventForm({ onToast }: { onToast: (msg: string) => void 
           <select
             value={eventForm.type}
             onChange={e => setEventForm({ ...eventForm, type: e.target.value })}
-            className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+            className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
           >
             <option>Birthday</option>
             <option>Corporate</option>
@@ -105,10 +105,10 @@ export default function EventForm({ onToast }: { onToast: (msg: string) => void 
             onChange={e => setEventForm({ ...eventForm, message: e.target.value })}
             placeholder="Tell us about your event — birthday, grazing table, wine pairing..."
             rows={3}
-            className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+            className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
           />
         </div>
-        <button type="submit" className="flex w-full items-center justify-center gap-1.5 rounded-full bg-amber-600 py-2.5 text-sm font-semibold text-white hover:bg-amber-700">
+        <button type="submit" className="flex w-full items-center justify-center gap-1.5 rounded-full bg-primary py-2.5 text-sm font-semibold text-white hover:bg-primary-light">
           <Send className="h-4 w-4" /> Send inquiry
         </button>
         <p className="text-center text-[11px] text-stone-400">We reply within 2 hrs</p>

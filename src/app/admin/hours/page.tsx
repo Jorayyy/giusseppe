@@ -90,7 +90,7 @@ export default function HoursEditorPage() {
           </button>
           <button
             onClick={save}
-            className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-700 transition"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition"
           >
             <Save className="h-4 w-4" /> Save
           </button>
@@ -100,7 +100,7 @@ export default function HoursEditorPage() {
       {/* Info */}
       <div className="rounded-2xl border border-stone-200 bg-white p-5">
         <div className="flex items-start gap-3">
-          <Clock className="mt-0.5 h-5 w-5 text-amber-600" />
+          <Clock className="mt-0.5 h-5 w-5 text-primary" />
           <div>
             <p className="text-sm font-medium text-stone-900">Two service windows</p>
             <p className="text-sm text-stone-500">Set a lunch window (11AM–4PM) and dinner window (5PM–close). Leave the second window empty if you&apos;re closed between services.</p>
@@ -153,7 +153,7 @@ export default function HoursEditorPage() {
                         <select
                           value={h.open}
                           onChange={(e) => updateField(day, "open", e.target.value)}
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                         >
                           <option value="">--</option>
                           {TIME_PRESETS.map((t) => (
@@ -166,7 +166,7 @@ export default function HoursEditorPage() {
                         <select
                           value={h.close}
                           onChange={(e) => updateField(day, "close", e.target.value)}
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                         >
                           <option value="">--</option>
                           {TIME_PRESETS.map((t) => (
@@ -186,7 +186,7 @@ export default function HoursEditorPage() {
                         <select
                           value={h.open2}
                           onChange={(e) => updateField(day, "open2", e.target.value)}
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                         >
                           <option value="">--</option>
                           {TIME_PRESETS.map((t) => (
@@ -199,7 +199,7 @@ export default function HoursEditorPage() {
                         <select
                           value={h.close2}
                           onChange={(e) => updateField(day, "close2", e.target.value)}
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                         >
                           <option value="">--</option>
                           {TIME_PRESETS.map((t) => (
@@ -244,7 +244,7 @@ export default function HoursEditorPage() {
       <div className="flex justify-end pb-8">
         <button
           onClick={save}
-          className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-6 py-3 text-sm font-semibold text-white hover:bg-amber-700 transition"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-light transition"
         >
           <Save className="h-4 w-4" /> Save Hours
         </button>

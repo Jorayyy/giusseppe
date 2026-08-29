@@ -20,12 +20,12 @@ export default function QrPage() {
     <div className="min-h-screen bg-[#FFFBF5] text-zinc-900 print:bg-white">
       <nav className="border-b border-stone-200 bg-white/80 backdrop-blur print:hidden">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-          <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-stone-600 hover:text-amber-600">
+          <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-stone-600 hover:text-primary">
             <ArrowLeft className="h-4 w-4" /> Back to site
           </a>
           <button
             onClick={() => window.print()}
-            className="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-5 py-2 text-sm font-semibold text-white hover:bg-amber-700"
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white hover:bg-primary-light"
           >
             <Printer className="h-4 w-4" /> Print
           </button>
@@ -34,7 +34,7 @@ export default function QrPage() {
 
       <main className="mx-auto max-w-5xl px-4 py-8 print:px-0 print:py-4">
         <div className="text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-600 font-serif text-xl font-bold text-white shadow-sm">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary font-serif text-xl font-bold text-white shadow-sm">
             G
           </div>
           <h1 className="mt-3 font-serif text-3xl font-bold tracking-tight">Giuseppe&apos;s</h1>
@@ -44,7 +44,7 @@ export default function QrPage() {
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           {/* Menu QR */}
           <div className="rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm print:border-stone-300 print:shadow-none">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-light">
               <QrCode className="h-3.5 w-3.5" /> Photo Menu
             </div>
             <h2 className="mt-3 font-serif text-2xl font-semibold">Scan to view menu</h2>
@@ -75,7 +75,7 @@ export default function QrPage() {
           {/* Chat QR */}
           <div className="space-y-6">
             <div className="rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm print:shadow-none">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-light">
                 <MessageSquare className="h-3.5 w-3.5" /> Chat with Us
               </div>
               <h3 className="mt-3 font-semibold">Questions? Message us</h3>
@@ -87,15 +87,15 @@ export default function QrPage() {
               <a
                 href={chatUrl}
                 target="_blank"
-                className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 print:hidden"
+                className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-light print:hidden"
               >
                 <MessageSquare className="h-4 w-4" /> Open Chat
               </a>
             </div>
 
-            <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-6 print:border-amber-300">
-              <h3 className="font-serif font-semibold text-amber-900">How to use</h3>
-              <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-6 text-amber-900/80">
+            <div className="rounded-2xl border border-primary bg-gradient-to-br from-surface to-orange-50 p-6 print:border-primary-light">
+              <h3 className="font-serif font-semibold text-primary">How to use</h3>
+              <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-6 text-primary/80">
                 <li>Print this QR on sturdy paper or sticker.</li>
                 <li>Place one on each table — near the centre or menu holder.</li>
                 <li>Guests scan to see the photo menu instantly — no reprinting when dishes change.</li>

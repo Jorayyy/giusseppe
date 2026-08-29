@@ -25,7 +25,7 @@ export default function SalesDashboard() {
   if (!data) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-amber-600 border-t-transparent" />
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -53,8 +53,8 @@ export default function SalesDashboard() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
-              <DollarSign className="h-5 w-5 text-amber-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface">
+              <DollarSign className="h-5 w-5 text-primary" />
             </div>
             <span className="flex items-center gap-1 text-xs font-medium text-emerald-600">
               <TrendingUp className="h-3 w-3" /> +12%
@@ -92,7 +92,7 @@ export default function SalesDashboard() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50">
               <Crown className="h-5 w-5 text-purple-600" />
             </div>
-            <span className="flex items-center gap-1 text-xs font-medium text-amber-600">
+            <span className="flex items-center gap-1 text-xs font-medium text-primary">
               <ArrowUpRight className="h-3 w-3" /> #1
             </span>
           </div>
@@ -116,7 +116,7 @@ export default function SalesDashboard() {
                   <span className="text-[10px] font-medium text-stone-500">{formatPeso(day.revenue)}</span>
                   <div
                     className={`w-full rounded-t-lg transition-all ${
-                      isMax ? "bg-amber-500" : "bg-amber-200"
+                      isMax ? "bg-accent" : "bg-stone-200"
                     }`}
                     style={{ height: `${height}%`, minHeight: "8px" }}
                   />
@@ -131,7 +131,7 @@ export default function SalesDashboard() {
         <div className="rounded-2xl border border-stone-200 bg-white p-6">
           <h3 className="font-serif text-lg font-semibold text-stone-900 mb-4">
             <span className="flex items-center gap-2">
-              <Clock className="h-5 w-5 text-amber-600" />
+              <Clock className="h-5 w-5 text-primary" />
               Peak Hours
             </span>
           </h3>
@@ -145,7 +145,7 @@ export default function SalesDashboard() {
                   <div className="flex-1 h-6 bg-stone-100 rounded-lg overflow-hidden">
                     <div
                       className={`h-full rounded-lg transition-all ${
-                        isPeak ? "bg-amber-500" : "bg-amber-300"
+                        isPeak ? "bg-accent" : "bg-stone-300"
                       }`}
                       style={{ width: `${width}%` }}
                     />
@@ -169,7 +169,7 @@ export default function SalesDashboard() {
                 <span
                   className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold ${
                     idx === 0
-                      ? "bg-amber-100 text-amber-700"
+                      ? "bg-surface text-primary-light"
                       : idx === 1
                       ? "bg-stone-200 text-stone-700"
                       : idx === 2
@@ -183,7 +183,7 @@ export default function SalesDashboard() {
                   <p className="text-sm font-medium text-stone-900 truncate">{item.name}</p>
                   <p className="text-xs text-stone-500">{item.count} sold</p>
                 </div>
-                <span className="text-sm font-semibold text-amber-700">{formatPeso(item.revenue)}</span>
+                <span className="text-sm font-semibold text-primary-light">{formatPeso(item.revenue)}</span>
               </div>
             ))}
           </div>
@@ -222,7 +222,7 @@ export default function SalesDashboard() {
             {/* Legend */}
             <div className="flex-1 space-y-2">
               {data.categoryData.map((cat, idx) => {
-                const colors = ["bg-amber-500", "bg-stone-500", "bg-orange-500", "bg-emerald-500", "bg-purple-500", "bg-red-500"];
+                const colors = ["bg-surface0", "bg-stone-500", "bg-orange-500", "bg-emerald-500", "bg-purple-500", "bg-red-500"];
                 return (
                   <div key={cat.name} className="flex items-center gap-2">
                     <div className={`h-3 w-3 rounded-full ${colors[idx % colors.length]}`} />
@@ -256,14 +256,14 @@ export default function SalesDashboard() {
                   <td className="py-3 font-medium text-stone-900">{order.id}</td>
                   <td className="py-3 text-stone-600">{order.time}</td>
                   <td className="py-3 text-stone-600 max-w-[200px] truncate">{order.items.join(", ")}</td>
-                  <td className="py-3 text-right font-semibold text-amber-700">{formatPeso(order.total)}</td>
+                  <td className="py-3 text-right font-semibold text-primary-light">{formatPeso(order.total)}</td>
                   <td className="py-3 text-right">
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                         order.status === "Completed"
                           ? "bg-emerald-50 text-emerald-700"
                           : order.status === "In Progress"
-                          ? "bg-amber-50 text-amber-700"
+                          ? "bg-surface text-primary-light"
                           : "bg-red-50 text-red-700"
                       }`}
                     >

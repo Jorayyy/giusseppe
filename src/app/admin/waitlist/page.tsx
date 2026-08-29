@@ -132,7 +132,7 @@ export default function AdminWaitlistPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-amber-600 border-t-transparent" />
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -157,11 +157,11 @@ export default function AdminWaitlistPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
-              <Users className="h-5 w-5 text-amber-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface">
+              <Users className="h-5 w-5 text-primary" />
             </div>
             {entries.length > 0 && (
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500 text-[11px] font-bold text-white animate-pulse">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-white animate-pulse">
                 {entries.length}
               </span>
             )}
@@ -225,7 +225,7 @@ export default function AdminWaitlistPage() {
               return (
                 <div key={entry.id} className="flex items-center gap-4 px-6 py-4 hover:bg-stone-50 transition">
                   {/* Position */}
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-sm font-bold text-amber-700">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface text-sm font-bold text-primary-light">
                     #{idx + 1}
                   </div>
 
@@ -234,7 +234,7 @@ export default function AdminWaitlistPage() {
                     <div className="flex items-center gap-2">
                       <p className="font-medium text-stone-900 truncate">{entry.name}</p>
                       {idx === 0 && (
-                        <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+                        <span className="flex items-center gap-1 rounded-full bg-surface px-2 py-0.5 text-[10px] font-semibold text-primary-light">
                           <AlertCircle className="h-3 w-3" /> Next
                         </span>
                       )}
@@ -252,7 +252,7 @@ export default function AdminWaitlistPage() {
                     <p className="text-xs text-stone-400">Joined {formatTime(entry.joinedAt)}</p>
                     <div className="mt-1 h-1.5 w-20 rounded-full bg-stone-200 overflow-hidden ml-auto">
                       <div
-                        className="h-full rounded-full bg-amber-400"
+                        className="h-full rounded-full bg-accent"
                         style={{ width: `${Math.min((waitMins / 120) * 100, 100)}%` }}
                       />
                     </div>
@@ -278,7 +278,7 @@ export default function AdminWaitlistPage() {
                     </button>
                     <button
                       onClick={() => notify(entry)}
-                      className="rounded-lg p-2 text-amber-600 hover:bg-amber-50 transition"
+                      className="rounded-lg p-2 text-primary hover:bg-surface transition"
                       title="Notify guest"
                     >
                       <Bell className="h-4 w-4" />

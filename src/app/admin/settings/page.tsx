@@ -67,7 +67,7 @@ export default function SettingsEditorPage() {
           </button>
           <button
             onClick={save}
-            className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-700 transition"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition"
           >
             <Save className="h-4 w-4" /> Save
           </button>
@@ -77,8 +77,8 @@ export default function SettingsEditorPage() {
       {/* Restaurant Info */}
       <div className="rounded-2xl border border-stone-200 bg-white p-6">
         <div className="flex items-center gap-3 mb-5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
-            <Store className="h-5 w-5 text-amber-600" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface">
+            <Store className="h-5 w-5 text-primary" />
           </div>
           <div>
             <h2 className="font-serif text-lg font-semibold text-stone-900">Restaurant Info</h2>
@@ -93,7 +93,7 @@ export default function SettingsEditorPage() {
             <input
               value={settings.name}
               onChange={(e) => updateField("name", e.target.value)}
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
             />
           </label>
           <label className="space-y-1.5">
@@ -104,7 +104,7 @@ export default function SettingsEditorPage() {
               value={settings.priceRange}
               onChange={(e) => updateField("priceRange", e.target.value)}
               placeholder="₱500–2,000"
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
             />
           </label>
           <label className="space-y-1.5 sm:col-span-2">
@@ -115,7 +115,7 @@ export default function SettingsEditorPage() {
               value={settings.tagline}
               onChange={(e) => updateField("tagline", e.target.value)}
               placeholder="Authentic Italian Cucina"
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
             />
           </label>
         </div>
@@ -141,7 +141,7 @@ export default function SettingsEditorPage() {
               value={settings.phone}
               onChange={(e) => updateField("phone", e.target.value)}
               placeholder="0931 970 4073"
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
             />
           </label>
           <label className="space-y-1.5 sm:col-span-2">
@@ -151,7 +151,7 @@ export default function SettingsEditorPage() {
             <input
               value={settings.address}
               onChange={(e) => updateField("address", e.target.value)}
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
             />
           </label>
         </div>
@@ -176,7 +176,7 @@ export default function SettingsEditorPage() {
             <input
               value={settings.mapsUrl}
               onChange={(e) => updateField("mapsUrl", e.target.value)}
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
             />
           </label>
 
@@ -187,7 +187,7 @@ export default function SettingsEditorPage() {
             <input
               value={settings.googleReviewUrl}
               onChange={(e) => updateField("googleReviewUrl", e.target.value)}
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
             />
           </label>
         </div>
@@ -198,7 +198,7 @@ export default function SettingsEditorPage() {
         <h3 className="mb-4 font-serif text-lg font-semibold text-stone-900">Preview</h3>
         <div className="rounded-xl bg-stone-50 p-5">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-600 font-serif text-lg font-bold text-white">G</div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary font-serif text-lg font-bold text-white">G</div>
             <div>
               <h4 className="font-serif text-xl font-bold text-stone-900">{settings.name}</h4>
               <p className="text-sm text-stone-500">{settings.tagline}</p>
@@ -216,7 +216,7 @@ export default function SettingsEditorPage() {
       <div className="flex justify-end pb-8">
         <button
           onClick={save}
-          className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-6 py-3 text-sm font-semibold text-white hover:bg-amber-700 transition"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-light transition"
         >
           <Save className="h-4 w-4" /> Save Settings
         </button>

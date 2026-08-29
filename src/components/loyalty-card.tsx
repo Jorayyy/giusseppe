@@ -41,7 +41,7 @@ export default function LoyaltyCard() {
     <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-600 font-serif text-xl font-bold text-white shadow-md">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary font-serif text-xl font-bold text-white shadow-md">
           G
         </div>
         <div>
@@ -51,14 +51,14 @@ export default function LoyaltyCard() {
       </div>
 
       {/* Card Body */}
-      <div className="rounded-2xl bg-gradient-to-br from-amber-50 via-amber-100/60 to-stone-50 border border-amber-200/60 p-6">
+      <div className="rounded-2xl bg-gradient-to-br from-surface via-surface/60 to-stone-50 border border-stone-300/60 p-6">
         {/* Progress Label */}
         <div className="flex items-center justify-between mb-4">
-          <span className="text-sm font-semibold text-amber-800">
+          <span className="text-sm font-semibold text-primary">
             {progress}/10 stamps
           </span>
           <div className="flex items-center gap-1.5 text-sm text-stone-600">
-            <Award className="h-4 w-4 text-amber-600" />
+            <Award className="h-4 w-4 text-primary" />
             <span>{10 - progress === 0 ? "Complete!" : `${10 - progress} to go`}</span>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function LoyaltyCard() {
                 key={i}
                 className={`flex aspect-square items-center justify-center rounded-xl border-2 transition-all duration-300 ${
                   filled
-                    ? "border-amber-500 bg-amber-500 shadow-md scale-105"
+                    ? "border-accent bg-accent shadow-md scale-105"
                     : "border-dashed border-stone-300 bg-white"
                 }`}
               >
@@ -88,13 +88,13 @@ export default function LoyaltyCard() {
 
         {/* Celebration Banner */}
         {celebrating && (
-          <div className="mb-4 rounded-xl bg-amber-600 p-4 text-center text-white shadow-lg">
+          <div className="mb-4 rounded-xl bg-primary p-4 text-center text-white shadow-lg">
             <div className="flex items-center justify-center gap-2 mb-1">
               <PartyPopper className="h-5 w-5" />
               <span className="font-serif text-lg font-bold">Free Tiramisu!</span>
               <PartyPopper className="h-5 w-5" />
             </div>
-            <p className="text-sm text-amber-100">Show this to your server to claim your reward.</p>
+            <p className="text-sm text-surface">Show this to your server to claim your reward.</p>
 
           </div>
         )}
@@ -105,7 +105,7 @@ export default function LoyaltyCard() {
             <button
               onClick={addStamp}
               disabled={stamps >= 10}
-              className="flex-1 rounded-xl bg-amber-600 py-3 text-sm font-semibold text-white hover:bg-amber-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 rounded-xl bg-primary py-3 text-sm font-semibold text-white hover:bg-primary-light transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {stamps >= 10 ? "Reward Ready!" : "Earn a Stamp"}
             </button>

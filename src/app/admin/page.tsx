@@ -44,7 +44,7 @@ const DEFAULT_MENU: Record<string, { name: string; price: string; desc: string; 
 };
 
 const QUICK_ACTIONS = [
-  { label: "Sales Dashboard", href: "/admin/sales", icon: BarChart3, color: "bg-amber-600" },
+  { label: "Sales Dashboard", href: "/admin/sales", icon: BarChart3, color: "bg-primary" },
   { label: "Edit Menu", href: "/admin/menu", icon: UtensilsCrossed, color: "bg-blue-500" },
   { label: "Edit Hours", href: "/admin/hours", icon: Clock, color: "bg-emerald-500" },
   { label: "Edit Photos", href: "/admin/photos", icon: Camera, color: "bg-purple-500" },
@@ -84,8 +84,8 @@ export default function AdminDashboard() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
-              <UtensilsCrossed className="h-5 w-5 text-amber-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface">
+              <UtensilsCrossed className="h-5 w-5 text-primary" />
             </div>
             <span className="flex items-center gap-1 text-xs font-medium text-emerald-600">
               <TrendingUp className="h-3 w-3" /> Active
@@ -107,8 +107,8 @@ export default function AdminDashboard() {
 
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
-              <Star className="h-5 w-5 text-amber-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface">
+              <Star className="h-5 w-5 text-primary" />
             </div>
           </div>
           <p className="mt-3 text-2xl font-bold text-stone-900">{popularItems}</p>
@@ -140,10 +140,10 @@ export default function AdminDashboard() {
                 <action.icon className="h-6 w-6" />
               </div>
               <div className="flex-1">
-                <p className="font-medium text-stone-900 group-hover:text-amber-700 transition">{action.label}</p>
+                <p className="font-medium text-stone-900 group-hover:text-primary-light transition">{action.label}</p>
                 <p className="text-xs text-stone-500">Manage</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-stone-400 group-hover:text-amber-600 transition" />
+              <ArrowRight className="h-4 w-4 text-stone-400 group-hover:text-primary transition" />
             </Link>
           ))}
         </div>
@@ -213,7 +213,7 @@ export default function AdminDashboard() {
       <div className="rounded-2xl border border-stone-200 bg-white p-6">
         <div className="flex items-center justify-between">
           <h3 className="font-serif text-lg font-semibold text-stone-900">Popular Items</h3>
-          <Link href="/admin/menu" className="text-sm font-medium text-amber-600 hover:text-amber-700">
+          <Link href="/admin/menu" className="text-sm font-medium text-primary hover:text-primary-light">
             View all →
           </Link>
         </div>
@@ -227,7 +227,7 @@ export default function AdminDashboard() {
                   <p className="font-medium text-stone-900">{item.name}</p>
                   <p className="text-xs text-stone-500">{item.category}</p>
                 </div>
-                <span className="font-semibold text-amber-700">{item.price}</span>
+                <span className="font-semibold text-primary-light">{item.price}</span>
               </div>
             ))}
         </div>

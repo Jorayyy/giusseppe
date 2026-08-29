@@ -117,7 +117,7 @@ export default function VouchersPage() {
         </div>
         <button
           onClick={save}
-          className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-700 transition"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition"
         >
           <Save className="h-4 w-4" /> Save Changes
         </button>
@@ -131,7 +131,7 @@ export default function VouchersPage() {
         <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
           {activeCount} active
         </span>
-        <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-700">
+        <span className="rounded-full bg-surface px-3 py-1 text-xs font-medium text-primary-light">
           {totalRedeemed} redeemed
         </span>
       </div>
@@ -150,7 +150,7 @@ export default function VouchersPage() {
                 {/* Icon */}
                 <div
                   className={`flex h-12 w-12 items-center justify-center rounded-xl ${
-                    v.active ? "bg-amber-100 text-amber-600" : "bg-stone-100 text-stone-400"
+                    v.active ? "bg-surface text-primary" : "bg-stone-100 text-stone-400"
                   }`}
                 >
                   {v.type === "discount" ? <Tag className="h-5 w-5" /> : <Gift className="h-5 w-5" />}
@@ -216,7 +216,7 @@ export default function VouchersPage() {
                 value={newCode}
                 onChange={(e) => setNewCode(e.target.value.toUpperCase())}
                 placeholder="e.g. SUMMER50"
-                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-900 uppercase tracking-wider placeholder:normal-case outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-900 uppercase tracking-wider placeholder:normal-case outline-none focus:border-accent focus:ring-2 focus:ring-surface"
               />
             </div>
             <div>
@@ -224,7 +224,7 @@ export default function VouchersPage() {
               <select
                 value={newType}
                 onChange={(e) => setNewType(e.target.value as "discount" | "free-item")}
-                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
               >
                 <option value="discount">Discount</option>
                 <option value="free-item">Free Item</option>
@@ -238,7 +238,7 @@ export default function VouchersPage() {
                   value={newValue}
                   onChange={(e) => setNewValue(e.target.value)}
                   placeholder="0"
-                  className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                  className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                 />
               </div>
             )}
@@ -248,7 +248,7 @@ export default function VouchersPage() {
                 value={newDesc}
                 onChange={(e) => setNewDesc(e.target.value)}
                 placeholder="e.g. ₱50 off your order"
-                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
               />
             </div>
           </div>
@@ -261,7 +261,7 @@ export default function VouchersPage() {
             </button>
             <button
               onClick={addVoucher}
-              className="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-700 transition"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-light transition"
             >
               <Plus className="h-4 w-4" /> Add Voucher
             </button>
@@ -270,7 +270,7 @@ export default function VouchersPage() {
       ) : (
         <button
           onClick={() => setShowAdd(true)}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-stone-300 bg-white py-4 text-sm font-medium text-stone-600 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700 transition"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-stone-300 bg-white py-4 text-sm font-medium text-stone-600 hover:border-accent hover:bg-surface hover:text-primary-light transition"
         >
           <Plus className="h-4 w-4" /> Add Voucher
         </button>
@@ -280,7 +280,7 @@ export default function VouchersPage() {
       <div className="flex justify-end pb-8">
         <button
           onClick={save}
-          className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-6 py-3 text-sm font-semibold text-white hover:bg-amber-700 transition"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-light transition"
         >
           <Save className="h-4 w-4" /> Save Changes
         </button>

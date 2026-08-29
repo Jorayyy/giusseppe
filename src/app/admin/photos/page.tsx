@@ -117,7 +117,7 @@ export default function PhotosEditorPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-6 w-6 animate-spin text-amber-600" />
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
       </div>
     );
   }
@@ -132,7 +132,7 @@ export default function PhotosEditorPage() {
         <button
           onClick={saveOrder}
           disabled={saving}
-          className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-700 transition disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition disabled:opacity-50"
         >
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           Save
@@ -175,7 +175,7 @@ export default function PhotosEditorPage() {
                 value={photo.alt || ""}
                 onChange={(e) => updateAlt(photo.id, e.target.value)}
                 placeholder="Alt text (optional)"
-                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs text-stone-900 outline-none focus:border-amber-400"
+                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs text-stone-900 outline-none focus:border-accent"
               />
             </div>
 
@@ -186,7 +186,7 @@ export default function PhotosEditorPage() {
         ))}
 
         {newSlot ? (
-          <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-4">
+          <div className="rounded-2xl border-2 border-accent bg-surface p-4">
             <p className="mb-3 text-sm font-medium text-stone-700">Upload new photo</p>
             <ImageUpload
               type="gallery"
@@ -202,7 +202,7 @@ export default function PhotosEditorPage() {
         ) : (
           <button
             onClick={() => setNewSlot(true)}
-            className="flex min-h-[280px] flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-stone-300 bg-white text-stone-500 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700 transition"
+            className="flex min-h-[280px] flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-stone-300 bg-white text-stone-500 hover:border-accent hover:bg-surface hover:text-primary-light transition"
           >
             <Plus className="h-8 w-8" />
             <span className="text-sm font-medium">Add Photo</span>
@@ -224,7 +224,7 @@ export default function PhotosEditorPage() {
         <button
           onClick={saveOrder}
           disabled={saving}
-          className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-6 py-3 text-sm font-semibold text-white hover:bg-amber-700 transition disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-light transition disabled:opacity-50"
         >
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           Save Photos

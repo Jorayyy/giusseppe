@@ -48,7 +48,7 @@ export default function ReviewsCard({
                 key={s}
                 className={`h-4 w-4 ${
                   s <= Math.round(RESTAURANT.rating)
-                    ? "fill-amber-400 text-amber-400"
+                    ? "fill-accent text-accent"
                     : "text-stone-300"
                 }`}
               />
@@ -72,7 +72,7 @@ export default function ReviewsCard({
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             placeholder="Your name"
-            className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+            className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
           />
           <div className="flex gap-0.5">
             {[1, 2, 3, 4, 5].map((s) => (
@@ -85,7 +85,7 @@ export default function ReviewsCard({
                 <Star
                   className={`h-5 w-5 ${
                     s <= form.rating
-                      ? "fill-amber-400 text-amber-400"
+                      ? "fill-accent text-accent"
                       : "text-stone-200"
                   }`}
                 />
@@ -97,7 +97,7 @@ export default function ReviewsCard({
             onChange={(e) => setForm({ ...form, text: e.target.value })}
             placeholder="Tell us about your experience..."
             rows={3}
-            className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+            className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
           />
           <div className="flex gap-2">
             <button
@@ -118,16 +118,16 @@ export default function ReviewsCard({
       )}
 
       {showGooglePrompt && (
-        <div className="mt-4 flex items-center justify-between rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+        <div className="mt-4 flex items-center justify-between rounded-xl border border-stone-300 bg-surface px-4 py-3">
           <div className="text-sm">
-            <p className="font-medium text-amber-900">Thanks for the review! ✨</p>
-            <p className="text-xs text-amber-700/70">Want to also post on Google?</p>
+            <p className="font-medium text-primary">Thanks for the review! ✨</p>
+            <p className="text-xs text-primary-light/70">Want to also post on Google?</p>
           </div>
           <a
             href={RESTAURANT.googleReviewUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-amber-700 shadow-sm hover:bg-amber-100"
+            className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-primary-light shadow-sm hover:bg-surface"
           >
             Post on Google <ExternalLink className="h-3 w-3" />
           </a>
@@ -152,7 +152,7 @@ export default function ReviewsCard({
                       key={s}
                       className={`h-3 w-3 ${
                         s <= r.rating
-                          ? "fill-amber-400 text-amber-400"
+                          ? "fill-accent text-accent"
                           : "text-stone-200"
                       }`}
                     />
@@ -166,7 +166,7 @@ export default function ReviewsCard({
                     onReview(nr[i]);
                     setHelpfulIdx(i);
                   }}
-                  className="mt-2 inline-flex items-center gap-1 text-xs text-stone-400 hover:text-amber-600"
+                  className="mt-2 inline-flex items-center gap-1 text-xs text-stone-400 hover:text-primary"
                 >
                   <Heart className="h-3 w-3" /> Helpful ({r.likes})
                 </button>
@@ -176,10 +176,10 @@ export default function ReviewsCard({
         ))}
       </div>
 
-      <div className="mt-6 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 via-orange-50 to-white p-5">
+      <div className="mt-6 rounded-2xl border border-stone-300 bg-gradient-to-br from-surface via-orange-50 to-white p-5">
         <div className="flex items-start gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm">
-            <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
+            <Star className="h-5 w-5 fill-accent text-accent" />
           </div>
           <div className="flex-1">
             <h3 className="font-serif text-base font-semibold text-zinc-900">
@@ -194,7 +194,7 @@ export default function ReviewsCard({
                 href={RESTAURANT.googleReviewUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-700"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-light"
               >
                 <Star className="h-4 w-4 fill-white" /> Leave a Google Review
               </a>
@@ -217,7 +217,7 @@ export default function ReviewsCard({
                     }}
                     className="p-0.5 hover:scale-110 transition"
                   >
-                    <Star className="h-4 w-4 text-amber-300 hover:fill-amber-400 hover:text-amber-400" />
+                    <Star className="h-4 w-4 text-stone-400 hover:fill-accent hover:text-accent" />
                   </button>
                 ))}
               </span>

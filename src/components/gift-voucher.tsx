@@ -97,7 +97,7 @@ export default function GiftVoucher() {
     <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-600 font-serif text-xl font-bold text-white shadow-md">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary font-serif text-xl font-bold text-white shadow-md">
           G
         </div>
         <div>
@@ -107,7 +107,7 @@ export default function GiftVoucher() {
       </div>
 
       {/* Card Body */}
-      <div className="rounded-2xl bg-gradient-to-br from-amber-50 via-amber-100/60 to-stone-50 border border-amber-200/60 p-6">
+      <div className="rounded-2xl bg-gradient-to-br from-surface via-surface/60 to-stone-50 border border-stone-300/60 p-6">
         {/* Input */}
         <div className="mb-4">
           <div className="flex gap-2">
@@ -117,11 +117,11 @@ export default function GiftVoucher() {
               onChange={(e) => setInputCode(e.target.value.toUpperCase())}
               onKeyDown={(e) => e.key === "Enter" && lookupVoucher()}
               placeholder="Enter voucher code"
-              className="flex-1 rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm font-medium text-stone-900 uppercase tracking-wider placeholder:text-stone-400 placeholder:normal-case focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none"
+              className="flex-1 rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm font-medium text-stone-900 uppercase tracking-wider placeholder:text-stone-400 placeholder:normal-case focus:border-accent focus:ring-2 focus:ring-surface outline-none"
             />
             <button
               onClick={lookupVoucher}
-              className="rounded-xl bg-amber-600 px-5 py-3 text-sm font-semibold text-white hover:bg-amber-700 transition"
+              className="rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary-light transition"
             >
               <Ticket className="h-4 w-4" />
             </button>
@@ -146,9 +146,9 @@ export default function GiftVoucher() {
 
         {/* Found Voucher */}
         {foundVoucher && (
-          <div className="mb-4 overflow-hidden rounded-xl border-2 border-amber-300 bg-white">
+          <div className="mb-4 overflow-hidden rounded-xl border-2 border-stone-300 bg-white">
             {/* Ribbon */}
-            <div className="relative bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3">
+            <div className="relative bg-gradient-to-r from-accent to-primary px-4 py-3">
               <div className="absolute -left-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-[#FFFBF5]" />
               <div className="absolute -right-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-[#FFFBF5]" />
               <div className="flex items-center justify-center gap-2">
@@ -159,15 +159,15 @@ export default function GiftVoucher() {
             <div className="p-4 text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 {foundVoucher.type === "discount" ? (
-                  <Tag className="h-5 w-5 text-amber-600" />
+                  <Tag className="h-5 w-5 text-primary" />
                 ) : (
-                  <Sparkles className="h-5 w-5 text-amber-600" />
+                  <Sparkles className="h-5 w-5 text-primary" />
                 )}
                 <span className="text-sm font-medium text-stone-700">{foundVoucher.description}</span>
               </div>
               <button
                 onClick={redeemVoucher}
-                className="mt-2 w-full rounded-xl bg-amber-600 py-3 text-sm font-semibold text-white hover:bg-amber-700 transition"
+                className="mt-2 w-full rounded-xl bg-primary py-3 text-sm font-semibold text-white hover:bg-primary-light transition"
               >
                 Redeem Now
               </button>
@@ -177,7 +177,7 @@ export default function GiftVoucher() {
 
         {/* Wallet */}
         {redeemed.length > 0 && (
-          <div className="mt-4 border-t border-amber-200/60 pt-4">
+          <div className="mt-4 border-t border-stone-300/60 pt-4">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-semibold text-stone-700">Your Wallet</span>
               <span className="text-xs text-stone-500">{redeemed.length} voucher{redeemed.length !== 1 ? "s" : ""}</span>
@@ -199,9 +199,9 @@ export default function GiftVoucher() {
               ))}
             </div>
             {totalSavings > 0 && (
-              <div className="mt-3 rounded-xl bg-amber-100 p-3 text-center">
-                <span className="text-xs text-amber-700">Total Savings</span>
-                <p className="font-serif text-lg font-bold text-amber-800">₱{totalSavings}</p>
+              <div className="mt-3 rounded-xl bg-surface p-3 text-center">
+                <span className="text-xs text-primary-light">Total Savings</span>
+                <p className="font-serif text-lg font-bold text-primary">₱{totalSavings}</p>
               </div>
             )}
           </div>

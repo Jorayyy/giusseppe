@@ -114,12 +114,12 @@ export default function ImageUpload({
           disabled={uploading}
           className={`flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 transition ${
             dragOver
-              ? "border-amber-400 bg-amber-50"
-              : "border-stone-300 bg-stone-50 hover:border-amber-300 hover:bg-amber-50"
+              ? "border-accent bg-surface"
+              : "border-stone-300 bg-stone-50 hover:border-stone-400 hover:bg-surface"
           } ${uploading ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
         >
           {uploading ? (
-            <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           ) : (
             <Upload className="h-8 w-8 text-stone-400" />
           )}

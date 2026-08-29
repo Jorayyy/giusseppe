@@ -30,7 +30,7 @@ export default function PopularTimes() {
             onClick={() => setSelectedDay(d)}
             className={`rounded-full px-3 py-1 text-xs font-medium ${
               selectedDay === d
-                ? "bg-amber-600 text-white"
+                ? "bg-primary text-white"
                 : "bg-stone-100 hover:bg-stone-200"
             }`}
           >
@@ -42,7 +42,7 @@ export default function PopularTimes() {
         {values.map((v, i) => (
           <div key={i} className="flex flex-1 flex-col items-center gap-1">
             <div
-              className="w-full rounded-t bg-amber-600 transition-all"
+              className="w-full rounded-t bg-primary transition-all"
               style={{ height: `${v / 1.2}px`, opacity: 0.3 + v / 150 }}
             />
             <span className="text-[10px] text-stone-400">{HOURS_LABELS[i]}</span>
@@ -51,7 +51,7 @@ export default function PopularTimes() {
       </div>
       <p className="mt-3 text-xs text-stone-500">
         8 PM:{" "}
-        <span className="font-medium text-amber-700">
+        <span className="font-medium text-primary-light">
           Usually a little busy
         </span>{" "}
         · No wait

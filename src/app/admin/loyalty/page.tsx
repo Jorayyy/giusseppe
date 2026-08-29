@@ -14,8 +14,8 @@ const STATS = [
     label: "Stamps Distributed",
     value: 312,
     icon: Award,
-    color: "bg-amber-50",
-    iconColor: "text-amber-600",
+    color: "bg-surface",
+    iconColor: "text-primary",
   },
   {
     label: "Rewards Claimed",
@@ -69,7 +69,7 @@ export default function AdminLoyaltyPage() {
           {RECENT_ACTIVITY.map((item, i) => (
             <div key={i} className="flex items-center justify-between rounded-xl bg-stone-50 px-4 py-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-sm font-bold text-amber-700">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface text-sm font-bold text-primary-light">
                   {item.name.charAt(0)}
                 </div>
                 <div>

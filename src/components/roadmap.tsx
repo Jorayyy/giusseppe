@@ -9,7 +9,7 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
     <section id="roadmap" className="mt-12 rounded-2xl border border-stone-200 bg-white p-6 sm:p-8">
       <div className="text-center">
         <div className="mx-auto inline-flex items-center gap-1.5 rounded-full bg-stone-900 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-white">
-          <Sparkles className="h-3.5 w-3.5 text-amber-400" /> Roadmap
+          <Sparkles className="h-3.5 w-3.5 text-accent" /> Roadmap
         </div>
         <h2 className="mt-3 font-serif text-3xl font-bold tracking-tight">What We&apos;re Building</h2>
         <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-stone-500">We&apos;re building more for our Tacloban family — from seamless ordering to AI sommeliers.</p>
@@ -18,7 +18,7 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-amber-700">Tier 2</span>
+            <span className="rounded-full bg-surface px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-primary-light">Tier 2</span>
             <h3 className="text-sm font-semibold text-stone-700">Order & Delight</h3>
           </div>
           {[
@@ -29,7 +29,7 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
             <div key={item.title} className="rounded-2xl border border-stone-200 bg-[#FFFBF5] p-5">
               <div className="flex items-start justify-between">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
-                  <item.icon className="h-5 w-5 text-amber-600" />
+                  <item.icon className="h-5 w-5 text-primary" />
                 </div>
                 {item.live ? (
                   <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
@@ -56,7 +56,7 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
 
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-amber-700">Tier 2</span>
+            <span className="rounded-full bg-surface px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-primary-light">Tier 2</span>
             <h3 className="text-sm font-semibold text-stone-700">Ops & Growth</h3>
           </div>
           {[
@@ -66,7 +66,7 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
             <div key={item.title} className="rounded-2xl border border-stone-200 bg-[#FFFBF5] p-5">
               <div className="flex items-start justify-between">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
-                  <item.icon className="h-5 w-5 text-amber-600" />
+                  <item.icon className="h-5 w-5 text-primary" />
                 </div>
                 {item.live ? (
                   <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
@@ -98,7 +98,7 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <span className="rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white">Tier 3</span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-700"><Sparkles className="h-3 w-3" /> Wow</span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-surface px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-primary-light"><Sparkles className="h-3 w-3" /> Wow</span>
             <h3 className="text-sm font-semibold text-stone-700">Magic</h3>
           </div>
           {[
@@ -141,7 +141,7 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
 
       <div className="mt-8 text-center">
         <p className="text-sm text-stone-500">Have an idea? We listen — call us with your wishlist.</p>
-        <a href={RESTAURANT.phoneHref} className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-amber-600 hover:text-amber-700">
+        <a href={RESTAURANT.phoneHref} className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary-light">
           Contact us
         </a>
       </div>

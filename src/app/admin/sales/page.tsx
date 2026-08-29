@@ -101,7 +101,7 @@ export default function AdminSalesPage() {
   if (!data) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-amber-600 border-t-transparent" />
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -128,7 +128,7 @@ export default function AdminSalesPage() {
           </button>
           <button
             onClick={exportCSV}
-            className="flex items-center gap-2 rounded-xl bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-700 transition"
+            className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition"
           >
             <Download className="h-4 w-4" />
             Export CSV
@@ -144,7 +144,7 @@ export default function AdminSalesPage() {
             onClick={() => setRange(r)}
             className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition ${
               range === r
-                ? "bg-amber-600 text-white"
+                ? "bg-primary text-white"
                 : "border border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
             }`}
           >
@@ -158,8 +158,8 @@ export default function AdminSalesPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
-              <DollarSign className="h-5 w-5 text-amber-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface">
+              <DollarSign className="h-5 w-5 text-primary" />
             </div>
             <span className="flex items-center gap-1 text-xs font-medium text-emerald-600">
               <ArrowUpRight className="h-3 w-3" /> +12%
@@ -224,7 +224,7 @@ export default function AdminSalesPage() {
                   <span className="text-[10px] font-medium text-stone-500">{formatPeso(day.revenue)}</span>
                   <div
                     className={`w-full rounded-t-lg transition-all ${
-                      isMax ? "bg-amber-500" : "bg-amber-200"
+                      isMax ? "bg-accent" : "bg-accent/40"
                     }`}
                     style={{ height: `${height}%`, minHeight: "8px" }}
                   />
@@ -248,7 +248,7 @@ export default function AdminSalesPage() {
                       <span
                         className={`flex h-6 w-6 items-center justify-center rounded-md text-xs font-bold ${
                           idx === 0
-                            ? "bg-amber-100 text-amber-700"
+                            ? "bg-surface text-primary-light"
                             : "bg-stone-100 text-stone-600"
                         }`}
                       >
@@ -256,11 +256,11 @@ export default function AdminSalesPage() {
                       </span>
                       <span className="text-sm font-medium text-stone-900">{item.name}</span>
                     </div>
-                    <span className="text-sm font-semibold text-amber-700">{formatPeso(item.revenue)}</span>
+                    <span className="text-sm font-semibold text-primary-light">{formatPeso(item.revenue)}</span>
                   </div>
                   <div className="h-2 bg-stone-100 rounded-full overflow-hidden">
                     <div
-                      className={`h-full rounded-full ${idx === 0 ? "bg-amber-500" : "bg-amber-300"}`}
+                      className={`h-full rounded-full ${idx === 0 ? "bg-accent" : "bg-accent/50"}`}
                       style={{ width: `${width}%` }}
                     />
                   </div>
@@ -280,7 +280,7 @@ export default function AdminSalesPage() {
           <div className="space-y-4">
             {data.categoryData.map((cat, idx) => {
               const width = (cat.revenue / maxCatRevenue) * 100;
-              const colors = ["bg-amber-500", "bg-stone-500", "bg-orange-500", "bg-emerald-500", "bg-purple-500", "bg-red-500"];
+              const colors = ["bg-accent", "bg-stone-500", "bg-orange-500", "bg-emerald-500", "bg-purple-500", "bg-red-500"];
               return (
                 <div key={cat.name}>
                   <div className="flex items-center justify-between mb-1">
@@ -290,7 +290,7 @@ export default function AdminSalesPage() {
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="text-xs text-stone-500">{cat.count} orders</span>
-                      <span className="text-sm font-semibold text-amber-700">{formatPeso(cat.revenue)}</span>
+                      <span className="text-sm font-semibold text-primary-light">{formatPeso(cat.revenue)}</span>
                     </div>
                   </div>
                   <div className="h-2 bg-stone-100 rounded-full overflow-hidden">
@@ -309,7 +309,7 @@ export default function AdminSalesPage() {
         <div className="rounded-2xl border border-stone-200 bg-white p-6">
           <h3 className="font-serif text-lg font-semibold text-stone-900 mb-4">
             <span className="flex items-center gap-2">
-              <Clock className="h-5 w-5 text-amber-600" />
+              <Clock className="h-5 w-5 text-primary" />
               Hourly Traffic Pattern
             </span>
           </h3>
@@ -323,7 +323,7 @@ export default function AdminSalesPage() {
                   <div className="flex-1 h-7 bg-stone-100 rounded-lg overflow-hidden">
                     <div
                       className={`h-full rounded-lg transition-all flex items-center pl-2 ${
-                        isPeak ? "bg-amber-500" : "bg-amber-300"
+                        isPeak ? "bg-accent" : "bg-accent/50"
                       }`}
                       style={{ width: `${width}%` }}
                     >
@@ -370,7 +370,7 @@ export default function AdminSalesPage() {
           </div>
           <div className="flex-1 grid grid-cols-2 gap-3">
             {data.categoryData.map((cat, idx) => {
-              const colors = ["bg-amber-500", "bg-stone-500", "bg-orange-500", "bg-emerald-500", "bg-purple-500", "bg-red-500"];
+              const colors = ["bg-accent", "bg-stone-500", "bg-orange-500", "bg-emerald-500", "bg-purple-500", "bg-red-500"];
               return (
                 <div key={cat.name} className="flex items-center gap-2 rounded-xl bg-stone-50 px-3 py-2">
                   <div className={`h-3 w-3 rounded-full ${colors[idx % colors.length]}`} />

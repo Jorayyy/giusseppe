@@ -114,7 +114,7 @@ export default function ChatWidget() {
     <>
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-amber-600 text-white shadow-lg transition hover:bg-amber-700 hover:scale-105"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg transition hover:bg-primary-light hover:scale-105"
       >
         {open ? <X className="h-6 w-6" /> : <MessageSquare className="h-6 w-6" />}
         {!open && unreadCount > 0 && (
@@ -126,8 +126,8 @@ export default function ChatWidget() {
 
       {open && (
         <div className="fixed bottom-24 right-6 z-50 flex w-[calc(100vw-3rem)] max-w-[400px] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl animate-in slide-in-from-bottom-4 sm:bottom-24 sm:right-6 max-sm:inset-3 max-sm:bottom-16 max-sm:rounded-xl">
-          <div className="flex items-center gap-3 bg-amber-600 px-4 py-3 text-white">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-700 font-serif text-sm font-bold">
+          <div className="flex items-center gap-3 bg-primary px-4 py-3 text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-light font-serif text-sm font-bold">
               G
             </div>
             <div className="flex-1">
@@ -141,8 +141,8 @@ export default function ChatWidget() {
 
           {!nameSaved ? (
             <div className="flex flex-col items-center justify-center p-6 text-center" style={{ minHeight: "320px" }}>
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
-                <MessageSquare className="h-8 w-8 text-amber-600" />
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface">
+                <MessageSquare className="h-8 w-8 text-primary" />
               </div>
               <h4 className="mb-1 font-serif text-lg font-bold text-stone-900">Hi there!</h4>
               <p className="mb-6 text-sm text-stone-500">What&apos;s your name so we know who you are?</p>
@@ -153,7 +153,7 @@ export default function ChatWidget() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSaveName()}
-                  className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                  className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                   autoFocus
                 />
                 <input
@@ -162,12 +162,12 @@ export default function ChatWidget() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSaveName()}
-                  className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                  className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                 />
                 <button
                   onClick={handleSaveName}
                   disabled={!name.trim()}
-                  className="w-full rounded-xl bg-amber-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary-light disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Start chatting
                 </button>
@@ -203,12 +203,12 @@ export default function ChatWidget() {
                     <div
                       className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
                         msg.sender === "customer"
-                          ? "bg-amber-500 text-white rounded-br-md"
+                          ? "bg-accent text-white rounded-br-md"
                           : "bg-stone-100 text-stone-800 rounded-bl-md"
                       }`}
                     >
                       {msg.sender === "owner" && msg.name && (
-                        <p className="mb-0.5 text-xs font-semibold text-amber-600">{msg.name}</p>
+                        <p className="mb-0.5 text-xs font-semibold text-primary">{msg.name}</p>
                       )}
                       <p>{msg.content}</p>
                       <p
@@ -235,12 +235,12 @@ export default function ChatWidget() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                    className="flex-1 rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400"
+                    className="flex-1 rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-accent"
                   />
                   <button
                     onClick={handleSend}
                     disabled={!input.trim() || sending}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-600 text-white transition hover:bg-amber-700 disabled:opacity-50"
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition hover:bg-primary-light disabled:opacity-50"
                   >
                     <Send className="h-4 w-4" />
                   </button>

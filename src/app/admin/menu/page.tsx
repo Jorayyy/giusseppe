@@ -150,7 +150,7 @@ export default function MenuEditorPage() {
         </div>
         <button
           onClick={save}
-          className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-700 transition"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition"
         >
           <Save className="h-4 w-4" /> Save Changes
         </button>
@@ -164,7 +164,7 @@ export default function MenuEditorPage() {
         <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
           {Object.values(menu).flat().length} items
         </span>
-        <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-700">
+        <span className="rounded-full bg-surface px-3 py-1 text-xs font-medium text-primary-light">
           {Object.values(menu).flat().filter((i) => i.popular).length} popular
         </span>
       </div>
@@ -244,20 +244,20 @@ export default function MenuEditorPage() {
                             value={item.name}
                             onChange={(e) => updateItem(cat, idx, "name", e.target.value)}
                             placeholder="Item name"
-                            className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                            className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                           />
                           <input
                             value={item.price}
                             onChange={(e) => updateItem(cat, idx, "price", e.target.value)}
                             placeholder="₱0"
-                            className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                            className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                           />
                         </div>
                         <input
                           value={item.desc}
                           onChange={(e) => updateItem(cat, idx, "desc", e.target.value)}
                           placeholder="Description"
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                         />
                         <div className="space-y-2">
                           <ImageUpload
@@ -269,7 +269,7 @@ export default function MenuEditorPage() {
                             value={item.image || ""}
                             onChange={(e) => updateItem(cat, idx, "image", e.target.value)}
                             placeholder="Or paste image URL"
-                            className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-xs text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                            className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-xs text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
                           />
                         </div>
                         <div className="flex items-center justify-between">
@@ -278,9 +278,9 @@ export default function MenuEditorPage() {
                               type="checkbox"
                               checked={!!item.popular}
                               onChange={(e) => updateItem(cat, idx, "popular", e.target.checked)}
-                              className="h-4 w-4 rounded border-stone-300 text-amber-600 focus:ring-amber-500"
+                              className="h-4 w-4 rounded border-stone-300 text-primary focus:ring-accent"
                             />
-                            <Star className={`h-3.5 w-3.5 ${item.popular ? "fill-amber-400 text-amber-400" : "text-stone-400"}`} />
+                            <Star className={`h-3.5 w-3.5 ${item.popular ? "fill-accent text-accent" : "text-stone-400"}`} />
                             <span className="font-medium">Popular</span>
                           </label>
                           <button
@@ -296,7 +296,7 @@ export default function MenuEditorPage() {
                 ))}
                 <button
                   onClick={() => addItem(cat)}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-stone-300 bg-white py-3 text-sm font-medium text-stone-600 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700 transition"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-stone-300 bg-white py-3 text-sm font-medium text-stone-600 hover:border-accent hover:bg-surface hover:text-primary-light transition"
                 >
                   <Plus className="h-4 w-4" /> Add Item
                 </button>
@@ -314,12 +314,12 @@ export default function MenuEditorPage() {
             onChange={(e) => setNewCategoryName(e.target.value)}
             placeholder="Category name"
             autoFocus
-            className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+            className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
             onKeyDown={(e) => e.key === "Enter" && addCategory()}
           />
           <button
             onClick={addCategory}
-            className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700"
+            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-light"
           >
             Add
           </button>
@@ -333,7 +333,7 @@ export default function MenuEditorPage() {
       ) : (
         <button
           onClick={() => setShowNewCategory(true)}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-stone-300 bg-white py-4 text-sm font-medium text-stone-600 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700 transition"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-stone-300 bg-white py-4 text-sm font-medium text-stone-600 hover:border-accent hover:bg-surface hover:text-primary-light transition"
         >
           <Plus className="h-4 w-4" /> Add Category
         </button>
@@ -343,7 +343,7 @@ export default function MenuEditorPage() {
       <div className="flex justify-end pb-8">
         <button
           onClick={save}
-          className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-6 py-3 text-sm font-semibold text-white hover:bg-amber-700 transition"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-light transition"
         >
           <Save className="h-4 w-4" /> Save Changes
         </button>

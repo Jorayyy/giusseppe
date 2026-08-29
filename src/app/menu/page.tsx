@@ -68,7 +68,7 @@ export default function MenuPage() {
                       <h3 className="font-serif text-lg font-semibold text-stone-900">
                         {item.name}
                         {item.popular && (
-                          <span className="ml-2 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+                          <span className="ml-2 inline-block rounded-full bg-surface px-2 py-0.5 text-xs font-medium text-primary">
                             Popular
                           </span>
                         )}
@@ -88,7 +88,7 @@ export default function MenuPage() {
         <div className="mt-12 rounded-xl border border-stone-200 bg-white p-6 text-center shadow-sm">
           <p className="text-sm text-stone-500">Prices are in Philippine Pesos (PHP). Menu items subject to availability.</p>
           <p className="mt-2 text-sm text-stone-500">
-            For reservations and takeout, <a href={RESTAURANT.phoneHref} className="font-medium text-amber-700 underline underline-offset-2 hover:text-amber-800">call us</a>
+            For reservations and takeout, <a href={RESTAURANT.phoneHref} className="font-medium text-primary-light underline underline-offset-2 hover:text-primary">call us</a>
           </p>
         </div>
       </div>

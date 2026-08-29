@@ -100,8 +100,8 @@ export default function Waitlist() {
     <div className="rounded-2xl border border-stone-200 bg-white p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
-            <Users className="h-5 w-5 text-amber-600" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface">
+            <Users className="h-5 w-5 text-primary" />
           </div>
           <div>
             <h3 className="font-serif text-lg font-semibold text-stone-900">Join the Waitlist</h3>
@@ -125,18 +125,18 @@ export default function Waitlist() {
               <div
                 key={entry.id}
                 className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm transition ${
-                  isMe ? "bg-amber-50 ring-1 ring-amber-200" : "bg-stone-50"
+                  isMe ? "bg-surface ring-1 ring-stone-300" : "bg-stone-50"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold ${
-                    isMe ? "bg-amber-500 text-white" : "bg-stone-200 text-stone-600"
+                    isMe ? "bg-surface0 text-white" : "bg-stone-200 text-stone-600"
                   }`}>
                     {idx + 1}
                   </div>
                   <div>
                     <p className="font-medium text-stone-900">
-                      {anonymizeName(entry.name)} {isMe && <span className="text-amber-600">(you)</span>}
+                      {anonymizeName(entry.name)} {isMe && <span className="text-primary">(you)</span>}
                     </p>
                     <p className="text-xs text-stone-500">{entry.partySize} {entry.partySize === 1 ? "guest" : "guests"} · {entry.preferredTime}</p>
                   </div>
@@ -145,7 +145,7 @@ export default function Waitlist() {
                   <span className="text-xs text-stone-400">{waitTime}</span>
                   <div className="h-1.5 w-16 rounded-full bg-stone-200 overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-amber-400 transition-all"
+                      className="h-full rounded-full bg-accent transition-all"
                       style={{ width: `${Math.max(100 - idx * (100 / entries.length), 15)}%` }}
                     />
                   </div>
@@ -158,11 +158,11 @@ export default function Waitlist() {
 
       {/* My Position */}
       {myEntry && (
-        <div className="mt-4 rounded-xl bg-amber-50 p-4 text-center">
+        <div className="mt-4 rounded-xl bg-surface p-4 text-center">
           <div className="flex items-center justify-center gap-2">
-            <Clock className="h-4 w-4 text-amber-600" />
+            <Clock className="h-4 w-4 text-primary" />
             <p className="text-sm font-medium text-stone-900">
-              You&apos;re <span className="text-amber-600 font-bold">#{myPosition}</span> in line
+              You&apos;re <span className="text-primary font-bold">#{myPosition}</span> in line
             </p>
           </div>
           <p className="mt-1 text-xs text-stone-500">Est. wait: {estimatedWait(myPosition)}</p>
@@ -183,7 +183,7 @@ export default function Waitlist() {
           {!showForm ? (
             <button
               onClick={() => setShowForm(true)}
-              className="w-full rounded-full bg-amber-600 py-3 text-sm font-semibold text-white hover:bg-amber-700 transition"
+              className="w-full rounded-full bg-primary py-3 text-sm font-semibold text-white hover:bg-primary-light transition"
             >
               Join the Waitlist
             </button>
@@ -194,14 +194,14 @@ export default function Waitlist() {
                 placeholder="Your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
               />
               <input
                 type="tel"
                 placeholder="Phone number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
               />
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -227,7 +227,7 @@ export default function Waitlist() {
                   <select
                     value={preferredTime}
                     onChange={(e) => setPreferredTime(e.target.value)}
-                    className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400"
+                    className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm text-stone-900 outline-none focus:border-accent"
                   >
                     <option value="">ASAP</option>
                     <option>11:00 AM</option>
@@ -249,7 +249,7 @@ export default function Waitlist() {
                 <button
                   onClick={joinWaitlist}
                   disabled={!name.trim() || !phone.trim()}
-                  className="flex-1 rounded-full bg-amber-600 py-3 text-sm font-semibold text-white hover:bg-amber-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 rounded-full bg-primary py-3 text-sm font-semibold text-white hover:bg-primary-light transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Join Waitlist
                 </button>

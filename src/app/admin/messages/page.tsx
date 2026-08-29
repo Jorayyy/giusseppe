@@ -125,11 +125,11 @@ export default function AdminMessagesPage() {
           <p className="mt-1 text-2xl font-bold text-stone-900">{totalMessages}</p>
         </div>
         <div className="rounded-xl border border-stone-200 bg-white p-4">
-          <div className="flex items-center gap-2 text-amber-600">
+          <div className="flex items-center gap-2 text-primary">
             <MailOpen className="h-4 w-4" />
             <span className="text-xs font-medium">Unread</span>
           </div>
-          <p className="mt-1 text-2xl font-bold text-amber-600">{unreadCount}</p>
+          <p className="mt-1 text-2xl font-bold text-primary">{unreadCount}</p>
         </div>
         <div className="rounded-xl border border-stone-200 bg-white p-4">
           <div className="flex items-center gap-2 text-stone-500">
@@ -149,7 +149,7 @@ export default function AdminMessagesPage() {
             placeholder="Search messages..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border border-stone-200 bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+            className="w-full rounded-xl border border-stone-200 bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-surface"
           />
         </div>
         <div className="flex gap-1 rounded-xl border border-stone-200 bg-white p-1">
@@ -159,7 +159,7 @@ export default function AdminMessagesPage() {
               onClick={() => { setFilter(f); setPhoneFilter(""); }}
               className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
                 filter === f
-                  ? "bg-amber-600 text-white"
+                  ? "bg-primary text-white"
                   : "text-stone-600 hover:bg-stone-50"
               }`}
             >
@@ -178,7 +178,7 @@ export default function AdminMessagesPage() {
               placeholder="Enter phone number..."
               value={phoneFilter}
               onChange={(e) => setPhoneFilter(e.target.value)}
-              className="w-full rounded-xl border border-stone-200 bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+              className="w-full rounded-xl border border-stone-200 bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-surface"
             />
           </div>
         </div>
@@ -187,7 +187,7 @@ export default function AdminMessagesPage() {
       {/* Conversations */}
       {loading ? (
         <div className="flex justify-center py-12">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-amber-600 border-t-transparent" />
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
         </div>
       ) : filteredConversations.length === 0 ? (
         <div className="rounded-2xl border border-stone-200 bg-white py-12 text-center">
@@ -209,7 +209,7 @@ export default function AdminMessagesPage() {
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-stone-900">{conv.name}</span>
                     {conv.unreadCount > 0 && (
-                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-600 px-1.5 text-[10px] font-bold text-white">
+                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-white">
                         {conv.unreadCount}
                       </span>
                     )}
@@ -235,11 +235,11 @@ export default function AdminMessagesPage() {
                         className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
                           msg.sender === "customer"
                             ? "bg-stone-100 text-stone-800 rounded-bl-md"
-                            : "bg-amber-500 text-white rounded-br-md"
+                            : "bg-accent text-white rounded-br-md"
                         }`}
                       >
                         {msg.sender === "owner" && (
-                          <p className="mb-0.5 text-[10px] font-semibold text-amber-100">You</p>
+                          <p className="mb-0.5 text-[10px] font-semibold text-surface">You</p>
                         )}
                         <p>{msg.content}</p>
                         <div className="mt-1 flex items-center gap-2">

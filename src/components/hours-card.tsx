@@ -10,7 +10,7 @@ export default function HoursCard({ open, today }: { open: boolean; today: strin
       </p>
       <div className="mt-4 divide-y divide-stone-100 text-sm">
         {Object.entries(HOURS).map(([day, h]) => (
-          <div key={day} className={`flex justify-between py-2 ${day === today ? "font-semibold text-amber-700" : "text-stone-600"}`}>
+          <div key={day} className={`flex justify-between py-2 ${day === today ? "font-semibold text-primary-light" : "text-stone-600"}`}>
             <span>{day}</span>
             <span className="tabular-nums">{h.open}–{h.close} · {h.open2}–{h.close2}</span>
           </div>

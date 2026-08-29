@@ -24,7 +24,7 @@ export default function Hero({ photos, photoIdx, setPhotoIdx, open, onShowLightb
               <p className="mt-1 text-white/80">{RESTAURANT.tagline} · {RESTAURANT.priceRange} · Restaurant</p>
               <div className="mt-3 flex flex-wrap items-center gap-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-sm font-medium text-zinc-900">
-                  <Star className="h-4 w-4 fill-amber-400 text-amber-400" /> {RESTAURANT.rating} · {RESTAURANT.reviewCount} Google reviews
+                  <Star className="h-4 w-4 fill-accent text-accent" /> {RESTAURANT.rating} · {RESTAURANT.reviewCount} Google reviews
                 </span>
                 <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium ${open ? "bg-emerald-500 text-white" : "bg-white/90 text-zinc-900"}`}>
                   <Clock className="h-4 w-4" /> {open ? "Open now" : "Closed"} · Opens 11 AM
