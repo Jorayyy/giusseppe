@@ -93,10 +93,31 @@ function getMenuRecommendation(): string {
 }
 
 export function getAIResponse(input: string): string {
-  const lower = input.toLowerCase();
+  const lower = input.toLowerCase().trim();
 
-  if (lower.match(/\b(hi|hello|hey|good\s*(morning|afternoon|evening)|kumusta)/)) {
-    return "Buongiorno! 🇮🇹 I'm Giuseppe's AI sommelier. Ask me about wine pairings, allergy info, menu stories, or what to order tonight!";
+  const menuMatch = findBestMatch(lower, Object.values(MENU).flat().map((m) => m.name));
+  if (menuMatch) {
+    const item = Object.values(MENU).flat().find((m) => m.name === menuMatch);
+    if (item) {
+      let response = `🍽️ **${item.name}** — ${item.price}\n\n${item.desc}`;
+      if (WINE_PAIRINGS[menuMatch]) response += `\n\n🍷 **Wine pairing:** ${WINE_PAIRINGS[menuMatch]}`;
+      if (STORIES[menuMatch]) response += `\n\n📖 **Story:** ${STORIES[menuMatch]}`;
+      if (item.popular) response += "\n\n⭐ **Popular choice!**";
+      return response;
+    }
+  }
+
+  if (lower.match(/\b(ingredient|what.*in|what.*made|what.*contain|recipe)/)) {
+    const itemMatch = findBestMatch(lower, Object.values(MENU).flat().map((m) => m.name));
+    if (itemMatch) {
+      const item = Object.values(MENU).flat().find((m) => m.name === itemMatch);
+      if (item) {
+        let response = `🍽️ **${item.name}** — ${item.price}\n\n${item.desc}`;
+        if (STORIES[itemMatch]) response += `\n\n📖 **Story:** ${STORIES[itemMatch]}`;
+        return response;
+      }
+    }
+    return "I can tell you about any dish on our menu! Which one are you curious about?";
   }
 
   if (lower.match(/\b(allerg|gluten|dairy|lactose|seafood|nut|vegetarian|vegan|diet)/)) {
@@ -107,7 +128,7 @@ export function getAIResponse(input: string): string {
     return getWinePairing(lower);
   }
 
-  if (lower.match(/\b(story|stories|history|about|origin|nonna|recipe|tradition|how\s*(did|was))/)) {
+  if (lower.match(/\b(story|stories|history|origin|nonna|recipe|tradition|how\s*(did|was))/)) {
     return getStory(lower);
   }
 
@@ -136,16 +157,8 @@ export function getAIResponse(input: string): string {
     return "Giuseppe's is an authentic Italian-Filipino restaurant at **173 Avenida Veteranos, Tacloban City**. Open since 2019, founded by Giuseppe and his Tacloban-born wife. Rated 4.4★ with 328 reviews. We're known for wood-fired pizza, handmade pasta, and great cocktails. Dogs welcome outside! 🐕";
   }
 
-  const menuMatch = findBestMatch(lower, Object.values(MENU).flat().map((m) => m.name));
-  if (menuMatch) {
-    const item = Object.values(MENU).flat().find((m) => m.name === menuMatch);
-    if (item) {
-      let response = `🍽️ **${item.name}** — ${item.price}\n\n${item.desc}`;
-      if (WINE_PAIRINGS[menuMatch]) response += `\n\n🍷 **Wine pairing:** ${WINE_PAIRINGS[menuMatch]}`;
-      if (STORIES[menuMatch]) response += `\n\n📖 **Story:** ${STORIES[menuMatch]}`;
-      if (item.popular) response += "\n\n⭐ **Popular choice!**";
-      return response;
-    }
+  if (lower.match(/^(hi|hello|hey|yo|sup|kumusta|good\s*(morning|afternoon|evening))[\s!?.]*$/)) {
+    return "Buongiorno! 🇮🇹 I'm Giuseppe's AI sommelier. Ask me about wine pairings, allergy info, menu stories, or what to order tonight!";
   }
 
   return "I can help with:\n\n• 🍷 **Wine pairings** — ask \"What wine goes with lasagna?\"\n• ⚠️ **Allergies** — ask \"Is there gluten in the menu?\"\n• 📖 **Stories** — ask \"Tell me about the tiramisu\"\n• 🌟 **Recommendations** — ask \"What should I order?\"\n• 📋 **Menu info** — ask about any dish\n• 🕐 **Hours & reservations**\n\nBuon appetito! 🇮🇹";
