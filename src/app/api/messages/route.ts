@@ -7,6 +7,9 @@ export async function GET(request: Request) {
     const unread = searchParams.get("unread");
     const phone = searchParams.get("phone");
 
+    const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    await prisma.message.deleteMany({ where: { createdAt: { lt: cutoff } } });
+
     const where: Record<string, unknown> = {};
     if (unread === "true") where.read = false;
     if (phone) where.phone = phone;
