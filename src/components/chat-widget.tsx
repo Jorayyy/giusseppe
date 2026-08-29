@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MessageSquare, Send, X, Bot, User, Sparkles } from "lucide-react";
+import { MessageSquare, Send, X, Bot, Sparkles } from "lucide-react";
 import { getAIResponse } from "@/lib/ai";
 
 interface Message {
@@ -151,33 +151,33 @@ export default function ChatWidget() {
     <>
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg transition hover:bg-primary-light hover:scale-105"
+        className="fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition hover:bg-primary-light hover:scale-105"
       >
-        {open ? <X className="h-6 w-6" /> : <MessageSquare className="h-6 w-6" />}
+        {open ? <X className="h-5 w-5" /> : <MessageSquare className="h-5 w-5" />}
         {!open && unreadCount > 0 && (
-          <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+          <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
             {unreadCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 flex w-[calc(100vw-3rem)] max-w-[400px] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl animate-in slide-in-from-bottom-4 sm:bottom-24 sm:right-6 max-sm:inset-3 max-sm:bottom-16 max-sm:rounded-xl">
-          <div className="flex items-center gap-3 bg-primary px-4 py-3 text-white">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-light font-serif text-sm font-bold">
+        <div className="fixed bottom-20 right-5 z-50 flex w-[calc(100vw-2.5rem)] max-w-[360px] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl animate-in slide-in-from-bottom-4 sm:bottom-20 sm:right-5 max-sm:inset-3 max-sm:bottom-16 max-sm:rounded-xl">
+          <div className="flex items-center gap-2.5 bg-primary px-3 py-2 text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-light font-serif text-xs font-bold">
               G
             </div>
             <div className="flex-1">
-              <h3 className="font-serif text-sm font-semibold">Giuseppe&apos;s</h3>
-              <div className="flex items-center gap-1.5 text-xs text-white/80">
-                <span className="h-2 w-2 rounded-full bg-green-400" />
+              <h3 className="font-serif text-xs font-semibold">Giuseppe&apos;s</h3>
+              <div className="flex items-center gap-1 text-[10px] text-white/80">
+                <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
                 Online
               </div>
             </div>
             {nameSaved && mode !== "choose" && (
               <button
                 onClick={() => setMode("choose")}
-                className="rounded-lg bg-white/20 px-2 py-1 text-[10px] font-medium text-white hover:bg-white/30 transition"
+                className="rounded-md bg-white/20 px-1.5 py-0.5 text-[9px] font-medium text-white hover:bg-white/30 transition"
               >
                 Switch
               </button>
@@ -185,20 +185,20 @@ export default function ChatWidget() {
           </div>
 
           {!nameSaved ? (
-            <div className="flex flex-col items-center justify-center p-6 text-center" style={{ minHeight: "320px" }}>
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface">
-                <MessageSquare className="h-8 w-8 text-primary" />
+            <div className="flex flex-col items-center justify-center p-4 text-center" style={{ minHeight: "260px" }}>
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-surface">
+                <MessageSquare className="h-6 w-6 text-primary" />
               </div>
-              <h4 className="mb-1 font-serif text-lg font-bold text-stone-900">Hi there!</h4>
-              <p className="mb-6 text-sm text-stone-500">What&apos;s your name so we know who you are?</p>
-              <div className="w-full space-y-3">
+              <h4 className="mb-0.5 font-serif text-base font-bold text-stone-900">Hi there!</h4>
+              <p className="mb-4 text-xs text-stone-500">What&apos;s your name?</p>
+              <div className="w-full space-y-2">
                 <input
                   type="text"
                   placeholder="Your name *"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSaveName()}
-                  className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
+                  className="w-full rounded-lg border border-stone-200 px-3 py-2 text-xs text-stone-900 outline-none focus:border-accent focus:ring-1 focus:ring-surface"
                   autoFocus
                 />
                 <input
@@ -207,25 +207,25 @@ export default function ChatWidget() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSaveName()}
-                  className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
+                  className="w-full rounded-lg border border-stone-200 px-3 py-2 text-xs text-stone-900 outline-none focus:border-accent focus:ring-1 focus:ring-surface"
                 />
                 <button
                   onClick={handleSaveName}
                   disabled={!name.trim()}
-                  className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary-light disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white transition hover:bg-primary-light disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Start chatting
                 </button>
               </div>
             </div>
           ) : mode === "choose" ? (
-            <div className="flex flex-col items-center justify-center p-6 text-center" style={{ minHeight: "320px" }}>
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface">
-                <Sparkles className="h-8 w-8 text-accent" />
+            <div className="flex flex-col items-center justify-center p-4 text-center" style={{ minHeight: "260px" }}>
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-surface">
+                <Sparkles className="h-6 w-6 text-accent" />
               </div>
-              <h4 className="mb-1 font-serif text-lg font-bold text-stone-900">Welcome, {name}!</h4>
-              <p className="mb-6 text-sm text-stone-500">How can we help you today?</p>
-              <div className="w-full space-y-3">
+              <h4 className="mb-0.5 font-serif text-base font-bold text-stone-900">Welcome, {name}!</h4>
+              <p className="mb-4 text-xs text-stone-500">How can we help?</p>
+              <div className="w-full space-y-2">
                 <button
                   onClick={() => {
                     setMode("ai");
@@ -236,54 +236,54 @@ export default function ChatWidget() {
                       createdAt: new Date(),
                     }]);
                   }}
-                  className="flex w-full items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:border-accent hover:bg-surface"
+                  className="flex w-full items-center gap-2.5 rounded-lg border border-stone-200 bg-white p-3 text-left transition hover:border-accent hover:bg-surface"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                    <Bot className="h-6 w-6 text-primary" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                    <Bot className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold text-stone-900">Ask Giuseppe AI</p>
-                    <p className="text-xs text-stone-500">Wine pairings, allergies, menu stories</p>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-stone-900">Ask Giuseppe AI</p>
+                    <p className="text-[10px] text-stone-500">Wine, allergies, stories</p>
                   </div>
-                  <span className="ml-auto rounded-full bg-accent/20 px-2 py-0.5 text-[10px] font-bold text-primary">SOON</span>
+                  <span className="rounded-full bg-accent/20 px-1.5 py-0.5 text-[9px] font-bold text-primary">SOON</span>
                 </button>
                 <button
                   onClick={() => setMode("message")}
-                  className="flex w-full items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:border-accent hover:bg-surface"
+                  className="flex w-full items-center gap-2.5 rounded-lg border border-stone-200 bg-white p-3 text-left transition hover:border-accent hover:bg-surface"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                    <MessageSquare className="h-6 w-6 text-primary" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                    <MessageSquare className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold text-stone-900">Message the restaurant</p>
-                    <p className="text-xs text-stone-500">Reservations, inquiries, feedback</p>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-stone-900">Message the restaurant</p>
+                    <p className="text-[10px] text-stone-500">Reservations, inquiries</p>
                   </div>
                 </button>
               </div>
             </div>
           ) : (
             <>
-              <div className="flex-1 overflow-y-auto p-4 space-y-3 max-sm:h-[50vh]">
+              <div className="flex-1 overflow-y-auto p-3 space-y-2 max-h-[320px] max-sm:h-[40vh]">
                 {mode === "ai" && chatMessages.map((msg) => (
                   <div
                     key={msg.id}
                     className={`flex ${msg.sender === "customer" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
+                      className={`max-w-[85%] rounded-xl px-3 py-1.5 text-xs ${
                         msg.sender === "customer"
-                          ? "bg-primary text-white rounded-br-md"
-                          : "bg-surface text-stone-800 rounded-bl-md"
+                          ? "bg-primary text-white rounded-br-sm"
+                          : "bg-surface text-stone-800 rounded-bl-sm"
                       }`}
                     >
                       {msg.sender === "ai" && (
-                        <p className="mb-1 flex items-center gap-1 text-[10px] font-semibold text-primary">
-                          <Bot className="h-3 w-3" /> Giuseppe AI
+                        <p className="mb-0.5 flex items-center gap-1 text-[9px] font-semibold text-primary">
+                          <Bot className="h-2.5 w-2.5" /> Giuseppe AI
                         </p>
                       )}
-                      <p className="whitespace-pre-line">{msg.content}</p>
+                      <p className="whitespace-pre-line leading-relaxed">{msg.content}</p>
                       <p
-                        className={`mt-1 text-[10px] ${
+                        className={`mt-0.5 text-[9px] ${
                           msg.sender === "customer" ? "text-white/60" : "text-stone-400"
                         }`}
                       >
@@ -297,21 +297,21 @@ export default function ChatWidget() {
                 ))}
 
                 {mode === "message" && submitted && (
-                  <div className="rounded-xl bg-green-50 p-3 text-center text-sm text-green-700">
+                  <div className="rounded-lg bg-green-50 p-2 text-center text-[11px] text-green-700">
                     Message sent! We&apos;ll reply soon.
                   </div>
                 )}
 
                 {mode === "message" && error && (
-                  <div className="rounded-xl bg-red-50 p-3 text-center text-sm text-red-600">
+                  <div className="rounded-lg bg-red-50 p-2 text-center text-[11px] text-red-600">
                     {error}
                   </div>
                 )}
 
                 {mode === "message" && dbMessages.length === 0 && (
-                  <div className="flex flex-col items-center justify-center py-8 text-center text-stone-400">
-                    <MessageSquare className="mb-2 h-8 w-8" />
-                    <p className="text-sm">Start a conversation with us!</p>
+                  <div className="flex flex-col items-center justify-center py-6 text-center text-stone-400">
+                    <MessageSquare className="mb-1.5 h-6 w-6" />
+                    <p className="text-[11px]">Start a conversation!</p>
                   </div>
                 )}
 
@@ -321,18 +321,18 @@ export default function ChatWidget() {
                     className={`flex ${msg.sender === "customer" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
+                      className={`max-w-[85%] rounded-xl px-3 py-1.5 text-xs ${
                         msg.sender === "customer"
-                          ? "bg-primary text-white rounded-br-md"
-                          : "bg-stone-100 text-stone-800 rounded-bl-md"
+                          ? "bg-primary text-white rounded-br-sm"
+                          : "bg-stone-100 text-stone-800 rounded-bl-sm"
                       }`}
                     >
                       {msg.sender === "owner" && msg.name && (
-                        <p className="mb-0.5 text-xs font-semibold text-primary">{msg.name}</p>
+                        <p className="mb-0.5 text-[10px] font-semibold text-primary">{msg.name}</p>
                       )}
                       <p>{msg.content}</p>
                       <p
-                        className={`mt-1 text-[10px] ${
+                        className={`mt-0.5 text-[9px] ${
                           msg.sender === "customer" ? "text-white/60" : "text-stone-400"
                         }`}
                       >
@@ -347,22 +347,22 @@ export default function ChatWidget() {
                 <div ref={messagesEndRef} />
               </div>
 
-              <div className="border-t border-stone-100 p-3">
-                <div className="flex gap-2">
+              <div className="border-t border-stone-100 p-2">
+                <div className="flex gap-1.5">
                   <input
                     type="text"
-                    placeholder={mode === "ai" ? "Ask about wine, allergies, menu..." : "Type a message..."}
+                    placeholder={mode === "ai" ? "Ask about wine, allergies..." : "Type a message..."}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                    className="flex-1 rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-accent"
+                    className="flex-1 rounded-lg border border-stone-200 px-3 py-2 text-xs text-stone-900 outline-none focus:border-accent"
                   />
                   <button
                     onClick={handleSend}
                     disabled={!input.trim() || sending}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition hover:bg-primary-light disabled:opacity-50"
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white transition hover:bg-primary-light disabled:opacity-50"
                   >
-                    <Send className="h-4 w-4" />
+                    <Send className="h-3.5 w-3.5" />
                   </button>
                 </div>
               </div>

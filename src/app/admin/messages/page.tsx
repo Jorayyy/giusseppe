@@ -11,6 +11,7 @@ import {
   Clock,
   Mail,
   MailOpen,
+  Calendar,
 } from "lucide-react";
 
 interface Message {
@@ -28,11 +29,25 @@ interface Conversation {
   name: string;
   messages: Message[];
   unreadCount: number;
+  hasBooking: boolean;
+}
+
+function isBooking(content: string) {
+  return content.startsWith("📅 BOOKING REQUEST");
+}
+
+function parseBooking(content: string) {
+  const lines = content.split("\n").filter((l) => l.trim());
+  const date = lines.find((l) => l.startsWith("📆"))?.replace("📆 ", "") || "";
+  const guests = lines.find((l) => l.startsWith("👥"))?.replace("👥 ", "") || "";
+  const name = lines.find((l) => l.startsWith("👤"))?.replace("👤 ", "") || "";
+  const phone = lines.find((l) => l.startsWith("📱"))?.replace("📱 ", "") || "";
+  return { date, guests, name, phone };
 }
 
 export default function AdminMessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [filter, setFilter] = useState<"all" | "unread" | "phone">("all");
+  const [filter, setFilter] = useState<"all" | "unread" | "bookings" | "phone">("all");
   const [phoneFilter, setPhoneFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -60,10 +75,11 @@ export default function AdminMessagesPage() {
   const conversations = messages.reduce<Record<string, Conversation>>((acc, msg) => {
     const key = msg.phone || msg.name || "unknown";
     if (!acc[key]) {
-      acc[key] = { phone: key, name: msg.name || key, messages: [], unreadCount: 0 };
+      acc[key] = { phone: key, name: msg.name || key, messages: [], unreadCount: 0, hasBooking: false };
     }
     acc[key].messages.push(msg);
     if (!msg.read) acc[key].unreadCount++;
+    if (isBooking(msg.content)) acc[key].hasBooking = true;
     return acc;
   }, {});
 
@@ -73,7 +89,7 @@ export default function AdminMessagesPage() {
     return latestB - latestA;
   });
 
-  const filteredConversations = searchQuery
+  const filteredBySearch = searchQuery
     ? conversationList.filter(
         (c) =>
           c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -82,8 +98,13 @@ export default function AdminMessagesPage() {
       )
     : conversationList;
 
+  const filteredConversations = filter === "bookings"
+    ? filteredBySearch.filter((c) => c.hasBooking)
+    : filteredBySearch;
+
   const totalMessages = messages.length;
   const unreadCount = messages.filter((m) => !m.read).length;
+  const bookingCount = messages.filter((m) => isBooking(m.content)).length;
   const todayMessages = messages.filter((m) => {
     const d = new Date(m.createdAt);
     const today = new Date();
@@ -112,11 +133,11 @@ export default function AdminMessagesPage() {
     <div>
       <div className="mb-6">
         <h1 className="font-serif text-2xl font-bold text-stone-900">Messages</h1>
-        <p className="text-sm text-stone-500">Manage customer conversations</p>
+        <p className="text-sm text-stone-500">Manage customer conversations & bookings</p>
       </div>
 
       {/* Stats */}
-      <div className="mb-6 grid grid-cols-3 gap-3">
+      <div className="mb-6 grid grid-cols-4 gap-3">
         <div className="rounded-xl border border-stone-200 bg-white p-4">
           <div className="flex items-center gap-2 text-stone-500">
             <Mail className="h-4 w-4" />
@@ -130,6 +151,13 @@ export default function AdminMessagesPage() {
             <span className="text-xs font-medium">Unread</span>
           </div>
           <p className="mt-1 text-2xl font-bold text-primary">{unreadCount}</p>
+        </div>
+        <div className="rounded-xl border border-stone-200 bg-white p-4">
+          <div className="flex items-center gap-2 text-accent">
+            <Calendar className="h-4 w-4" />
+            <span className="text-xs font-medium">Bookings</span>
+          </div>
+          <p className="mt-1 text-2xl font-bold text-accent">{bookingCount}</p>
         </div>
         <div className="rounded-xl border border-stone-200 bg-white p-4">
           <div className="flex items-center gap-2 text-stone-500">
@@ -153,7 +181,7 @@ export default function AdminMessagesPage() {
           />
         </div>
         <div className="flex gap-1 rounded-xl border border-stone-200 bg-white p-1">
-          {(["all", "unread", "phone"] as const).map((f) => (
+          {(["all", "unread", "bookings", "phone"] as const).map((f) => (
             <button
               key={f}
               onClick={() => { setFilter(f); setPhoneFilter(""); }}
@@ -163,7 +191,7 @@ export default function AdminMessagesPage() {
                   : "text-stone-600 hover:bg-stone-50"
               }`}
             >
-              {f === "all" ? "All" : f === "unread" ? "Unread" : "By Phone"}
+              {f === "all" ? "All" : f === "unread" ? "Unread" : f === "bookings" ? "Bookings" : "By Phone"}
             </button>
           ))}
         </div>
@@ -192,95 +220,137 @@ export default function AdminMessagesPage() {
       ) : filteredConversations.length === 0 ? (
         <div className="rounded-2xl border border-stone-200 bg-white py-12 text-center">
           <MessageSquare className="mx-auto mb-3 h-10 w-10 text-stone-300" />
-          <p className="text-sm text-stone-500">No messages yet</p>
+          <p className="text-sm text-stone-500">
+            {filter === "bookings" ? "No booking requests yet" : "No messages yet"}
+          </p>
         </div>
       ) : (
         <div className="space-y-3">
-          {filteredConversations.map((conv) => (
-            <div key={conv.phone} className="rounded-2xl border border-stone-200 bg-white overflow-hidden">
-              <button
-                onClick={() => setExpandedPhone(expandedPhone === conv.phone ? null : conv.phone)}
-                className="flex w-full items-center gap-3 p-4 text-left hover:bg-stone-50 transition"
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-stone-600">
-                  <User className="h-5 w-5" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-stone-900">{conv.name}</span>
-                    {conv.unreadCount > 0 && (
-                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-white">
-                        {conv.unreadCount}
-                      </span>
-                    )}
-                  </div>
-                  <p className="truncate text-xs text-stone-500">
-                    {conv.phone && `${conv.phone} · `}
-                    {conv.messages[0]?.content}
-                  </p>
-                </div>
-                <span className="text-xs text-stone-400">
-                  {new Date(conv.messages[0]?.createdAt).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-              </button>
+          {filteredConversations.map((conv) => {
+            const lastMsg = conv.messages[0];
+            const isConvBooking = lastMsg && isBooking(lastMsg.content);
+            const booking = isConvBooking ? parseBooking(lastMsg.content) : null;
 
-              {expandedPhone === conv.phone && (
-                <div className="border-t border-stone-100 p-4 space-y-3">
-                  {conv.messages.map((msg) => (
-                    <div key={msg.id} className={`flex ${msg.sender === "customer" ? "justify-start" : "justify-end"}`}>
-                      <div
-                        className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
-                          msg.sender === "customer"
-                            ? "bg-stone-100 text-stone-800 rounded-bl-md"
-                            : "bg-accent text-white rounded-br-md"
-                        }`}
-                      >
-                        {msg.sender === "owner" && (
-                          <p className="mb-0.5 text-[10px] font-semibold text-surface">You</p>
-                        )}
-                        <p>{msg.content}</p>
-                        <div className="mt-1 flex items-center gap-2">
-                          <span className={`text-[10px] ${msg.sender === "customer" ? "text-stone-400" : "text-white/60"}`}>
-                            {new Date(msg.createdAt).toLocaleTimeString("en-US", {
-                              hour: "numeric",
-                              minute: "2-digit",
-                            })}
-                          </span>
-                          {msg.read && (
-                            <CheckCheck className={`h-3 w-3 ${msg.sender === "customer" ? "text-stone-400" : "text-white/60"}`} />
-                          )}
-                        </div>
-                      </div>
+            return (
+              <div key={conv.phone} className="rounded-2xl border border-stone-200 bg-white overflow-hidden">
+                <button
+                  onClick={() => setExpandedPhone(expandedPhone === conv.phone ? null : conv.phone)}
+                  className="flex w-full items-center gap-3 p-4 text-left hover:bg-stone-50 transition"
+                >
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
+                    conv.hasBooking ? "bg-accent/10 text-accent" : "bg-stone-100 text-stone-600"
+                  }`}>
+                    {conv.hasBooking ? <Calendar className="h-5 w-5" /> : <User className="h-5 w-5" />}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-stone-900">{conv.name}</span>
+                      {conv.hasBooking && (
+                        <span className="rounded-full bg-accent/20 px-1.5 py-0.5 text-[9px] font-bold text-accent">
+                          BOOKING
+                        </span>
+                      )}
+                      {conv.unreadCount > 0 && (
+                        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-white">
+                          {conv.unreadCount}
+                        </span>
+                      )}
                     </div>
-                  ))}
-
-                  {/* Actions */}
-                  <div className="flex flex-wrap gap-2 pt-2 border-t border-stone-100">
-                    {conv.messages.some((m) => !m.read) && (
-                      <button
-                        onClick={() => conv.messages.filter((m) => !m.read).forEach((m) => markAsRead(m.id))}
-                        className="flex items-center gap-1.5 rounded-lg bg-stone-100 px-3 py-2 text-xs font-medium text-stone-700 hover:bg-stone-200 transition"
-                      >
-                        <CheckCheck className="h-3.5 w-3.5" />
-                        Mark all read
-                      </button>
-                    )}
-
-                    <button
-                      onClick={() => conv.messages.forEach((m) => deleteMessage(m.id))}
-                      className="flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100 transition"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                      Delete all
-                    </button>
+                    <p className="truncate text-xs text-stone-500">
+                      {conv.phone && `${conv.phone} · `}
+                      {isConvBooking && booking
+                        ? `${booking.date} — ${booking.guests}`
+                        : lastMsg?.content}
+                    </p>
                   </div>
-                </div>
-              )}
-            </div>
-          ))}
+                  <span className="text-xs text-stone-400">
+                    {new Date(lastMsg?.createdAt || 0).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
+                </button>
+
+                {expandedPhone === conv.phone && (
+                  <div className="border-t border-stone-100 p-4 space-y-3">
+                    {conv.messages.map((msg) => {
+                      const msgIsBooking = isBooking(msg.content);
+                      const bookingData = msgIsBooking ? parseBooking(msg.content) : null;
+
+                      return (
+                        <div key={msg.id} className={`flex ${msg.sender === "customer" ? "justify-start" : "justify-end"}`}>
+                          <div
+                            className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
+                              msgIsBooking
+                                ? "bg-accent/10 text-stone-800 border border-accent/30 rounded-bl-md"
+                                : msg.sender === "customer"
+                                  ? "bg-stone-100 text-stone-800 rounded-bl-md"
+                                  : "bg-primary text-white rounded-br-md"
+                            }`}
+                          >
+                            {msgIsBooking && (
+                              <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-accent">
+                                <Calendar className="h-3.5 w-3.5" /> Table Booking
+                              </div>
+                            )}
+                            {msgIsBooking && bookingData ? (
+                              <div className="space-y-1 text-xs">
+                                <p>📆 <strong>{bookingData.date}</strong></p>
+                                <p>👥 {bookingData.guests}</p>
+                                <p>👤 {bookingData.name}</p>
+                                {bookingData.phone && <p>📱 {bookingData.phone}</p>}
+                              </div>
+                            ) : (
+                              <>
+                                {msg.sender === "owner" && (
+                                  <p className="mb-0.5 text-[10px] font-semibold text-surface">You</p>
+                                )}
+                                <p className="whitespace-pre-line">{msg.content}</p>
+                              </>
+                            )}
+                            <div className="mt-1.5 flex items-center gap-2">
+                              <span className={`text-[10px] ${
+                                msg.sender === "customer" ? "text-stone-400" : "text-white/60"
+                              }`}>
+                                {new Date(msg.createdAt).toLocaleTimeString("en-US", {
+                                  hour: "numeric",
+                                  minute: "2-digit",
+                                })}
+                              </span>
+                              {msg.read && (
+                                <CheckCheck className={`h-3 w-3 ${msg.sender === "customer" ? "text-stone-400" : "text-white/60"}`} />
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {/* Actions */}
+                    <div className="flex flex-wrap gap-2 pt-2 border-t border-stone-100">
+                      {conv.messages.some((m) => !m.read) && (
+                        <button
+                          onClick={() => conv.messages.filter((m) => !m.read).forEach((m) => markAsRead(m.id))}
+                          className="flex items-center gap-1.5 rounded-lg bg-stone-100 px-3 py-2 text-xs font-medium text-stone-700 hover:bg-stone-200 transition"
+                        >
+                          <CheckCheck className="h-3.5 w-3.5" />
+                          Mark all read
+                        </button>
+                      )}
+
+                      <button
+                        onClick={() => conv.messages.forEach((m) => deleteMessage(m.id))}
+                        className="flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100 transition"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                        Delete all
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
