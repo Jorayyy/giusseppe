@@ -8,19 +8,25 @@ import {
   UtensilsCrossed,
   Clock,
   Camera,
+  Gift,
+  Ticket,
   Settings,
   LogOut,
   Eye,
   ChevronLeft,
   Menu,
   X,
+  BarChart3,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/sales", label: "Sales", icon: BarChart3 },
   { href: "/admin/menu", label: "Menu", icon: UtensilsCrossed },
   { href: "/admin/hours", label: "Hours", icon: Clock },
   { href: "/admin/photos", label: "Photos", icon: Camera },
+  { href: "/admin/loyalty", label: "Loyalty", icon: Gift },
+  { href: "/admin/vouchers", label: "Vouchers", icon: Ticket },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 

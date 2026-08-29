@@ -12,9 +12,12 @@ import ReviewsCard from "@/components/reviews-card";
 import ContactCard from "@/components/contact-card";
 import BookingWidget from "@/components/booking-widget";
 import EventForm from "@/components/event-form";
+import Waitlist from "@/components/waitlist";
 import Roadmap from "@/components/roadmap";
 import PhotoLightbox from "@/components/photo-lightbox";
 import Toast from "@/components/toast";
+import LoyaltyCard from "@/components/loyalty-card";
+import GiftVoucher from "@/components/gift-voucher";
 import Footer from "@/components/footer";
 import { PHOTOS, DEFAULT_REVIEWS, type Review, isOpen } from "@/lib/data";
 
@@ -67,11 +70,16 @@ export default function RestaurantPage() {
           <div className="space-y-6">
             <ContactCard open={open} />
             <BookingWidget onToast={showToast} />
+            <Waitlist />
             <EventForm onToast={showToast} />
           </div>
         </div>
 
-        {/* <Roadmap onToast={showToast} /> */}
+        <Roadmap onToast={showToast} />
+        <div className="mt-8 grid gap-8 lg:grid-cols-2">
+          <LoyaltyCard />
+          <GiftVoucher />
+        </div>
       </main>
 
       <Footer />

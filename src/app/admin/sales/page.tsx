@@ -1,0 +1,389 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import {
+  BarChart3,
+  TrendingUp,
+  DollarSign,
+  ShoppingBag,
+  Crown,
+  RefreshCw,
+  Download,
+  ArrowUpRight,
+  ArrowDownRight,
+  Clock,
+  Calendar,
+} from "lucide-react";
+import { generateSalesData, formatPeso, type SalesData } from "@/lib/sales-data";
+
+type DateRange = "today" | "week" | "month";
+
+const DATE_LABELS: Record<DateRange, string> = {
+  today: "Today",
+  week: "This Week",
+  month: "This Month",
+};
+
+const MULTIPLIER: Record<DateRange, { revenue: number; orders: number }> = {
+  today: { revenue: 1, orders: 1 },
+  week: { revenue: 6.2, orders: 5.8 },
+  month: { revenue: 26, orders: 24 },
+};
+
+export default function AdminSalesPage() {
+  const [data, setData] = useState<SalesData | null>(null);
+  const [range, setRange] = useState<DateRange>("today");
+
+  const loadData = useCallback(() => {
+    const base = generateSalesData();
+    const mult = MULTIPLIER[range];
+    const adjusted: SalesData = {
+      ...base,
+      totalRevenue: Math.round(base.totalRevenue * mult.revenue),
+      totalOrders: Math.round(base.totalOrders * mult.orders),
+      avgOrderValue: base.avgOrderValue,
+      topItem: base.topItem,
+      topItems: base.topItems.map((i) => ({
+        ...i,
+        count: Math.round(i.count * mult.orders),
+        revenue: Math.round(i.revenue * mult.revenue),
+      })),
+      hourlyData: base.hourlyData.map((h) => ({
+        ...h,
+        orders: Math.round(h.orders * mult.orders),
+        revenue: Math.round(h.revenue * mult.revenue),
+      })),
+      categoryData: base.categoryData.map((c) => ({
+        ...c,
+        count: Math.round(c.count * mult.orders),
+        revenue: Math.round(c.revenue * mult.revenue),
+      })),
+      recentOrders: base.recentOrders,
+      revenueByDay: base.revenueByDay.map((d) => ({
+        ...d,
+        revenue: Math.round(d.revenue * mult.revenue),
+        orders: Math.round(d.orders * mult.orders),
+      })),
+    };
+    setData(adjusted);
+  }, [range]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const exportCSV = () => {
+    if (!data) return;
+    const rows = [
+      "Metric,Value",
+      `Total Revenue,${data.totalRevenue}`,
+      `Total Orders,${data.totalOrders}`,
+      `Avg Order Value,${data.avgOrderValue}`,
+      "",
+      "Top Items,Count,Revenue",
+      ...data.topItems.map((i) => `${i.name},${i.count},${i.revenue}`),
+      "",
+      "Category,Count,Revenue,Percentage",
+      ...data.categoryData.map((c) => `${c.name},${c.count},${c.revenue},${c.percentage}%`),
+      "",
+      "Hour,Orders,Revenue",
+      ...data.hourlyData.map((h) => `${h.hour},${h.orders},${h.revenue}`),
+    ];
+    const blob = new Blob([rows.join("\n")], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `giuseppes-sales-${range}-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-amber-600 border-t-transparent" />
+      </div>
+    );
+  }
+
+  const maxHourlyOrders = Math.max(...data.hourlyData.map((h) => h.orders));
+  const maxTopRevenue = Math.max(...data.topItems.slice(0, 5).map((i) => i.revenue));
+  const maxCatRevenue = Math.max(...data.categoryData.map((c) => c.revenue));
+
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="font-serif text-3xl font-bold text-stone-900">Sales Dashboard</h1>
+          <p className="mt-1 text-stone-500">Track revenue, orders, and performance</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={loadData}
+            className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-50 transition"
+          >
+            <RefreshCw className="h-4 w-4" />
+            Refresh
+          </button>
+          <button
+            onClick={exportCSV}
+            className="flex items-center gap-2 rounded-xl bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-700 transition"
+          >
+            <Download className="h-4 w-4" />
+            Export CSV
+          </button>
+        </div>
+      </div>
+
+      {/* Date Range */}
+      <div className="flex gap-2">
+        {(Object.keys(DATE_LABELS) as DateRange[]).map((r) => (
+          <button
+            key={r}
+            onClick={() => setRange(r)}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition ${
+              range === r
+                ? "bg-amber-600 text-white"
+                : "border border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
+            }`}
+          >
+            <Calendar className="h-4 w-4" />
+            {DATE_LABELS[r]}
+          </button>
+        ))}
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-2xl border border-stone-200 bg-white p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
+              <DollarSign className="h-5 w-5 text-amber-600" />
+            </div>
+            <span className="flex items-center gap-1 text-xs font-medium text-emerald-600">
+              <ArrowUpRight className="h-3 w-3" /> +12%
+            </span>
+          </div>
+          <p className="mt-3 text-2xl font-bold text-stone-900">{formatPeso(data.totalRevenue)}</p>
+          <p className="text-sm text-stone-500">Total Revenue</p>
+        </div>
+
+        <div className="rounded-2xl border border-stone-200 bg-white p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
+              <ShoppingBag className="h-5 w-5 text-blue-600" />
+            </div>
+            <span className="flex items-center gap-1 text-xs font-medium text-emerald-600">
+              <ArrowUpRight className="h-3 w-3" /> +8%
+            </span>
+          </div>
+          <p className="mt-3 text-2xl font-bold text-stone-900">{data.totalOrders.toLocaleString()}</p>
+          <p className="text-sm text-stone-500">Total Orders</p>
+        </div>
+
+        <div className="rounded-2xl border border-stone-200 bg-white p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50">
+              <BarChart3 className="h-5 w-5 text-emerald-600" />
+            </div>
+            <span className="flex items-center gap-1 text-xs font-medium text-red-600">
+              <ArrowDownRight className="h-3 w-3" /> -2%
+            </span>
+          </div>
+          <p className="mt-3 text-2xl font-bold text-stone-900">{formatPeso(data.avgOrderValue)}</p>
+          <p className="text-sm text-stone-500">Avg Order Value</p>
+        </div>
+
+        <div className="rounded-2xl border border-stone-200 bg-white p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50">
+              <Crown className="h-5 w-5 text-purple-600" />
+            </div>
+          </div>
+          <p className="mt-3 text-lg font-bold text-stone-900 truncate">{data.topItem.name}</p>
+          <p className="text-sm text-stone-500">Top Item — {data.topItem.count} sold</p>
+        </div>
+      </div>
+
+      {/* Revenue Trend + Top 5 Items */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Revenue Trend (Bar Chart) */}
+        <div className="rounded-2xl border border-stone-200 bg-white p-6">
+          <h3 className="font-serif text-lg font-semibold text-stone-900 mb-1">Revenue Trend</h3>
+          <p className="text-xs text-stone-500 mb-4">
+            {range === "today" ? "Today's" : range === "week" ? "This week's" : "This month's"} daily breakdown
+          </p>
+          <div className="flex items-end gap-2 h-52">
+            {data.revenueByDay.map((day) => {
+              const maxRev = Math.max(...data.revenueByDay.map((d) => d.revenue));
+              const height = (day.revenue / maxRev) * 100;
+              const isMax = day.revenue === maxRev;
+              return (
+                <div key={day.day} className="flex flex-1 flex-col items-center gap-1">
+                  <span className="text-[10px] font-medium text-stone-500">{formatPeso(day.revenue)}</span>
+                  <div
+                    className={`w-full rounded-t-lg transition-all ${
+                      isMax ? "bg-amber-500" : "bg-amber-200"
+                    }`}
+                    style={{ height: `${height}%`, minHeight: "8px" }}
+                  />
+                  <span className="text-xs font-medium text-stone-600">{day.day}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Top 5 Items */}
+        <div className="rounded-2xl border border-stone-200 bg-white p-6">
+          <h3 className="font-serif text-lg font-semibold text-stone-900 mb-4">Top 5 Items</h3>
+          <div className="space-y-4">
+            {data.topItems.slice(0, 5).map((item, idx) => {
+              const width = (item.revenue / maxTopRevenue) * 100;
+              return (
+                <div key={item.name}>
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`flex h-6 w-6 items-center justify-center rounded-md text-xs font-bold ${
+                          idx === 0
+                            ? "bg-amber-100 text-amber-700"
+                            : "bg-stone-100 text-stone-600"
+                        }`}
+                      >
+                        {idx + 1}
+                      </span>
+                      <span className="text-sm font-medium text-stone-900">{item.name}</span>
+                    </div>
+                    <span className="text-sm font-semibold text-amber-700">{formatPeso(item.revenue)}</span>
+                  </div>
+                  <div className="h-2 bg-stone-100 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${idx === 0 ? "bg-amber-500" : "bg-amber-300"}`}
+                      style={{ width: `${width}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-stone-500 mt-1">{item.count} orders</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Category Performance + Hourly Traffic */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Category Performance */}
+        <div className="rounded-2xl border border-stone-200 bg-white p-6">
+          <h3 className="font-serif text-lg font-semibold text-stone-900 mb-4">Category Performance</h3>
+          <div className="space-y-4">
+            {data.categoryData.map((cat, idx) => {
+              const width = (cat.revenue / maxCatRevenue) * 100;
+              const colors = ["bg-amber-500", "bg-stone-500", "bg-orange-500", "bg-emerald-500", "bg-purple-500", "bg-red-500"];
+              return (
+                <div key={cat.name}>
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <div className={`h-3 w-3 rounded-full ${colors[idx % colors.length]}`} />
+                      <span className="text-sm font-medium text-stone-900">{cat.name}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-stone-500">{cat.count} orders</span>
+                      <span className="text-sm font-semibold text-amber-700">{formatPeso(cat.revenue)}</span>
+                    </div>
+                  </div>
+                  <div className="h-2 bg-stone-100 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${colors[idx % colors.length]}`}
+                      style={{ width: `${width}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Hourly Traffic */}
+        <div className="rounded-2xl border border-stone-200 bg-white p-6">
+          <h3 className="font-serif text-lg font-semibold text-stone-900 mb-4">
+            <span className="flex items-center gap-2">
+              <Clock className="h-5 w-5 text-amber-600" />
+              Hourly Traffic Pattern
+            </span>
+          </h3>
+          <div className="space-y-2">
+            {data.hourlyData.map((hour) => {
+              const width = (hour.orders / maxHourlyOrders) * 100;
+              const isPeak = hour.orders >= maxHourlyOrders * 0.85;
+              return (
+                <div key={hour.hour} className="flex items-center gap-3">
+                  <span className="w-12 text-xs font-medium text-stone-500 text-right">{hour.hour}</span>
+                  <div className="flex-1 h-7 bg-stone-100 rounded-lg overflow-hidden">
+                    <div
+                      className={`h-full rounded-lg transition-all flex items-center pl-2 ${
+                        isPeak ? "bg-amber-500" : "bg-amber-300"
+                      }`}
+                      style={{ width: `${width}%` }}
+                    >
+                      {width > 25 && (
+                        <span className="text-[10px] font-semibold text-white">{hour.orders} orders</span>
+                      )}
+                    </div>
+                  </div>
+                  <span className="w-20 text-xs font-medium text-stone-600 text-right">{formatPeso(hour.revenue)}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Category Pie Chart */}
+      <div className="rounded-2xl border border-stone-200 bg-white p-6">
+        <h3 className="font-serif text-lg font-semibold text-stone-900 mb-4">Sales by Category</h3>
+        <div className="flex flex-col sm:flex-row items-center gap-8">
+          <div className="relative h-48 w-48 shrink-0">
+            <div
+              className="h-full w-full rounded-full"
+              style={{
+                background: (() => {
+                  const colors = ["#d97706", "#78716c", "#ea580c", "#059669", "#7c3aed", "#dc2626"];
+                  let accumulated = 0;
+                  const stops: string[] = [];
+                  for (let i = 0; i < data.categoryData.length; i++) {
+                    const start = accumulated;
+                    accumulated += data.categoryData[i].percentage;
+                    stops.push(`${colors[i % colors.length]} ${start}% ${accumulated}%`);
+                  }
+                  return `conic-gradient(${stops.join(", ")})`;
+                })(),
+              }}
+            />
+            <div className="absolute inset-5 rounded-full bg-white flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-xl font-bold text-stone-900">{formatPeso(data.totalRevenue)}</p>
+                <p className="text-[10px] text-stone-500">Total</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex-1 grid grid-cols-2 gap-3">
+            {data.categoryData.map((cat, idx) => {
+              const colors = ["bg-amber-500", "bg-stone-500", "bg-orange-500", "bg-emerald-500", "bg-purple-500", "bg-red-500"];
+              return (
+                <div key={cat.name} className="flex items-center gap-2 rounded-xl bg-stone-50 px-3 py-2">
+                  <div className={`h-3 w-3 rounded-full ${colors[idx % colors.length]}`} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-stone-900 truncate">{cat.name}</p>
+                    <p className="text-xs text-stone-500">{cat.percentage}% — {cat.count} orders</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

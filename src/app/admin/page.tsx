@@ -14,6 +14,7 @@ import {
   QrCode,
   ArrowRight,
   CheckCircle2,
+  BarChart3,
 } from "lucide-react";
 
 const DEFAULT_MENU: Record<string, { name: string; price: string; desc: string; popular?: boolean; image?: string }[]> = {
@@ -43,6 +44,7 @@ const DEFAULT_MENU: Record<string, { name: string; price: string; desc: string; 
 };
 
 const QUICK_ACTIONS = [
+  { label: "Sales Dashboard", href: "/admin/sales", icon: BarChart3, color: "bg-amber-600" },
   { label: "Edit Menu", href: "/admin/menu", icon: UtensilsCrossed, color: "bg-blue-500" },
   { label: "Edit Hours", href: "/admin/hours", icon: Clock, color: "bg-emerald-500" },
   { label: "Edit Photos", href: "/admin/photos", icon: Camera, color: "bg-purple-500" },
