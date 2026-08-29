@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import ImageUpload from "@/components/image-upload";
 
 type MenuItem = { name: string; price: string; desc: string; popular?: boolean; image?: string };
 
@@ -258,12 +259,19 @@ export default function MenuEditorPage() {
                           placeholder="Description"
                           className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
                         />
-                        <input
-                          value={item.image || ""}
-                          onChange={(e) => updateItem(cat, idx, "image", e.target.value)}
-                          placeholder="Image URL (optional)"
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-xs text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
-                        />
+                        <div className="space-y-2">
+                          <ImageUpload
+                            type="menu"
+                            currentImage={item.image}
+                            onUpload={(url) => updateItem(cat, idx, "image", url)}
+                          />
+                          <input
+                            value={item.image || ""}
+                            onChange={(e) => updateItem(cat, idx, "image", e.target.value)}
+                            placeholder="Or paste image URL"
+                            className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-xs text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          />
+                        </div>
                         <div className="flex items-center justify-between">
                           <label className="inline-flex items-center gap-2 text-sm">
                             <input

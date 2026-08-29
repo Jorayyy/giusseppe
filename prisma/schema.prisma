@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  name        String
+  price       String
+  description String
+  category    String
+  image       String?
+  popular     Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model WaitlistEntry {
+  id          String   @id @default(cuid())
+  name        String
+  phone       String
+  partySize   Int
+  preferredTime String?
+  status      String   @default("waiting") // waiting, seated, left
+  position    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model LoyaltyCard {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  name      String?
+  stamps    Int      @default(0)
+  rewards   Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Voucher {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  type        String   // discount, free-item
+  value       Int      // amount off or item price
+  description String?
+  active      Boolean  @default(true)
+  maxUses     Int?
+  useCount    Int      @default(0)
+  redemptions VoucherRedemption[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model VoucherRedemption {
+  id        String   @id @default(cuid())
+  voucherId String
+  voucher   Voucher  @relation(fields: [voucherId], references: [id])
+  phone     String
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  sender    String   // customer or owner
+  name      String?
+  phone     String?
+  content   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+model SalesRecord {
+  id        String   @id @default(cuid())
+  date      DateTime @default(now())
+  total     Int
+  orders    Int
+  items     Json     // array of {name, quantity, price}
+  createdAt DateTime @default(now())
+}

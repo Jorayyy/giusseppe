@@ -18,6 +18,7 @@ import PhotoLightbox from "@/components/photo-lightbox";
 import Toast from "@/components/toast";
 import LoyaltyCard from "@/components/loyalty-card";
 import GiftVoucher from "@/components/gift-voucher";
+import ChatWidget from "@/components/chat-widget";
 import Footer from "@/components/footer";
 import { PHOTOS, DEFAULT_REVIEWS, type Review, isOpen } from "@/lib/data";
 
@@ -83,6 +84,7 @@ export default function RestaurantPage() {
       </main>
 
       <Footer />
+      <ChatWidget />
 
       {showLightbox && (
         <PhotoLightbox photos={photos} idx={photoIdx} setIdx={setPhotoIdx} onClose={() => setShowLightbox(false)} />

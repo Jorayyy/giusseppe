@@ -106,6 +106,28 @@ export const PHOTOS = [
   "/photos/6.jpg",
 ];
 
+export async function fetchMenu(): Promise<Record<string, MenuItem[]>> {
+  try {
+    const res = await fetch("/api/menu", { next: { revalidate: 60 } });
+    const data = await res.json();
+    if (res.ok && data.data) {
+      return data.data;
+    }
+  } catch {}
+  return MENU;
+}
+
+export async function fetchPhotos(): Promise<string[]> {
+  try {
+    const res = await fetch("/api/photos", { next: { revalidate: 60 } });
+    const data = await res.json();
+    if (res.ok && data.data?.length) {
+      return data.data.map((p: { url: string }) => p.url);
+    }
+  } catch {}
+  return PHOTOS;
+}
+
 export function isOpen(now: Date): boolean {
   const day = now.toLocaleDateString("en-US", { weekday: "long" });
   const h = now.getHours();

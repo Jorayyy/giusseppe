@@ -17,6 +17,7 @@ import {
   Menu,
   X,
   BarChart3,
+  MessageSquare,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -27,6 +28,7 @@ const NAV_ITEMS = [
   { href: "/admin/photos", label: "Photos", icon: Camera },
   { href: "/admin/loyalty", label: "Loyalty", icon: Gift },
   { href: "/admin/vouchers", label: "Vouchers", icon: Ticket },
+  { href: "/admin/messages", label: "Messages", icon: MessageSquare },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
@@ -36,6 +38,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [unreadMessages, setUnreadMessages] = useState(0);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -44,6 +47,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     } catch {}
     setChecking(false);
   }, []);
+
+  useEffect(() => {
+    if (!authed) return;
+    const fetchUnread = async () => {
+      try {
+        const res = await fetch("/api/messages?unread=true");
+        const json = await res.json();
+        setUnreadMessages(json.data?.length ?? 0);
+      } catch {}
+    };
+    fetchUnread();
+    const interval = setInterval(fetchUnread, 30000);
+    return () => clearInterval(interval);
+  }, [authed]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,6 +155,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <nav className="flex-1 space-y-1 p-3">
               {NAV_ITEMS.map((item) => {
                 const isActive = pathname === item.href;
+                const showBadge = item.href === "/admin/messages" && unreadMessages > 0;
                 return (
                   <Link
                     key={item.href}
@@ -151,6 +169,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   >
                     <item.icon className={`h-5 w-5 ${isActive ? "text-amber-600" : "text-stone-400"}`} />
                     {item.label}
+                    {showBadge && (
+                      <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                        {unreadMessages}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
