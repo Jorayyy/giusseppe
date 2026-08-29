@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MessageSquare, Send, X, AlertCircle } from "lucide-react";
+import { MessageSquare, Send, X } from "lucide-react";
 
 interface Message {
   id: string;
@@ -13,24 +13,8 @@ interface Message {
   createdAt: string;
 }
 
-const LS_KEY = "giuseppe_chat_messages";
 const LS_NAME_KEY = "giuseppe_chat_name";
 const LS_PHONE_KEY = "giuseppe_chat_phone";
-
-function loadLocalMessages(): Message[] {
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveLocalMessages(msgs: Message[]) {
-  try {
-    localStorage.setItem(LS_KEY, JSON.stringify(msgs.slice(-50)));
-  } catch {}
-}
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -42,7 +26,6 @@ export default function ChatWidget() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-  const [apiAvailable, setApiAvailable] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -74,45 +57,23 @@ export default function ChatWidget() {
   async function fetchMessages() {
     try {
       const res = await fetch("/api/messages");
-      if (!res.ok) throw new Error("API unavailable");
       const json = await res.json();
-      const apiMessages = json.data ?? [];
-      setMessages(apiMessages);
-      setApiAvailable(true);
-      saveLocalMessages(apiMessages);
-    } catch {
-      setApiAvailable(false);
-      const local = loadLocalMessages();
-      if (local.length > 0) setMessages(local);
-    }
+      setMessages(json.data ?? []);
+    } catch {}
   }
 
   async function fetchUnreadCount() {
     try {
       const res = await fetch("/api/messages?unread=true");
-      if (!res.ok) throw new Error("API unavailable");
       const json = await res.json();
       setUnreadCount(json.data?.length ?? 0);
-    } catch {
-      setUnreadCount(0);
-    }
+    } catch {}
   }
 
   async function handleSend() {
     if (!input.trim() || !name.trim()) return;
     setSending(true);
     setError("");
-
-    const newMsg: Message = {
-      id: `local_${Date.now()}`,
-      sender: "customer",
-      name: name.trim(),
-      phone: phone.trim() || null,
-      content: input.trim(),
-      read: false,
-      createdAt: new Date().toISOString(),
-    };
-
     try {
       const res = await fetch("/api/messages", {
         method: "POST",
@@ -124,24 +85,20 @@ export default function ChatWidget() {
           content: input.trim(),
         }),
       });
-      if (!res.ok) throw new Error("Send failed");
+      if (!res.ok) throw new Error("Failed to send");
       const json = await res.json();
       setMessages((prev) => [...prev, json.data]);
-      setApiAvailable(true);
+      setInput("");
+      setSubmitted(true);
+      try {
+        localStorage.setItem(LS_NAME_KEY, name.trim());
+        if (phone.trim()) localStorage.setItem(LS_PHONE_KEY, phone.trim());
+      } catch {}
+      setTimeout(() => setSubmitted(false), 3000);
     } catch {
-      setApiAvailable(false);
-      setMessages((prev) => [...prev, newMsg]);
-      saveLocalMessages([...messages, newMsg]);
+      setError("Failed to send message. Please try again.");
     }
-
-    setInput("");
-    setSubmitted(true);
-    try {
-      localStorage.setItem(LS_NAME_KEY, name.trim());
-      if (phone.trim()) localStorage.setItem(LS_PHONE_KEY, phone.trim());
-    } catch {}
     setSending(false);
-    setTimeout(() => setSubmitted(false), 3000);
   }
 
   return (
@@ -172,13 +129,6 @@ export default function ChatWidget() {
               </div>
             </div>
           </div>
-
-          {!apiAvailable && (
-            <div className="flex items-center gap-2 bg-amber-50 px-4 py-2 text-xs text-amber-700 border-b border-amber-100">
-              <AlertCircle className="h-3.5 w-3.5 shrink-0" />
-              <span>Offline mode — messages saved locally</span>
-            </div>
-          )}
 
           <div className="flex-1 overflow-y-auto p-4 space-y-3 max-sm:h-[50vh]">
             {submitted && (
