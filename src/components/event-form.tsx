@@ -23,9 +23,10 @@ export default function EventForm({ onToast }: { onToast: (msg: string) => void 
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        sender: "customer",
         name: eventForm.name,
         phone: eventForm.phone,
-        content: `Private Dining inquiry:\nDate: ${eventForm.date || "Flexible"}\nGuests: ${eventForm.guests}\nEvent Type: ${eventForm.type}\nMessage: ${eventForm.message || "-"}`,
+        content: `🎉 PRIVATE DINING INQUIRY\n\n📆 ${eventForm.date || "Flexible"}\n👥 ${eventForm.guests} guests\n🎂 ${eventForm.type}\n💬 ${eventForm.message || "-"}\n\n👤 ${eventForm.name}\n📱 ${eventForm.phone}`,
       }),
     }).catch(() => {});
     onToast("Inquiry sent — we'll call to confirm");
