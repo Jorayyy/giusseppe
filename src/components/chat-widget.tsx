@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MessageSquare, Send, X } from "lucide-react";
+import { MessageSquare, Send, X, AlertCircle } from "lucide-react";
 
 interface Message {
   id: string;
@@ -13,6 +13,25 @@ interface Message {
   createdAt: string;
 }
 
+const LS_KEY = "giuseppe_chat_messages";
+const LS_NAME_KEY = "giuseppe_chat_name";
+const LS_PHONE_KEY = "giuseppe_chat_phone";
+
+function loadLocalMessages(): Message[] {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalMessages(msgs: Message[]) {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify(msgs.slice(-50)));
+  } catch {}
+}
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -22,13 +41,15 @@ export default function ChatWidget() {
   const [sending, setSending] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [apiAvailable, setApiAvailable] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("giuseppe_chat_phone");
+      const saved = localStorage.getItem(LS_PHONE_KEY);
       if (saved) setPhone(saved);
-      const savedName = localStorage.getItem("giuseppe_chat_name");
+      const savedName = localStorage.getItem(LS_NAME_KEY);
       if (savedName) setName(savedName);
     } catch {}
   }, []);
@@ -53,22 +74,45 @@ export default function ChatWidget() {
   async function fetchMessages() {
     try {
       const res = await fetch("/api/messages");
+      if (!res.ok) throw new Error("API unavailable");
       const json = await res.json();
-      setMessages(json.data ?? []);
-    } catch {}
+      const apiMessages = json.data ?? [];
+      setMessages(apiMessages);
+      setApiAvailable(true);
+      saveLocalMessages(apiMessages);
+    } catch {
+      setApiAvailable(false);
+      const local = loadLocalMessages();
+      if (local.length > 0) setMessages(local);
+    }
   }
 
   async function fetchUnreadCount() {
     try {
       const res = await fetch("/api/messages?unread=true");
+      if (!res.ok) throw new Error("API unavailable");
       const json = await res.json();
       setUnreadCount(json.data?.length ?? 0);
-    } catch {}
+    } catch {
+      setUnreadCount(0);
+    }
   }
 
   async function handleSend() {
     if (!input.trim() || !name.trim()) return;
     setSending(true);
+    setError("");
+
+    const newMsg: Message = {
+      id: `local_${Date.now()}`,
+      sender: "customer",
+      name: name.trim(),
+      phone: phone.trim() || null,
+      content: input.trim(),
+      read: false,
+      createdAt: new Date().toISOString(),
+    };
+
     try {
       const res = await fetch("/api/messages", {
         method: "POST",
@@ -80,28 +124,28 @@ export default function ChatWidget() {
           content: input.trim(),
         }),
       });
-      if (!res.ok) {
-        const err = await res.json();
-        console.error("Failed to send:", err);
-        return;
-      }
-      setInput("");
-      setSubmitted(true);
-      try {
-        localStorage.setItem("giuseppe_chat_name", name.trim());
-        if (phone.trim()) localStorage.setItem("giuseppe_chat_phone", phone.trim());
-      } catch {}
-      fetchMessages();
-      setTimeout(() => setSubmitted(false), 3000);
-    } catch (e) {
-      console.error("Chat send error:", e);
+      if (!res.ok) throw new Error("Send failed");
+      const json = await res.json();
+      setMessages((prev) => [...prev, json.data]);
+      setApiAvailable(true);
+    } catch {
+      setApiAvailable(false);
+      setMessages((prev) => [...prev, newMsg]);
+      saveLocalMessages([...messages, newMsg]);
     }
+
+    setInput("");
+    setSubmitted(true);
+    try {
+      localStorage.setItem(LS_NAME_KEY, name.trim());
+      if (phone.trim()) localStorage.setItem(LS_PHONE_KEY, phone.trim());
+    } catch {}
     setSending(false);
+    setTimeout(() => setSubmitted(false), 3000);
   }
 
   return (
     <>
-      {/* Floating button */}
       <button
         onClick={() => setOpen(!open)}
         className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-amber-600 text-white shadow-lg transition hover:bg-amber-700 hover:scale-105"
@@ -114,10 +158,8 @@ export default function ChatWidget() {
         )}
       </button>
 
-      {/* Chat panel */}
       {open && (
         <div className="fixed bottom-24 right-6 z-50 flex w-[calc(100vw-3rem)] max-w-[400px] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl animate-in slide-in-from-bottom-4 sm:bottom-24 sm:right-6 max-sm:inset-3 max-sm:bottom-16 max-sm:rounded-xl">
-          {/* Header */}
           <div className="flex items-center gap-3 bg-amber-600 px-4 py-3 text-white">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-700 font-serif text-sm font-bold">
               G
@@ -131,11 +173,23 @@ export default function ChatWidget() {
             </div>
           </div>
 
-          {/* Messages area */}
+          {!apiAvailable && (
+            <div className="flex items-center gap-2 bg-amber-50 px-4 py-2 text-xs text-amber-700 border-b border-amber-100">
+              <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+              <span>Offline mode — messages saved locally</span>
+            </div>
+          )}
+
           <div className="flex-1 overflow-y-auto p-4 space-y-3 max-sm:h-[50vh]">
             {submitted && (
               <div className="rounded-xl bg-green-50 p-3 text-center text-sm text-green-700">
                 Message sent! We&apos;ll reply soon.
+              </div>
+            )}
+
+            {error && (
+              <div className="rounded-xl bg-red-50 p-3 text-center text-sm text-red-600">
+                {error}
               </div>
             )}
 
@@ -178,7 +232,6 @@ export default function ChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input area */}
           <div className="border-t border-stone-100 p-3">
             {!name.trim() && (
               <div className="mb-2 grid grid-cols-2 gap-2">
@@ -187,14 +240,14 @@ export default function ChatWidget() {
                   placeholder="Your name *"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+                  className="rounded-xl border border-stone-200 px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400"
                 />
                 <input
                   type="tel"
                   placeholder="Phone (optional)"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+                  className="rounded-xl border border-stone-200 px-3 py-2 text-sm text-stone-900 outline-none focus:border-amber-400"
                 />
               </div>
             )}
@@ -206,7 +259,7 @@ export default function ChatWidget() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
                 disabled={!name.trim()}
-                className="flex-1 rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-amber-400 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex-1 rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 disabled:cursor-not-allowed disabled:opacity-50"
               />
               <button
                 onClick={handleSend}
