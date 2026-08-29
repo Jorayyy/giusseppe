@@ -76,7 +76,7 @@ export default function RestaurantPage() {
           </div>
         </div>
 
-        <Roadmap onToast={showToast} />
+        {/* <Roadmap onToast={showToast} /> */}
         <div className="mt-8 grid gap-8 lg:grid-cols-2">
           <LoyaltyCard />
           <GiftVoucher />

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MessageSquare, Send, X } from "lucide-react";
+import { MessageSquare, Send, X, Bot, User, Sparkles } from "lucide-react";
+import { getAIResponse } from "@/lib/ai";
 
 interface Message {
   id: string;
@@ -13,12 +14,20 @@ interface Message {
   createdAt: string;
 }
 
+interface ChatMessage {
+  id: string;
+  sender: "customer" | "owner" | "ai";
+  content: string;
+  createdAt: Date;
+}
+
 const LS_NAME_KEY = "giuseppe_chat_name";
 const LS_PHONE_KEY = "giuseppe_chat_phone";
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [dbMessages, setDbMessages] = useState<Message[]>([]);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -27,6 +36,7 @@ export default function ChatWidget() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [nameSaved, setNameSaved] = useState(false);
+  const [mode, setMode] = useState<"choose" | "ai" | "message">("choose");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,11 +52,11 @@ export default function ChatWidget() {
   }, []);
 
   useEffect(() => {
-    if (!open || !nameSaved) return;
+    if (!open || !nameSaved || mode !== "message") return;
     fetchMessages();
     const interval = setInterval(fetchMessages, 10000);
     return () => clearInterval(interval);
-  }, [open, nameSaved]);
+  }, [open, nameSaved, mode]);
 
   useEffect(() => {
     fetchUnreadCount();
@@ -56,13 +66,13 @@ export default function ChatWidget() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [chatMessages, dbMessages]);
 
   async function fetchMessages() {
     try {
       const res = await fetch("/api/messages");
       const json = await res.json();
-      setMessages(json.data ?? []);
+      setDbMessages(json.data ?? []);
     } catch {}
   }
 
@@ -83,7 +93,26 @@ export default function ChatWidget() {
     setNameSaved(true);
   }
 
-  async function handleSend() {
+  function handleAIMessage() {
+    if (!input.trim()) return;
+    const userMsg: ChatMessage = {
+      id: `user-${Date.now()}`,
+      sender: "customer",
+      content: input.trim(),
+      createdAt: new Date(),
+    };
+    const aiResponse = getAIResponse(input.trim());
+    const aiMsg: ChatMessage = {
+      id: `ai-${Date.now()}`,
+      sender: "ai",
+      content: aiResponse,
+      createdAt: new Date(),
+    };
+    setChatMessages((prev) => [...prev, userMsg, aiMsg]);
+    setInput("");
+  }
+
+  async function handleSendMessage() {
     if (!input.trim() || !nameSaved) return;
     setSending(true);
     setError("");
@@ -100,7 +129,7 @@ export default function ChatWidget() {
       });
       if (!res.ok) throw new Error("Failed to send");
       const json = await res.json();
-      setMessages((prev) => [...prev, json.data]);
+      setDbMessages((prev) => [...prev, json.data]);
       setInput("");
       setSubmitted(true);
       setTimeout(() => setSubmitted(false), 3000);
@@ -108,6 +137,14 @@ export default function ChatWidget() {
       setError("Failed to send message. Please try again.");
     }
     setSending(false);
+  }
+
+  function handleSend() {
+    if (mode === "ai") {
+      handleAIMessage();
+    } else {
+      handleSendMessage();
+    }
   }
 
   return (
@@ -137,6 +174,14 @@ export default function ChatWidget() {
                 Online
               </div>
             </div>
+            {nameSaved && mode !== "choose" && (
+              <button
+                onClick={() => setMode("choose")}
+                className="rounded-lg bg-white/20 px-2 py-1 text-[10px] font-medium text-white hover:bg-white/30 transition"
+              >
+                Switch
+              </button>
+            )}
           </div>
 
           {!nameSaved ? (
@@ -173,29 +218,104 @@ export default function ChatWidget() {
                 </button>
               </div>
             </div>
+          ) : mode === "choose" ? (
+            <div className="flex flex-col items-center justify-center p-6 text-center" style={{ minHeight: "320px" }}>
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface">
+                <Sparkles className="h-8 w-8 text-accent" />
+              </div>
+              <h4 className="mb-1 font-serif text-lg font-bold text-stone-900">Welcome, {name}!</h4>
+              <p className="mb-6 text-sm text-stone-500">How can we help you today?</p>
+              <div className="w-full space-y-3">
+                <button
+                  onClick={() => {
+                    setMode("ai");
+                    setChatMessages([{
+                      id: "welcome",
+                      sender: "ai",
+                      content: `Buongiorno ${name}! 🇮🇹 I'm Giuseppe's AI sommelier. Ask me about:\n\n• 🍷 Wine pairings\n• ⚠️ Allergy info\n• 📖 Menu stories\n• 🌟 What to order\n\nBuon appetito!`,
+                      createdAt: new Date(),
+                    }]);
+                  }}
+                  className="flex w-full items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:border-accent hover:bg-surface"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                    <Bot className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-stone-900">Ask Giuseppe AI</p>
+                    <p className="text-xs text-stone-500">Wine pairings, allergies, menu stories</p>
+                  </div>
+                  <span className="ml-auto rounded-full bg-accent/20 px-2 py-0.5 text-[10px] font-bold text-primary">SOON</span>
+                </button>
+                <button
+                  onClick={() => setMode("message")}
+                  className="flex w-full items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:border-accent hover:bg-surface"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                    <MessageSquare className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-stone-900">Message the restaurant</p>
+                    <p className="text-xs text-stone-500">Reservations, inquiries, feedback</p>
+                  </div>
+                </button>
+              </div>
+            </div>
           ) : (
             <>
               <div className="flex-1 overflow-y-auto p-4 space-y-3 max-sm:h-[50vh]">
-                {submitted && (
+                {mode === "ai" && chatMessages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex ${msg.sender === "customer" ? "justify-end" : "justify-start"}`}
+                  >
+                    <div
+                      className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
+                        msg.sender === "customer"
+                          ? "bg-primary text-white rounded-br-md"
+                          : "bg-surface text-stone-800 rounded-bl-md"
+                      }`}
+                    >
+                      {msg.sender === "ai" && (
+                        <p className="mb-1 flex items-center gap-1 text-[10px] font-semibold text-primary">
+                          <Bot className="h-3 w-3" /> Giuseppe AI
+                        </p>
+                      )}
+                      <p className="whitespace-pre-line">{msg.content}</p>
+                      <p
+                        className={`mt-1 text-[10px] ${
+                          msg.sender === "customer" ? "text-white/60" : "text-stone-400"
+                        }`}
+                      >
+                        {msg.createdAt.toLocaleTimeString("en-US", {
+                          hour: "numeric",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+                {mode === "message" && submitted && (
                   <div className="rounded-xl bg-green-50 p-3 text-center text-sm text-green-700">
                     Message sent! We&apos;ll reply soon.
                   </div>
                 )}
 
-                {error && (
+                {mode === "message" && error && (
                   <div className="rounded-xl bg-red-50 p-3 text-center text-sm text-red-600">
                     {error}
                   </div>
                 )}
 
-                {messages.length === 0 && (
+                {mode === "message" && dbMessages.length === 0 && (
                   <div className="flex flex-col items-center justify-center py-8 text-center text-stone-400">
                     <MessageSquare className="mb-2 h-8 w-8" />
                     <p className="text-sm">Start a conversation with us!</p>
                   </div>
                 )}
 
-                {messages.map((msg) => (
+                {mode === "message" && dbMessages.map((msg) => (
                   <div
                     key={msg.id}
                     className={`flex ${msg.sender === "customer" ? "justify-end" : "justify-start"}`}
@@ -203,7 +323,7 @@ export default function ChatWidget() {
                     <div
                       className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
                         msg.sender === "customer"
-                          ? "bg-accent text-white rounded-br-md"
+                          ? "bg-primary text-white rounded-br-md"
                           : "bg-stone-100 text-stone-800 rounded-bl-md"
                       }`}
                     >
@@ -231,7 +351,7 @@ export default function ChatWidget() {
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="Type a message..."
+                    placeholder={mode === "ai" ? "Ask about wine, allergies, menu..." : "Type a message..."}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSend()}
