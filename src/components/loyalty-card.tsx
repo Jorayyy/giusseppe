@@ -95,14 +95,7 @@ export default function LoyaltyCard() {
               <PartyPopper className="h-5 w-5" />
             </div>
             <p className="text-sm text-amber-100">Show this to your server to claim your reward.</p>
-            <a
-              href="https://wa.me/639319704073"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-amber-700 hover:bg-amber-50 transition"
-            >
-              Message us on WhatsApp
-            </a>
+
           </div>
         )}
 

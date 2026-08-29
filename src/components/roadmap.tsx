@@ -2,6 +2,7 @@
 
 import { Sparkles, ShoppingBag, CreditCard, Camera, Clock3, BarChart3, Bot, Eye, Gift, Ticket, Bell, CheckCircle } from "lucide-react";
 import Link from "next/link";
+import { RESTAURANT } from "@/lib/data";
 
 export default function Roadmap({ onToast }: { onToast: (msg: string) => void }) {
   return (
@@ -59,7 +60,7 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
             <h3 className="text-sm font-semibold text-stone-700">Ops & Growth</h3>
           </div>
           {[
-            { icon: Clock3, title: "Waitlist & Reminders", desc: "Join the waitlist from your phone, get SMS/WhatsApp when table is ready.", live: true, href: "/#waitlist" },
+            { icon: Clock3, title: "Waitlist & Reminders", desc: "Join the waitlist from your phone, get notified when your table is ready.", live: true, href: "/#waitlist" },
             { icon: BarChart3, title: "Sales Dashboard", desc: "For owners: daily sales, bestsellers & peak hours at a glance.", live: true, href: "/admin/sales" },
           ].map((item) => (
             <div key={item.title} className="rounded-2xl border border-stone-200 bg-[#FFFBF5] p-5">
@@ -139,9 +140,9 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
       </div>
 
       <div className="mt-8 text-center">
-        <p className="text-sm text-stone-500">Have an idea? We listen — WhatsApp us your wishlist.</p>
-        <a href="https://wa.me/639319704073?text=Hi%20Giuseppe's!%20I'd%20like%20to%20order..." target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-amber-600 hover:text-amber-700">
-          Share feedback on WhatsApp
+        <p className="text-sm text-stone-500">Have an idea? We listen — call us with your wishlist.</p>
+        <a href={RESTAURANT.phoneHref} className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-amber-600 hover:text-amber-700">
+          Contact us
         </a>
       </div>
     </section>

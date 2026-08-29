@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MessageSquare, Send, X, Phone } from "lucide-react";
+import { MessageSquare, Send, X } from "lucide-react";
 
 interface Message {
   id: string;
@@ -70,7 +70,7 @@ export default function ChatWidget() {
     if (!input.trim() || !name.trim()) return;
     setSending(true);
     try {
-      await fetch("/api/messages", {
+      const res = await fetch("/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -80,6 +80,11 @@ export default function ChatWidget() {
           content: input.trim(),
         }),
       });
+      if (!res.ok) {
+        const err = await res.json();
+        console.error("Failed to send:", err);
+        return;
+      }
       setInput("");
       setSubmitted(true);
       try {
@@ -88,7 +93,9 @@ export default function ChatWidget() {
       } catch {}
       fetchMessages();
       setTimeout(() => setSubmitted(false), 3000);
-    } catch {}
+    } catch (e) {
+      console.error("Chat send error:", e);
+    }
     setSending(false);
   }
 
@@ -122,14 +129,6 @@ export default function ChatWidget() {
                 Online
               </div>
             </div>
-            <a
-              href="https://wa.me/639319704073"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full bg-white/20 p-2 transition hover:bg-white/30"
-            >
-              <Phone className="h-4 w-4" />
-            </a>
           </div>
 
           {/* Messages area */}

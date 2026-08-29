@@ -6,7 +6,6 @@ import {
   Search,
   CheckCheck,
   Trash2,
-  ExternalLink,
   Phone,
   User,
   Clock,
@@ -107,11 +106,6 @@ export default function AdminMessagesPage() {
       await fetch(`/api/messages/${id}`, { method: "DELETE" });
       fetchMessages();
     } catch {}
-  }
-
-  function getWhatsAppUrl(phone: string, name: string) {
-    const text = encodeURIComponent(`Hi ${name}, thanks for messaging Giuseppe's! How can we help?`);
-    return `https://wa.me/${phone.replace(/[^0-9]/g, "")}?text=${text}`;
   }
 
   return (
@@ -274,17 +268,7 @@ export default function AdminMessagesPage() {
                         Mark all read
                       </button>
                     )}
-                    {conv.phone && (
-                      <a
-                        href={getWhatsAppUrl(conv.phone, conv.name)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 rounded-lg bg-[#25D366] px-3 py-2 text-xs font-medium text-white hover:bg-[#20bd5a] transition"
-                      >
-                        <ExternalLink className="h-3.5 w-3.5" />
-                        Reply via WhatsApp
-                      </a>
-                    )}
+
                     <button
                       onClick={() => conv.messages.forEach((m) => deleteMessage(m.id))}
                       className="flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100 transition"

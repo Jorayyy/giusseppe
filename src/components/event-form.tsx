@@ -19,8 +19,15 @@ export default function EventForm({ onToast }: { onToast: (msg: string) => void 
       onToast("Please enter name and phone");
       return;
     }
-    const waUrl = `https://wa.me/639319704073?text=${encodeURIComponent(`Hi Giuseppe's! Private Dining inquiry:\nName: ${eventForm.name}\nPhone: ${eventForm.phone}\nDate: ${eventForm.date || "Flexible"}\nGuests: ${eventForm.guests}\nEvent Type: ${eventForm.type}\nMessage: ${eventForm.message || "-"}`)}`;
-    window.open(waUrl, "_blank");
+    fetch("/api/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: eventForm.name,
+        phone: eventForm.phone,
+        content: `Private Dining inquiry:\nDate: ${eventForm.date || "Flexible"}\nGuests: ${eventForm.guests}\nEvent Type: ${eventForm.type}\nMessage: ${eventForm.message || "-"}`,
+      }),
+    }).catch(() => {});
     onToast("Inquiry sent — we'll call to confirm");
   };
 
@@ -102,9 +109,9 @@ export default function EventForm({ onToast }: { onToast: (msg: string) => void 
           />
         </div>
         <button type="submit" className="flex w-full items-center justify-center gap-1.5 rounded-full bg-amber-600 py-2.5 text-sm font-semibold text-white hover:bg-amber-700">
-          <Send className="h-4 w-4" /> Send inquiry via WhatsApp
+          <Send className="h-4 w-4" /> Send inquiry
         </button>
-        <p className="text-center text-[11px] text-stone-400">Opens WhatsApp with pre-filled details · We reply within 2 hrs</p>
+        <p className="text-center text-[11px] text-stone-400">We reply within 2 hrs</p>
       </form>
     </section>
   );

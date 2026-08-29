@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Users, Clock, Phone, MessageCircle, X, ChevronDown, ChevronUp, UserMinus } from "lucide-react";
+import { Users, Clock, ChevronDown, ChevronUp, UserMinus } from "lucide-react";
 
 interface WaitlistEntry {
   id: string;
@@ -96,10 +96,6 @@ export default function Waitlist() {
     localStorage.removeItem(MY_ID_KEY);
   };
 
-  const waUrl = `https://wa.me/639319704073?text=${encodeURIComponent(
-    `Hi Giuseppe's! I'd like to join the waitlist for ${myEntry?.partySize || 2} people. My name is ${myEntry?.name || "Guest"}.`
-  )}`;
-
   return (
     <div className="rounded-2xl border border-stone-200 bg-white p-6">
       <div className="flex items-center justify-between">
@@ -171,17 +167,9 @@ export default function Waitlist() {
           </div>
           <p className="mt-1 text-xs text-stone-500">Est. wait: {estimatedWait(myPosition)}</p>
           <div className="mt-3 flex gap-2">
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#25D366] px-4 py-2 text-xs font-semibold text-white hover:bg-[#20bd5a]"
-            >
-              <MessageCircle className="h-3.5 w-3.5" /> Notify via WhatsApp
-            </a>
             <button
               onClick={leaveWaitlist}
-              className="flex items-center gap-1 rounded-full border border-stone-200 bg-white px-4 py-2 text-xs font-medium text-stone-600 hover:bg-stone-50"
+              className="flex flex-1 items-center justify-center gap-1 rounded-full border border-stone-200 bg-white px-4 py-2 text-xs font-medium text-stone-600 hover:bg-stone-50"
             >
               <UserMinus className="h-3.5 w-3.5" /> Leave
             </button>
@@ -272,14 +260,6 @@ export default function Waitlist() {
                   Cancel
                 </button>
               </div>
-              <a
-                href={`https://wa.me/639319704073?text=${encodeURIComponent("Hi Giuseppe's! I'd like to join the waitlist.")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-1.5 rounded-full bg-[#25D366] py-3 text-sm font-semibold text-white hover:bg-[#20bd5a]"
-              >
-                <Phone className="h-4 w-4" /> Join via WhatsApp
-              </a>
             </div>
           )}
         </div>

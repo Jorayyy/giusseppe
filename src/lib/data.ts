@@ -8,8 +8,7 @@ export const RESTAURANT = {
   phone: "0931 970 4073",
   phoneHref: "tel:+639319704073",
   mapsUrl: "https://maps.google.com/?q=173+Avenida+Veteranos+Tacloban+City+6500+Leyte",
-  waOrderUrl: "https://wa.me/639319704073?text=Hi%20Giuseppe's!%20I'd%20like%20to%20order...",
-  googleReviewUrl: "https://www.google.com/search?q=Giuseppe's+Tacloban+reviews",
+googleReviewUrl: "https://www.google.com/search?q=Giuseppe's+Tacloban+reviews",
   qrImg: "https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://giusseppe.vercel.app/menu",
 } as const;
 

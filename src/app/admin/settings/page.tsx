@@ -8,7 +8,6 @@ import {
   MapPin,
   DollarSign,
   Globe,
-  MessageCircle,
   RotateCcw,
 } from "lucide-react";
 
@@ -19,7 +18,6 @@ const DEFAULT_SETTINGS = {
   address: "173 Avenida Veteranos, Tacloban City, 6500 Leyte",
   priceRange: "₱500–2,000",
   mapsUrl: "https://maps.google.com/?q=173+Avenida+Veteranos+Tacloban+City+6500+Leyte",
-  waOrderUrl: "https://wa.me/639319704073?text=Hi%20Giuseppe's!%20I'd%20like%20to%20order...",
   googleReviewUrl: "https://www.google.com/search?q=Giuseppe's+Tacloban+reviews",
 };
 
@@ -181,16 +179,7 @@ export default function SettingsEditorPage() {
               className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
             />
           </label>
-          <label className="space-y-1.5">
-            <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-stone-500">
-              <MessageCircle className="h-3 w-3" /> WhatsApp Order URL
-            </span>
-            <input
-              value={settings.waOrderUrl}
-              onChange={(e) => updateField("waOrderUrl", e.target.value)}
-              className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
-            />
-          </label>
+
           <label className="space-y-1.5">
             <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-stone-500">
               Google Review URL

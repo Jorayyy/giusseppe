@@ -1,7 +1,5 @@
-import { MapPin, Phone, Clock, Navigation, MessageCircle, Award } from "lucide-react";
+import { MapPin, Phone, Clock, Navigation, Award } from "lucide-react";
 import { RESTAURANT } from "@/lib/data";
-
-const WA_ORDER_URL = "https://wa.me/639319704073?text=Hi%20Giuseppe's!%20I'd%20like%20to%20order...";
 
 export default function ContactCard({ open }: { open: boolean }) {
   return (
@@ -15,9 +13,6 @@ export default function ContactCard({ open }: { open: boolean }) {
         <a href={RESTAURANT.phoneHref} className="flex items-center gap-3 hover:text-amber-600">
           <Phone className="h-4 w-4 text-stone-400" /> {RESTAURANT.phone}
         </a>
-        <a href={WA_ORDER_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-emerald-600 hover:text-emerald-700">
-          <MessageCircle className="h-4 w-4" /> WhatsApp to order
-        </a>
         <div className="flex items-center gap-3 text-stone-600">
           <Clock className="h-4 w-4 text-stone-400" />
           <span>{open ? "Open" : "Closed"} · Opens 11 AM</span>
@@ -25,7 +20,7 @@ export default function ContactCard({ open }: { open: boolean }) {
       </div>
       <div className="mt-4 grid grid-cols-2 gap-2">
         <a href={RESTAURANT.phoneHref} className="inline-flex items-center justify-center gap-1.5 rounded-full bg-amber-600 py-2 text-sm font-medium text-white hover:bg-amber-700"><Phone className="h-4 w-4" /> Call</a>
-        <a href={WA_ORDER_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#25D366] py-2 text-sm font-medium text-white hover:bg-[#20bd5a]"><MessageCircle className="h-4 w-4" /> WhatsApp</a>
+        <a href={RESTAURANT.phoneHref} className="inline-flex items-center justify-center gap-1.5 rounded-full border border-stone-200 bg-white py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"><Phone className="h-4 w-4" /> Message</a>
       </div>
       <a href={RESTAURANT.mapsUrl} target="_blank" className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-full border border-stone-200 py-2 text-sm font-medium hover:bg-stone-50"><Navigation className="h-4 w-4" /> Directions</a>
       <div className="mt-4 flex items-center justify-between border-t border-stone-100 pt-4">

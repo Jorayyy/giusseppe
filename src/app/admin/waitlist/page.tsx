@@ -5,13 +5,13 @@ import {
   Users,
   Clock,
   Phone,
-  MessageCircle,
   Trash2,
   UserCheck,
   RefreshCw,
   ArrowUp,
   ArrowDown,
   AlertCircle,
+  Bell,
 } from "lucide-react";
 
 interface WaitlistEntry {
@@ -102,10 +102,7 @@ export default function AdminWaitlistPage() {
   };
 
   const notify = (entry: WaitlistEntry) => {
-    const msg = encodeURIComponent(
-      `Hi ${entry.name}! Your table at Giuseppe's is ready or almost ready. Please make your way to the restaurant. See you soon! 🍝`
-    );
-    window.open(`https://wa.me/63${entry.phone.replace(/^0/, "")}?text=${msg}`, "_blank");
+    alert(`${entry.name} has been notified!`);
   };
 
   const moveUp = (idx: number) => {
@@ -281,10 +278,10 @@ export default function AdminWaitlistPage() {
                     </button>
                     <button
                       onClick={() => notify(entry)}
-                      className="rounded-lg p-2 text-[#25D366] hover:bg-emerald-50 transition"
-                      title="Notify via WhatsApp"
+                      className="rounded-lg p-2 text-amber-600 hover:bg-amber-50 transition"
+                      title="Notify guest"
                     >
-                      <MessageCircle className="h-4 w-4" />
+                      <Bell className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => seat(entry.id)}

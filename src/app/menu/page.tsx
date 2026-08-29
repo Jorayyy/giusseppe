@@ -88,15 +88,7 @@ export default function MenuPage() {
         <div className="mt-12 rounded-xl border border-stone-200 bg-white p-6 text-center shadow-sm">
           <p className="text-sm text-stone-500">Prices are in Philippine Pesos (PHP). Menu items subject to availability.</p>
           <p className="mt-2 text-sm text-stone-500">
-            For reservations and takeout, message us on{" "}
-            <a
-              href={RESTAURANT.waOrderUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-emerald-700 underline underline-offset-2 hover:text-emerald-800"
-            >
-              WhatsApp
-            </a>
+            For reservations and takeout, <a href={RESTAURANT.phoneHref} className="font-medium text-amber-700 underline underline-offset-2 hover:text-amber-800">call us</a>
           </p>
         </div>
       </div>

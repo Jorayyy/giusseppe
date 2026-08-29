@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Users, MessageCircle } from "lucide-react";
+import { Calendar, Users } from "lucide-react";
 
 export default function BookingWidget({ onToast }: { onToast: (msg: string) => void }) {
   const [bookingDate, setBookingDate] = useState(new Date().toISOString().slice(0, 10));
   const [bookingGuests, setBookingGuests] = useState("2 people");
-
-  const waReserveUrl = `https://wa.me/639319704073?text=${encodeURIComponent(`Hi Giuseppe's! Table for ${bookingGuests} on ${bookingDate} ... Please confirm availability.`)}`;
 
   return (
     <div className="rounded-2xl bg-zinc-900 p-6 text-white">
@@ -31,15 +29,6 @@ export default function BookingWidget({ onToast }: { onToast: (msg: string) => v
         </div>
       </div>
       <button onClick={() => onToast("Table request sent — we'll call to confirm")} className="mt-3 w-full rounded-full bg-white py-2.5 text-sm font-semibold text-zinc-900 hover:bg-stone-100">Request table</button>
-      <a
-        href={waReserveUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-full bg-[#25D366] py-2.5 text-sm font-semibold text-white hover:bg-[#20bd5a]"
-      >
-        <MessageCircle className="h-4 w-4" /> WhatsApp to Reserve
-      </a>
-      <p className="mt-2 text-center text-[11px] text-white/50">Prefills: Table for {bookingGuests} on {bookingDate || "your date"}</p>
     </div>
   );
 }
