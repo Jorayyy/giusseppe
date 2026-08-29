@@ -62,15 +62,15 @@ export default function RestaurantPage() {
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="space-y-6 lg:col-span-2">
             <About />
-            <MenuSection />
-            <HoursCard open={open} today={today} />
+            <div id="menu"><MenuSection /></div>
+            <div id="hours"><HoursCard open={open} today={today} /></div>
             <PopularTimes />
             <ReviewsCard reviews={reviews} onReview={handleReview} showGooglePrompt={showGooglePrompt} />
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6" id="contact">
             <ContactCard open={open} />
-            <BookingWidget onToast={showToast} />
+            <div id="booking"><BookingWidget onToast={showToast} /></div>
             <Waitlist />
             <EventForm onToast={showToast} />
           </div>
