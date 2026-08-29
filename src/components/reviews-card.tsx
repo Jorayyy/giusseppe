@@ -60,7 +60,7 @@ export default function ReviewsCard({
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="ml-auto rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium hover:bg-stone-50"
+          className="ml-auto rounded-full border border-stone-200 bg-white px-3 py-2 text-xs font-medium hover:bg-stone-50"
         >
           Write a review
         </button>

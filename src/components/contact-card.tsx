@@ -19,10 +19,10 @@ export default function ContactCard({ open }: { open: boolean }) {
         </div>
       </div>
       <div className="mt-4 grid grid-cols-2 gap-2">
-        <a href={RESTAURANT.phoneHref} className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary py-2 text-sm font-medium text-white hover:bg-primary-light"><Phone className="h-4 w-4" /> Call</a>
-        <a href={RESTAURANT.phoneHref} className="inline-flex items-center justify-center gap-1.5 rounded-full border border-stone-200 bg-white py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"><Phone className="h-4 w-4" /> Message</a>
+        <a href={RESTAURANT.phoneHref} className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary py-2.5 text-sm font-medium text-white hover:bg-primary-light"><Phone className="h-4 w-4" /> Call</a>
+        <a href={RESTAURANT.phoneHref} className="inline-flex items-center justify-center gap-1.5 rounded-full border border-stone-200 bg-white py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-50"><Phone className="h-4 w-4" /> Message</a>
       </div>
-      <a href={RESTAURANT.mapsUrl} target="_blank" className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-full border border-stone-200 py-2 text-sm font-medium hover:bg-stone-50"><Navigation className="h-4 w-4" /> Directions</a>
+      <a href={RESTAURANT.mapsUrl} target="_blank" className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-full border border-stone-200 py-2.5 text-sm font-medium hover:bg-stone-50"><Navigation className="h-4 w-4" /> Directions</a>
       <div className="mt-4 flex items-center justify-between border-t border-stone-100 pt-4">
         <span className="text-xs text-stone-500">Price · {RESTAURANT.priceRange} per person</span>
         <Award className="h-4 w-4 text-accent" />

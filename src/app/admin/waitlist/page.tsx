@@ -140,7 +140,7 @@ export default function AdminWaitlistPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="font-serif text-3xl font-bold text-stone-900">Waitlist</h1>
           <p className="mt-1 text-stone-500">Manage the current queue and notify guests.</p>
@@ -260,22 +260,24 @@ export default function AdminWaitlistPage() {
 
                   {/* Actions */}
                   <div className="flex items-center gap-1.5">
-                    <button
-                      onClick={() => moveUp(idx)}
-                      disabled={idx === 0}
-                      className="rounded-lg p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-600 disabled:opacity-30 disabled:cursor-not-allowed transition"
-                      title="Move up"
-                    >
-                      <ArrowUp className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={() => moveDown(idx)}
-                      disabled={idx === entries.length - 1}
-                      className="rounded-lg p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-600 disabled:opacity-30 disabled:cursor-not-allowed transition"
-                      title="Move down"
-                    >
-                      <ArrowDown className="h-4 w-4" />
-                    </button>
+                    <div className="hidden sm:flex items-center gap-1.5">
+                      <button
+                        onClick={() => moveUp(idx)}
+                        disabled={idx === 0}
+                        className="rounded-lg p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-600 disabled:opacity-30 disabled:cursor-not-allowed transition"
+                        title="Move up"
+                      >
+                        <ArrowUp className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => moveDown(idx)}
+                        disabled={idx === entries.length - 1}
+                        className="rounded-lg p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-600 disabled:opacity-30 disabled:cursor-not-allowed transition"
+                        title="Move down"
+                      >
+                        <ArrowDown className="h-4 w-4" />
+                      </button>
+                    </div>
                     <button
                       onClick={() => notify(entry)}
                       className="rounded-lg p-2 text-primary hover:bg-surface transition"

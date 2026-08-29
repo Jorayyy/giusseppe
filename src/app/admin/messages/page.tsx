@@ -137,7 +137,7 @@ export default function AdminMessagesPage() {
       </div>
 
       {/* Stats */}
-      <div className="mb-6 grid grid-cols-4 gap-3">
+      <div className="mb-6 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         <div className="rounded-xl border border-stone-200 bg-white p-4">
           <div className="flex items-center gap-2 text-stone-500">
             <Mail className="h-4 w-4" />

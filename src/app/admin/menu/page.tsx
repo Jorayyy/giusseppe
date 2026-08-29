@@ -143,7 +143,7 @@ export default function MenuEditorPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="font-serif text-3xl font-bold text-stone-900">Menu Editor</h1>
           <p className="mt-1 text-stone-500">Manage your menu items, prices, and photos.</p>
@@ -213,7 +213,7 @@ export default function MenuEditorPage() {
                     <div className="flex items-start gap-3">
                       {/* Drag handle & image */}
                       <div className="flex flex-col items-center gap-2">
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition">
+                        <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition">
                           <button
                             onClick={() => moveItem(cat, idx, -1)}
                             disabled={idx === 0}

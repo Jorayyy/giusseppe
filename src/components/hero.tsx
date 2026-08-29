@@ -17,7 +17,7 @@ export default function Hero({ photos, photoIdx, setPhotoIdx, open, onShowLightb
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <div className="relative overflow-hidden rounded-2xl bg-stone-900">
-            <img src={photos[photoIdx]} alt="Giuseppe's" className="h-[360px] w-full object-cover opacity-90" />
+            <img src={photos[photoIdx]} alt="Giuseppe's" className="h-[240px] sm:h-[300px] lg:h-[360px] w-full object-cover opacity-90" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
             <div className="absolute bottom-0 p-6 text-white">
               <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-5xl">Giuseppe&apos;s</h1>
@@ -42,10 +42,10 @@ export default function Hero({ photos, photoIdx, setPhotoIdx, open, onShowLightb
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-1">
-          <div className="overflow-hidden rounded-2xl"><img src={photos[1]} className="h-[172px] w-full object-cover" alt="" /></div>
+          <div className="overflow-hidden rounded-2xl"><img src={photos[1]} className="h-[120px] sm:h-[150px] lg:h-[172px] w-full object-cover" alt="" /></div>
           <div className="relative overflow-hidden rounded-2xl">
-            <img src={photos[2]} className="h-[172px] w-full object-cover" alt="" />
-            <button onClick={onShowLightbox} className="absolute inset-0 flex items-center justify-center gap-1.5 bg-black/40 text-sm font-medium text-white opacity-0 transition hover:opacity-100">
+            <img src={photos[2]} className="h-[120px] sm:h-[150px] lg:h-[172px] w-full object-cover" alt="" />
+            <button onClick={onShowLightbox} className="absolute inset-0 flex items-center justify-center gap-1.5 bg-black/40 text-sm font-medium text-white opacity-100 sm:opacity-0 transition sm:hover:opacity-100">
               <Camera className="h-4 w-4" /> See all photos
             </button>
           </div>

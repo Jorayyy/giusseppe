@@ -185,7 +185,7 @@ export default function ChatWidget() {
           </div>
 
           {!nameSaved ? (
-            <div className="flex flex-col items-center justify-center p-4 text-center" style={{ minHeight: "260px" }}>
+            <div className="flex flex-col items-center justify-center p-4 text-center" style={{ minHeight: "220px" }}>
               <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-surface">
                 <MessageSquare className="h-6 w-6 text-primary" />
               </div>
@@ -219,7 +219,7 @@ export default function ChatWidget() {
               </div>
             </div>
           ) : mode === "choose" ? (
-            <div className="flex flex-col items-center justify-center p-4 text-center" style={{ minHeight: "260px" }}>
+            <div className="flex flex-col items-center justify-center p-4 text-center" style={{ minHeight: "220px" }}>
               <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-surface">
                 <Sparkles className="h-6 w-6 text-accent" />
               </div>
@@ -360,7 +360,7 @@ export default function ChatWidget() {
                   <button
                     onClick={handleSend}
                     disabled={!input.trim() || sending}
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white transition hover:bg-primary-light disabled:opacity-50"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white transition hover:bg-primary-light disabled:opacity-50"
                   >
                     <Send className="h-3.5 w-3.5" />
                   </button>

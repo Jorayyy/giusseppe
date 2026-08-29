@@ -23,7 +23,7 @@ export default function MenuSection() {
           <button
             key={cat}
             onClick={() => setMenuCat(cat as keyof typeof MENU)}
-            className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition ${menuCat === cat ? "bg-zinc-900 text-white" : "bg-stone-100 hover:bg-stone-200"}`}
+            className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${menuCat === cat ? "bg-zinc-900 text-white" : "bg-stone-100 hover:bg-stone-200"}`}
           >
             {cat}
           </button>

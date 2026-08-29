@@ -55,7 +55,7 @@ export default function BookingWidget({ onToast }: { onToast: (msg: string) => v
     <div className="rounded-2xl bg-primary p-5 text-white">
       <h3 className="font-serif text-base font-semibold">Book a table</h3>
       <p className="mt-0.5 text-xs text-white/70">Reserve your spot — especially for Friday & Saturday nights.</p>
-      <div className="mt-3 grid grid-cols-2 gap-2">
+      <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="rounded-lg bg-white/10 p-2.5">
           <div className="flex items-center gap-1 text-[10px] text-white/70"><Calendar className="h-3 w-3" /> Date</div>
           <input
@@ -81,7 +81,7 @@ export default function BookingWidget({ onToast }: { onToast: (msg: string) => v
           </select>
         </div>
       </div>
-      <div className="mt-2 grid grid-cols-2 gap-2">
+      <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="relative rounded-lg bg-white/10 p-2.5">
           <div className="flex items-center gap-1 text-[10px] text-white/70"><User className="h-3 w-3" /> Name</div>
           <input
@@ -106,7 +106,7 @@ export default function BookingWidget({ onToast }: { onToast: (msg: string) => v
       <button
         onClick={handleBook}
         disabled={sending || sent}
-        className="mt-2.5 w-full rounded-lg bg-white py-2 text-xs font-semibold text-primary transition hover:bg-stone-100 disabled:opacity-50"
+        className="mt-2.5 w-full rounded-lg bg-white py-2.5 text-xs font-semibold text-primary transition hover:bg-stone-100 disabled:opacity-50"
       >
         {sent ? "✓ Sent!" : sending ? "Sending..." : "Request table"}
       </button>
