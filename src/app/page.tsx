@@ -2,20 +2,20 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, MapPin, Phone, Clock, Navigation, Share2, Bookmark, BookmarkCheck, UtensilsCrossed, ChevronRight, ChevronLeft, ExternalLink, Check, Send, Wine, X, ArrowLeft } from "lucide-react";
+import { Star, MapPin, Phone, Clock, Navigation, Share2, Bookmark, BookmarkCheck, UtensilsCrossed, ChevronRight, ChevronLeft, ExternalLink, Check, Wine, X, ArrowLeft } from "lucide-react";
 
 const R = {
   name: "Giuseppe's",
   tagline: "Authentic Italian-Filipino Restaurant",
   since: "1992",
   rating: 4.4,
-  reviews: 328,
+  reviews: 315,
   price: "₱500–2,000",
   address: "173 Avenida Veteranos, Tacloban City, 6500 Leyte",
   phone: "0945 841 9400",
   phoneHref: "tel:+639458419400",
-  maps: "https://maps.google.com/?q=173+Avenida+Veteranos+Tacloban+City+6500+Leyte",
-  google: "https://www.google.com/search?q=Giuseppe's+Tacloban+reviews",
+  maps: "https://www.google.com/maps/place/?q=ChIJAQAAANB2CDMRQJ530mS0AI8",
+  google: "https://www.google.com/maps/place/@11.241723,125.000744,17z/data=!4m10!3m9!1s0x330876d000000001:0x8f00b464d2779e40!5m2!4m1!1i2!8m2!3d11.241723!4d125.000744!9m1!1b1",
   facebook: "https://www.facebook.com/giuseppesresto",
   instagram: "https://www.instagram.com/giuseppestacloban/",
   website: "https://giuseppesresto.net",
@@ -23,7 +23,7 @@ const R = {
 
 const HOURS: Record<string, string> = {
   Monday: "11 AM – 4 PM, 5 – 9:30 PM", Tuesday: "11 AM – 4 PM, 5 – 9:30 PM", Wednesday: "11 AM – 4 PM, 5 – 9:30 PM",
-  Thursday: "11 AM – 4 PM, 5 – 9:30 PM", Friday: "11 AM – 4 PM, 5 – 9:30 PM", Saturday: "11 AM – 4 PM, 5 – 9:30 PM", Sunday: "11 AM – 4 PM, 5 – 9:30 PM",
+  Thursday: "11 AM – 4 PM, 5 – 9:30 PM", Friday: "11 AM – 4 PM, 5 – 10:30 PM", Saturday: "11 AM – 4 PM, 5 – 10:30 PM", Sunday: "11 AM – 4 PM, 5 – 9:30 PM",
 };
 
 const MENU = {
@@ -85,10 +85,11 @@ const MENU = {
 };
 
 const REVIEWS = [
-  { name: "Mackie B.", rating: 5, text: "Everything was perfect. Pizza, pasta, porkchop — all recommended. They even booked us taxis and served complimentary amaretto digestifs." },
-  { name: "Stephen M.", rating: 5, text: "Nice Italian atmosphere. The pork chop was melt-in-your-mouth. Baked scallops were very flavorful." },
-  { name: "Ibizian I.", rating: 5, text: "Amazing baked lasagna! Great pork chop! The 3rd best tiramisu I've ever had in the world!" },
-  { name: "Brooks R.", rating: 5, text: "By far the nicest restaurant in the city. Thin crust 4 cheese pizza was delicious." },
+  { name: "Ibizian I.", rating: 5, text: "Amazing baked lasagna! Great pork chop.. fantastic service. Just an absolutely perfect place to enjoy an excellent meal and then top it off with the 3rd best tiramisu I've ever had in the world!", date: "Sep 2025", source: "Google" },
+  { name: "Mackie B.", rating: 5, text: "Everything was perfect. From the food to the service. We had some of their pizzas, pastas, and porkchop (all of which, we recommend). Staff were mindful of our needs and were eager to fulfill our requests.", date: "Oct 2025", source: "Google" },
+  { name: "Rene T.", rating: 5, text: "This is really a hot top spot for first class fine dining. I did not expect a restaurant like this in Tacloban. Great!", date: "Jan 2026", source: "Google" },
+  { name: "Jiah M.", rating: 5, text: "Nice authentic Italian-Filipino restaurant. Known to be an institution in Tacloban for some. Everything we had was delicious. Glad I was able to visit!", date: "Sep 2024", source: "Google" },
+  { name: "Enrico M.", rating: 4, text: "Good food & service in the 3 times I've been here. The meat is already good — simple sauce will do.", date: "Sep 2025", source: "Google" },
 ];
 
 const PHOTOS = ["/photos/real/food-1.jpg", "/photos/real/food-2.jpg", "/photos/real/food-3.jpg", "/photos/real/interior.jpg", "/photos/real/food-4.jpg", "/photos/real/food-5.jpg", "/photos/real/exterior.jpg", "/photos/real/food-6.jpg", "/photos/real/food-7.jpg", "/photos/real/food-8.jpg", "/photos/real/food-9.jpg", "/photos/real/food-10.jpg", "/photos/real/food-11.jpg", "/photos/real/food-12.jpg"];
@@ -100,11 +101,9 @@ export default function Home() {
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-  const [showReview, setShowReview] = useState(false);
   const [showFullMenu, setShowFullMenu] = useState(false);
   const [selectedDish, setSelectedDish] = useState<{ name: string; desc: string; price: string; img: string } | null>(null);
-  const [reviews, setReviews] = useState(REVIEWS);
-  const [newReview, setNewReview] = useState({ name: "", rating: 5, text: "" });
+  const [reviews] = useState(REVIEWS);
 
   const dayName = new Date().toLocaleDateString("en-US", { weekday: "long" });
   const h = new Date().getHours();
@@ -112,14 +111,6 @@ export default function Home() {
 
   const toast_ = (msg: string) => { setToast(msg); setTimeout(() => setToast(null), 2500); };
   const share = async () => { await navigator.clipboard.writeText(window.location.href); setCopied(true); toast_("Link copied"); setTimeout(() => setCopied(false), 2000); };
-  const submitReview = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newReview.name || !newReview.text) return;
-    setReviews([{ name: newReview.name, rating: newReview.rating, text: newReview.text }, ...reviews]);
-    setNewReview({ name: "", rating: 5, text: "" });
-    setShowReview(false);
-    toast_("Review posted — thank you!");
-  };
   const scroll = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
@@ -179,7 +170,6 @@ export default function Home() {
           <button onClick={() => setShowFullMenu(true)} className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 px-4 py-2 text-sm font-medium transition hover:bg-stone-50"><UtensilsCrossed className="h-4 w-4" /> Full Menu</button>
           <button onClick={() => setSaved(!saved)} className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition ${saved ? "border-amber-200 bg-amber-50 text-amber-700" : "border-stone-200 hover:bg-stone-50"}`}>{saved ? <BookmarkCheck className="h-4 w-4" /> : <Bookmark className="h-4 w-4" />} {saved ? "Saved" : "Save"}</button>
           <button onClick={share} className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 px-4 py-2 text-sm font-medium transition hover:bg-stone-50">{copied ? <Check className="h-4 w-4" /> : <Share2 className="h-4 w-4" />} {copied ? "Copied" : "Share"}</button>
-          <button onClick={() => setShowReview(true)} className="ml-auto inline-flex items-center gap-1.5 rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-black"><Star className="h-4 w-4" /> Review</button>
         </div>
       </div>
 
@@ -238,7 +228,7 @@ export default function Home() {
             <motion.section id="reviews" initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold">Reviews</h2>
-                <button onClick={() => setShowReview(true)} className="text-sm font-medium text-amber-600 hover:text-amber-700">Write one →</button>
+                <a href={R.google} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-amber-600 hover:text-amber-700">See all on Google →</a>
               </div>
               <div className="mt-3 flex items-center gap-3">
                 <span className="text-3xl font-bold">{R.rating}</span>
@@ -250,13 +240,17 @@ export default function Home() {
               <div className="mt-4 space-y-3">
                 {reviews.map((r, i) => (
                   <div key={i} className="rounded-xl bg-stone-50 p-4">
-                    <div className="flex items-center gap-2"><span className="text-sm font-semibold">{r.name}</span><div className="flex gap-0.5">{[1, 2, 3, 4, 5].map((s) => <Star key={s} className={`h-3 w-3 ${s <= r.rating ? "fill-amber-400 text-amber-400" : "text-stone-200"}`} />)}</div></div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold">{r.name}</span>
+                      <div className="flex gap-0.5">{[1, 2, 3, 4, 5].map((s) => <Star key={s} className={`h-3 w-3 ${s <= r.rating ? "fill-amber-400 text-amber-400" : "text-stone-200"}`} />)}</div>
+                      <span className="text-xs text-stone-400">{r.date}</span>
+                    </div>
                     <p className="mt-1 text-sm text-stone-600">{r.text}</p>
                   </div>
                 ))}
               </div>
               <div className="mt-4 flex gap-2">
-                <a href={R.google} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-stone-200 px-4 py-2 text-sm font-medium transition hover:bg-stone-50"><Star className="h-4 w-4 fill-amber-400 text-amber-400" /> Google Reviews</a>
+                <a href={R.google} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-stone-200 px-4 py-2 text-sm font-medium transition hover:bg-stone-50"><Star className="h-4 w-4 fill-amber-400 text-amber-400" /> All Google Reviews</a>
                 <a href={R.facebook} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-stone-200 px-4 py-2 text-sm font-medium transition hover:bg-stone-50">Facebook</a>
                 <a href={R.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-stone-200 px-4 py-2 text-sm font-medium transition hover:bg-stone-50">Instagram</a>
               </div>
@@ -332,21 +326,6 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Review Modal */}
-      {showReview && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowReview(false)}>
-          <form onSubmit={submitReview} onClick={(e) => e.stopPropagation()} className="w-full max-w-md rounded-2xl bg-white p-6">
-            <div className="flex items-center justify-between"><h3 className="font-bold">Write a review</h3><button type="button" onClick={() => setShowReview(false)} className="rounded-full p-1 hover:bg-stone-100">✕</button></div>
-            <div className="mt-4 space-y-3">
-              <input value={newReview.name} onChange={(e) => setNewReview({ ...newReview, name: e.target.value })} placeholder="Your name" required className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400" />
-              <div className="flex gap-1">{[1, 2, 3, 4, 5].map((s) => (<button type="button" key={s} onClick={() => setNewReview({ ...newReview, rating: s })} className="p-1"><Star className={`h-6 w-6 ${s <= newReview.rating ? "fill-amber-400 text-amber-400" : "text-stone-300"}`} /></button>))}</div>
-              <textarea value={newReview.text} onChange={(e) => setNewReview({ ...newReview, text: e.target.value })} placeholder="Your experience..." required rows={3} className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400" />
-              <button type="submit" className="flex w-full items-center justify-center gap-1.5 rounded-full bg-zinc-900 py-2.5 text-sm font-medium text-white hover:bg-black"><Send className="h-4 w-4" /> Post review</button>
-            </div>
-          </form>
-        </div>
-      )}
 
       {/* Full Menu Modal */}
       {showFullMenu && (
