@@ -17,59 +17,59 @@ import {
 
 const DEFAULT_MENU: Record<string, { name: string; price: string; desc: string; img?: string; popular?: boolean }[]> = {
   "Antipasto": [
-    { name: "Antipasto Italiano", price: "₱480", desc: "Prosciutto, crostini, olives, cheese", img: "/photos/real/food-1.jpg" },
-    { name: "Baked Scallops", price: "₱380", desc: "Fresh Guiuan scallops, garlic butter, herbs", img: "/photos/real/food-7.jpg", popular: true },
-    { name: "Insalata di Mare", price: "₱420", desc: "Mixed seafood salad, lemon vinaigrette", img: "/photos/real/food-2.jpg" },
-    { name: "Garlic Bread", price: "₱120", desc: "Toasted sourdough, garlic butter, parsley", img: "/photos/real/food-3.jpg" },
-    { name: "Crostini Alla Livornese", price: "₱280", desc: "Tomato, olive, caper topping on crostini", img: "/photos/real/food-1.jpg" },
+    { name: "Antipasto Italiano", price: "₱480", desc: "Prosciutto, crostini, olives, cheese", img: "/photos/google/placejoys-5.jpg" },
+    { name: "Baked Scallops", price: "₱380", desc: "Fresh Guiuan scallops, garlic butter, herbs", img: "/photos/google/placejoys-8.jpg", popular: true },
+    { name: "Insalata di Mare", price: "₱420", desc: "Mixed seafood salad, lemon vinaigrette", img: "/photos/google/placejoys-8.jpg" },
+    { name: "Garlic Bread", price: "₱120", desc: "Toasted sourdough, garlic butter, parsley", img: "/photos/google/placejoys-8.jpg" },
+    { name: "Crostini Alla Livornese", price: "₱280", desc: "Tomato, olive, caper topping on crostini", img: "/photos/google/placejoys-5.jpg" },
   ],
   "Homemade Pasta": [
-    { name: "Ravioli Alla Panna", price: "₱380", desc: "Cheese ravioli, cream sauce", img: "/photos/real/food-10.jpg" },
-    { name: "Fettuccine Alfredo", price: "₱350", desc: "Fresh fettuccine, parmesan cream sauce", img: "/photos/real/food-11.jpg", popular: true },
-    { name: "Fettuccine Puttanesca", price: "₱350", desc: "Tomato, olive, caper, anchovy sauce", img: "/photos/real/food-11.jpg" },
-    { name: "Spaghetti Carbonara", price: "₱340", desc: "Egg, pancetta, pecorino, black pepper", img: "/photos/real/food-11.jpg" },
-    { name: "Pasta Supreme w/ Salsiccia", price: "₱380", desc: "Mixed pasta, Italian sausage, tomato sauce", img: "/photos/real/food-10.jpg" },
+    { name: "Ravioli Alla Panna", price: "₱380", desc: "Cheese ravioli, cream sauce", img: "/photos/google/wanderlog-2.jpg" },
+    { name: "Fettuccine Alfredo", price: "₱350", desc: "Fresh fettuccine, parmesan cream sauce", img: "/photos/google/wanderlog-2.jpg", popular: true },
+    { name: "Fettuccine Puttanesca", price: "₱350", desc: "Tomato, olive, caper, anchovy sauce", img: "/photos/google/wanderlog-2.jpg" },
+    { name: "Spaghetti Carbonara", price: "₱340", desc: "Egg, pancetta, pecorino, black pepper", img: "/photos/google/wanderlog-2.jpg" },
+    { name: "Pasta Supreme w/ Salsiccia", price: "₱380", desc: "Mixed pasta, Italian sausage, tomato sauce", img: "/photos/google/wanderlog-2.jpg" },
   ],
   "Pizza": [
-    { name: "Giuseppe's Special No. 1", price: "₱380", desc: "House specialty, wood-fired", img: "/photos/real/food-12.jpg", popular: true },
-    { name: "Pizza Margherita", price: "₱320", desc: "San Marzano tomato, mozzarella, basil", img: "/photos/real/food-12.jpg" },
-    { name: "4 Cheese Pizza", price: "₱420", desc: "Mozzarella, parmesan, gorgonzola, fontina", img: "/photos/real/food-12.jpg" },
-    { name: "Pizza w/ Salsiccia", price: "₱400", desc: "Italian sausage, tomato sauce, mozzarella", img: "/photos/real/food-12.jpg" },
-    { name: "Hawaiian Pizza", price: "₱350", desc: "Ham, pineapple, cheese", img: "/photos/real/food-12.jpg" },
+    { name: "Giuseppe's Special No. 1", price: "₱380", desc: "House specialty, wood-fired", img: "/photos/google/placejoys-3.jpg", popular: true },
+    { name: "Pizza Margherita", price: "₱320", desc: "San Marzano tomato, mozzarella, basil", img: "/photos/google/wanderlog-3.jpg" },
+    { name: "4 Cheese Pizza", price: "₱420", desc: "Mozzarella, parmesan, gorgonzola, fontina", img: "/photos/google/wanderlog-3.jpg" },
+    { name: "Pizza w/ Salsiccia", price: "₱400", desc: "Italian sausage, tomato sauce, mozzarella", img: "/photos/google/wanderlog-3.jpg" },
+    { name: "Hawaiian Pizza", price: "₱350", desc: "Ham, pineapple, cheese", img: "/photos/google/placejoys-7.jpg" },
   ],
   "Beef": [
-    { name: "Tenderloin alla Sorrentino", price: "₱680", desc: "USDA Choice tenderloin, tomato, mozzarella, herbs", img: "/photos/real/food-4.jpg", popular: true },
-    { name: "Saltimbocca alla Romana", price: "₱620", desc: "Veal, prosciutto, sage, white wine", img: "/photos/real/food-5.jpg" },
-    { name: "Ossobuco", price: "₱720", desc: "Braised veal shank, gremolata, risotto", img: "/photos/real/food-5.jpg" },
-    { name: "Tenderloin w/ Marsala", price: "₱650", desc: "Mushroom marsala wine sauce", img: "/photos/real/food-4.jpg" },
+    { name: "Tenderloin alla Sorrentino", price: "₱680", desc: "USDA Choice tenderloin, tomato, mozzarella, herbs", img: "/photos/google/placejoys-2.jpg", popular: true },
+    { name: "Saltimbocca alla Romana", price: "₱620", desc: "Veal, prosciutto, sage, white wine", img: "/photos/google/placejoys-2.jpg" },
+    { name: "Ossobuco", price: "₱720", desc: "Braised veal shank, gremolata, risotto", img: "/photos/google/placejoys-2.jpg" },
+    { name: "Tenderloin w/ Marsala", price: "₱650", desc: "Mushroom marsala wine sauce", img: "/photos/google/placejoys-2.jpg" },
   ],
   "Seafood": [
-    { name: "Grilled Prawns", price: "₱580", desc: "Jumbo prawns, garlic butter, lemon", img: "/photos/real/food-6.jpg" },
-    { name: "Lapu-Lapu Francese", price: "₱520", desc: "Fresh grouper, egg batter, lemon butter", img: "/photos/real/food-6.jpg", popular: true },
-    { name: "Seafood Platter", price: "₱880", desc: "Calamari, lapu-lapu, shrimp, sword fish", img: "/photos/real/food-9.jpg" },
-    { name: "Surf & Turf", price: "₱1,200", desc: "Sword fish, prawns, salsiccia, tenderloin (good for 2)", img: "/photos/real/food-9.jpg" },
+    { name: "Grilled Prawns", price: "₱580", desc: "Jumbo prawns, garlic butter, lemon", img: "/photos/google/placejoys-8.jpg" },
+    { name: "Lapu-Lapu Francese", price: "₱520", desc: "Fresh grouper, egg batter, lemon butter", img: "/photos/google/placejoys-8.jpg", popular: true },
+    { name: "Seafood Platter", price: "₱880", desc: "Calamari, lapu-lapu, shrimp, sword fish", img: "/photos/google/placejoys-8.jpg" },
+    { name: "Surf & Turf", price: "₱1,200", desc: "Sword fish, prawns, salsiccia, tenderloin (good for 2)", img: "/photos/google/placejoys-2.jpg" },
   ],
   "Pork": [
-    { name: "Grilled Porkchop", price: "₱420", desc: "Monterey pork, herb marinade, grilled", img: "/photos/real/food-4.jpg", popular: true },
-    { name: "Porkchop Milanese", price: "₱450", desc: "Breaded pork chop, arugula, lemon", img: "/photos/real/food-5.jpg" },
-    { name: "Porkchop w/ Mushroom Sauce", price: "₱450", desc: "Cream of mushroom, pan-grilled", img: "/photos/real/food-4.jpg" },
+    { name: "Grilled Porkchop", price: "₱420", desc: "Monterey pork, herb marinade, grilled", img: "/photos/google/placejoys-2.jpg", popular: true },
+    { name: "Porkchop Milanese", price: "₱450", desc: "Breaded pork chop, arugula, lemon", img: "/photos/google/placejoys-2.jpg" },
+    { name: "Porkchop w/ Mushroom Sauce", price: "₱450", desc: "Cream of mushroom, pan-grilled", img: "/photos/google/placejoys-2.jpg" },
   ],
   "Chicken": [
-    { name: "Chicken Milanese", price: "₱380", desc: "Breaded chicken breast, mushroom marsala", img: "/photos/real/food-8.jpg" },
-    { name: "Chicken Parmigiana", price: "₱380", desc: "Breaded chicken, tomato sauce, melted cheese", img: "/photos/real/food-8.jpg" },
-    { name: "Grilled Chicken Breast", price: "₱350", desc: "Herb-marinated, grilled, seasonal vegetables", img: "/photos/real/food-8.jpg" },
+    { name: "Chicken Milanese", price: "₱380", desc: "Breaded chicken breast, mushroom marsala", img: "/photos/google/placejoys-8.jpg" },
+    { name: "Chicken Parmigiana", price: "₱380", desc: "Breaded chicken, tomato sauce, melted cheese", img: "/photos/google/placejoys-8.jpg" },
+    { name: "Grilled Chicken Breast", price: "₱350", desc: "Herb-marinated, grilled, seasonal vegetables", img: "/photos/google/placejoys-8.jpg" },
   ],
   "Desserts": [
-    { name: "Tiramisu", price: "₱280", desc: "Espresso-soaked ladyfingers, mascarpone, cocoa", img: "/photos/real/food-3.jpg", popular: true },
-    { name: "Zabaglione w/ Ice Cream", price: "₱250", desc: "Marsala wine custard, vanilla gelato", img: "/photos/real/food-3.jpg" },
-    { name: "Blueberry Cheesecake", price: "₱220", desc: "New York style, fresh blueberry compote", img: "/photos/real/food-3.jpg" },
-    { name: "Peaches & Ice Cream", price: "₱180", desc: "Fresh peaches, vanilla gelato", img: "/photos/real/food-3.jpg" },
+    { name: "Tiramisu", price: "₱280", desc: "Espresso-soaked ladyfingers, mascarpone, cocoa", img: "/photos/google/placejoys-4.jpg", popular: true },
+    { name: "Zabaglione w/ Ice Cream", price: "₱250", desc: "Marsala wine custard, vanilla gelato", img: "/photos/google/wanderlog-1.jpg" },
+    { name: "Blueberry Cheesecake", price: "₱220", desc: "New York style, fresh blueberry compote", img: "/photos/google/wanderlog-1.jpg" },
+    { name: "Peaches & Ice Cream", price: "₱180", desc: "Fresh peaches, vanilla gelato", img: "/photos/google/wanderlog-1.jpg" },
   ],
   "Drinks": [
-    { name: "House Wine (Red/White)", price: "₱180/glass", desc: "Italian table wine, glass or carafe", img: "/photos/real/food-1.jpg" },
-    { name: "Espresso", price: "₱120", desc: "Double-shot Italian espresso", img: "/photos/real/food-1.jpg" },
-    { name: "Cappuccino", price: "₱150", desc: "Espresso, steamed milk, foam", img: "/photos/real/food-1.jpg" },
-    { name: "Fresh Lemonade", price: "₱120", desc: "House-made, refreshing", img: "/photos/real/food-1.jpg" },
+    { name: "House Wine (Red/White)", price: "₱180/glass", desc: "Italian table wine, glass or carafe", img: "/photos/google/placejoys-1.jpg" },
+    { name: "Espresso", price: "₱120", desc: "Double-shot Italian espresso", img: "/photos/google/placejoys-1.jpg" },
+    { name: "Cappuccino", price: "₱150", desc: "Espresso, steamed milk, foam", img: "/photos/google/placejoys-1.jpg" },
+    { name: "Fresh Lemonade", price: "₱120", desc: "House-made, refreshing", img: "/photos/google/placejoys-1.jpg" },
   ],
 };
 
@@ -85,7 +85,7 @@ const DEFAULT_HOURS: Record<string, { open: string; close: string; open2?: strin
 
 const HOURS_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-const DEFAULT_PHOTOS = ["/photos/real/food-1.jpg", "/photos/real/food-2.jpg", "/photos/real/food-3.jpg", "/photos/real/interior.jpg", "/photos/real/exterior.jpg", "/photos/real/food-4.jpg"];
+const DEFAULT_PHOTOS = ["/photos/google/placejoys-1.jpg", "/photos/google/placejoys-10.jpg", "/photos/google/placejoys-3.jpg", "/photos/google/placejoys-2.jpg", "/photos/google/placejoys-4.jpg", "/photos/google/placejoys-5.jpg"];
 
 const DEFAULT_SETTINGS = {
   name: "Giuseppe's",
