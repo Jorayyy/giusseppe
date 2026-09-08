@@ -10,6 +10,9 @@ import { MenuSection } from "@/components/MenuSection";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import { ActionBar, Sidebar, Footer, MobileCTABar, AboutSection, Toast } from "@/components/PageSections";
 import { DishModal } from "@/components/DishModal";
+import { OurStory } from "@/components/OurStory";
+import { AwardsBar } from "@/components/AwardsBar";
+import { FeaturesGrid } from "@/components/FeaturesGrid";
 import { SplitAbout } from "@/components/SplitAbout";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { BackToTop } from "@/components/BackToTop";
@@ -48,10 +51,11 @@ export default function Home() {
         <ActionBar settings={settings} saved={saved} copied={copied} onToggleSave={() => setSaved(!saved)} onShare={share} onShowFullMenu={() => {}} />
 
         <main className="mx-auto max-w-5xl px-4 pb-28">
-          <div className="grid gap-12 lg:grid-cols-3">
-            <div className="space-y-16 lg:col-span-2">
+          <div className="grid gap-16 lg:grid-cols-3">
+            <div className="space-y-20 lg:col-span-2">
               <AboutSection />
               <SplitAbout />
+              <OurStory />
               <MenuSection menu={menu} onSelectDish={setSelectedDish} />
 
               <Reveal>
@@ -77,6 +81,8 @@ export default function Home() {
           </div>
         </main>
 
+        <AwardsBar />
+        <FeaturesGrid />
         <PhotoGallery photos={photos} settings={settings} />
         <Footer settings={settings} />
         <MobileCTABar settings={settings} />
