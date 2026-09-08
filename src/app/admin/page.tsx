@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -17,6 +17,7 @@ import {
   Image,
   Star,
   Check,
+  Pencil,
 } from "lucide-react";
 import type { MenuData, HoursData, RestaurantSettings } from "@/lib/types";
 import { DEFAULT_MENU, DEFAULT_HOURS, DEFAULT_PHOTOS, DEFAULT_SETTINGS, HOURS_ORDER } from "@/lib/data";
@@ -83,6 +84,7 @@ export default function AdminPage() {
   const [imgUrl, setImgUrl] = useState("");
   const [catFilter, setCatFilter] = useState<string>("All");
   const [editingDish, setEditingDish] = useState<string | null>(null);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; category: string; index: number } | null>(null);
 
   const [menu, setMenu] = useState<MenuData>(initMenu);
   const [hours, setHours] = useState<HoursData>(initHours);
@@ -92,6 +94,16 @@ export default function AdminPage() {
   const categories = ["All", ...Object.keys(menu)];
   const flatItems = flattenMenu(menu);
   const filteredItems = catFilter === "All" ? flatItems : flatItems.filter((i) => i.category === catFilter);
+
+  // Close context menu on click outside
+  useEffect(() => {
+    const close = () => setContextMenu(null);
+    if (contextMenu) {
+      document.addEventListener("click", close);
+      document.addEventListener("scroll", close, true);
+      return () => { document.removeEventListener("click", close); document.removeEventListener("scroll", close, true); };
+    }
+  }, [contextMenu]);
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -268,7 +280,14 @@ export default function AdminPage() {
               {filteredItems.map((item) => {
                 const isEditing = editingDish === `${item.category}-${item.index}`;
                 return (
-                  <div key={`${item.category}-${item.index}`} className={`rounded-2xl border bg-white overflow-hidden transition ${isEditing ? "border-amber-400 shadow-lg ring-2 ring-amber-100" : "border-stone-200 hover:shadow-md"}`}>
+                  <div
+                    key={`${item.category}-${item.index}`}
+                    className={`rounded-2xl border bg-white overflow-hidden transition ${isEditing ? "border-amber-400 shadow-lg ring-2 ring-amber-100" : "border-stone-200 hover:shadow-md"}`}
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      setContextMenu({ x: e.clientX, y: e.clientY, category: item.category, index: item.index });
+                    }}
+                  >
                     {/* Image */}
                     <div className="relative h-36 overflow-hidden bg-stone-100">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -278,27 +297,6 @@ export default function AdminPage() {
                         className="h-full w-full object-cover"
                         onError={(e) => { (e.target as HTMLImageElement).src = "/photos/google/placejoys-1.jpg"; }}
                       />
-                      {/* Overlay actions */}
-                      <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center gap-1">
-                        <button
-                          onClick={() => { setEditingImg(`${item.category}-${item.index}`); setImgUrl(item.img); }}
-                          className="rounded-full bg-white/90 p-1.5 text-zinc-900 hover:bg-white"
-                        >
-                          <Image className="h-3 w-3" />
-                        </button>
-                        <button
-                          onClick={() => togglePopular(item.category, item.index)}
-                          className={`rounded-full p-1.5 hover:bg-white ${item.popular ? "bg-amber-400 text-white" : "bg-white/90 text-zinc-900"}`}
-                        >
-                          <Star className="h-3 w-3" fill={item.popular ? "currentColor" : "none"} />
-                        </button>
-                        <button
-                          onClick={() => deleteDish(item.category, item.index)}
-                          className="rounded-full bg-white/90 p-1.5 text-red-500 hover:bg-white"
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </button>
-                      </div>
                       {item.popular && (
                         <span className="absolute left-1.5 top-1.5 rounded bg-amber-500 px-1.5 py-0.5 text-[8px] font-bold uppercase text-white">Popular</span>
                       )}
@@ -343,12 +341,20 @@ export default function AdminPage() {
                             className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-amber-400"
                           />
                         </div>
-                        <button
-                          onClick={() => setEditingDish(null)}
-                          className="w-full rounded-lg bg-zinc-900 py-1.5 text-xs font-medium text-white hover:bg-black"
-                        >
-                          Done
-                        </button>
+                        <div className="flex gap-1.5">
+                          <button
+                            onClick={() => setEditingDish(null)}
+                            className="flex-1 rounded-lg bg-zinc-900 py-1.5 text-xs font-medium text-white hover:bg-black"
+                          >
+                            Done
+                          </button>
+                          <button
+                            onClick={() => { deleteDish(item.category, item.index); setEditingDish(null); }}
+                            className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
                     ) : (
                       <button
@@ -358,36 +364,8 @@ export default function AdminPage() {
                         <p className="text-xs font-semibold leading-tight line-clamp-1">{item.name}</p>
                         <p className="mt-0.5 text-[10px] text-stone-400 line-clamp-1">{item.desc}</p>
                         <p className="mt-1 text-xs font-bold text-amber-700">{item.price}</p>
-                        <p className="mt-1 text-[9px] text-stone-300">Click to edit</p>
+                        <p className="mt-1 text-[9px] text-stone-300">Click to edit · Right-click for more</p>
                       </button>
-                    )}
-
-                    {/* Inline image URL editor (separate from full edit) */}
-                    {editingImg === `${item.category}-${item.index}` && !isEditing && (
-                      <div className="border-t border-stone-100 p-2.5 space-y-1.5">
-                        <p className="text-[10px] font-medium text-stone-500">Image URL</p>
-                        <input
-                          value={imgUrl}
-                          onChange={(e) => setImgUrl(e.target.value)}
-                          placeholder="https://..."
-                          className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-[11px] outline-none focus:border-amber-400"
-                          autoFocus
-                        />
-                        <div className="flex gap-1">
-                          <button
-                            onClick={() => updateDishImg(item.category, item.index, imgUrl)}
-                            className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-amber-600 py-1 text-[10px] font-medium text-white hover:bg-amber-700"
-                          >
-                            <Check className="h-2.5 w-2.5" /> Apply
-                          </button>
-                          <button
-                            onClick={() => setEditingImg(null)}
-                            className="rounded-lg border border-stone-200 px-2 py-1 text-[10px] text-stone-500 hover:bg-stone-50"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
                     )}
                   </div>
                 );
@@ -404,6 +382,54 @@ export default function AdminPage() {
                 </button>
               )}
             </div>
+
+            {/* Right-click context menu */}
+            {contextMenu && (
+              <div
+                className="fixed z-50 min-w-[160px] rounded-xl border border-stone-200 bg-white py-1.5 shadow-xl"
+                style={{ left: contextMenu.x, top: contextMenu.y }}
+              >
+                <button
+                  onClick={() => {
+                    setEditingDish(`${contextMenu.category}-${contextMenu.index}`);
+                    setContextMenu(null);
+                  }}
+                  className="flex w-full items-center gap-2 px-3 py-2 text-xs text-stone-700 hover:bg-stone-50"
+                >
+                  <Pencil className="h-3 w-3" /> Edit dish
+                </button>
+                <button
+                  onClick={() => {
+                    togglePopular(contextMenu.category, contextMenu.index);
+                    setContextMenu(null);
+                  }}
+                  className="flex w-full items-center gap-2 px-3 py-2 text-xs text-stone-700 hover:bg-stone-50"
+                >
+                  <Star className="h-3 w-3" fill={flatItems.find((i) => i.category === contextMenu.category && i.index === contextMenu.index)?.popular ? "currentColor" : "none"} />
+                  {flatItems.find((i) => i.category === contextMenu.category && i.index === contextMenu.index)?.popular ? "Unmark popular" : "Mark popular"}
+                </button>
+                <button
+                  onClick={() => {
+                    setEditingImg(`${contextMenu.category}-${contextMenu.index}`);
+                    setImgUrl(flatItems.find((i) => i.category === contextMenu.category && i.index === contextMenu.index)?.img ?? "");
+                    setContextMenu(null);
+                  }}
+                  className="flex w-full items-center gap-2 px-3 py-2 text-xs text-stone-700 hover:bg-stone-50"
+                >
+                  <Image className="h-3 w-3" /> Change image
+                </button>
+                <div className="my-1 border-t border-stone-100" />
+                <button
+                  onClick={() => {
+                    deleteDish(contextMenu.category, contextMenu.index);
+                    setContextMenu(null);
+                  }}
+                  className="flex w-full items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red-50"
+                >
+                  <Trash2 className="h-3 w-3" /> Delete dish
+                </button>
+              </div>
+            )}
           </div>
         )}
 
