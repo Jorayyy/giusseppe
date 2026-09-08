@@ -14,6 +14,9 @@ import {
   Plus,
   Eye,
   ExternalLink,
+  Image,
+  Star,
+  Check,
 } from "lucide-react";
 import type { MenuData, HoursData, RestaurantSettings } from "@/lib/types";
 import { DEFAULT_MENU, DEFAULT_HOURS, DEFAULT_PHOTOS, DEFAULT_SETTINGS, HOURS_ORDER } from "@/lib/data";
@@ -59,18 +62,35 @@ function initSettings(): RestaurantSettings {
   return { ...DEFAULT_SETTINGS, ...load("giuseppe_settings", {}) };
 }
 
+// Flatten menu into array for grid view
+function flattenMenu(menu: MenuData): { category: string; index: number; name: string; price: string; desc: string; img: string; popular: boolean }[] {
+  const items: { category: string; index: number; name: string; price: string; desc: string; img: string; popular: boolean }[] = [];
+  Object.entries(menu).forEach(([cat, dishes]) => {
+    dishes.forEach((dish, i) => {
+      items.push({ category: cat, index: i, ...dish });
+    });
+  });
+  return items;
+}
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState<boolean>(initAuth);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [tab, setTab] = useState<Tab>("Menu");
   const [toast, setToast] = useState<string | null>(null);
+  const [editingImg, setEditingImg] = useState<string | null>(null);
+  const [imgUrl, setImgUrl] = useState("");
+  const [catFilter, setCatFilter] = useState<string>("All");
 
   const [menu, setMenu] = useState<MenuData>(initMenu);
   const [hours, setHours] = useState<HoursData>(initHours);
   const [photos, setPhotos] = useState<string[]>(initPhotos);
   const [settings, setSettings] = useState<RestaurantSettings>(initSettings);
-  const [editingCat, setEditingCat] = useState<string | null>(null);
+
+  const categories = ["All", ...Object.keys(menu)];
+  const flatItems = flattenMenu(menu);
+  const filteredItems = catFilter === "All" ? flatItems : flatItems.filter((i) => i.category === catFilter);
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -92,6 +112,33 @@ export default function AdminPage() {
     localStorage.removeItem(STORAGE_KEY);
     setAuthed(false);
     setPassword("");
+  };
+
+  const updateDishImg = (category: string, index: number, newImg: string) => {
+    const copy = { ...menu };
+    copy[category] = [...copy[category]];
+    copy[category][index] = { ...copy[category][index], img: newImg };
+    setMenu(copy);
+    setEditingImg(null);
+  };
+
+  const togglePopular = (category: string, index: number) => {
+    const copy = { ...menu };
+    copy[category] = [...copy[category]];
+    copy[category][index] = { ...copy[category][index], popular: !copy[category][index].popular };
+    setMenu(copy);
+  };
+
+  const deleteDish = (category: string, index: number) => {
+    const copy = { ...menu };
+    copy[category] = copy[category].filter((_, i) => i !== index);
+    setMenu(copy);
+  };
+
+  const addDish = (category: string) => {
+    const copy = { ...menu };
+    copy[category] = [...copy[category], { name: "New Item", price: "₱0", desc: "", img: "/photos/google/placejoys-1.jpg", popular: false }];
+    setMenu(copy);
   };
 
   const saveMenu = () => { save("giuseppe_menu", menu); showToast("Menu saved"); };
@@ -132,327 +179,333 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-stone-50 text-zinc-900">
+      {/* Compact header */}
       <header className="sticky top-0 z-30 border-b border-stone-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-600 font-serif text-sm font-bold text-white italic">G</div>
-            <div>
-              <h1 className="font-serif text-lg font-bold leading-none">Giuseppe&apos;s Dashboard</h1>
-              <p className="text-xs text-stone-500">Manage menu, hours, photos & settings</p>
-            </div>
-          </div>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
           <div className="flex items-center gap-2">
-            <Link href="/" className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-4 py-1.5 text-sm font-medium transition hover:bg-stone-50">
-              <Eye className="h-4 w-4" /> View site
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-600 font-serif text-xs font-bold text-white italic">G</div>
+            <span className="font-serif text-sm font-bold">Dashboard</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Link href="/" className="inline-flex items-center gap-1 rounded-full border border-stone-200 bg-white px-3 py-1 text-xs font-medium transition hover:bg-stone-50">
+              <Eye className="h-3 w-3" /> View
             </Link>
-            <button onClick={handleLogout} className="inline-flex items-center gap-1.5 rounded-full bg-zinc-900 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-black">
-              <LogOut className="h-4 w-4" /> Logout
+            <button onClick={handleLogout} className="inline-flex items-center gap-1 rounded-full bg-zinc-900 px-3 py-1 text-xs font-medium text-white transition hover:bg-black">
+              <LogOut className="h-3 w-3" /> Out
             </button>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto max-w-6xl px-4 pt-6">
-        <div className="flex flex-wrap gap-2">
-          {(
-            [
-              { id: "Menu", icon: UtensilsCrossed },
-              { id: "Hours", icon: Clock },
-              { id: "Photos", icon: Camera },
-              { id: "Settings", icon: Settings },
-            ] as const
-          ).map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id as Tab)}
-              className={`inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium transition ${tab === t.id ? "bg-amber-600 text-white shadow-sm" : "border border-stone-200 bg-white hover:bg-stone-50"}`}
-            >
-              <t.icon className="h-4 w-4" /> {t.id}
-            </button>
-          ))}
+      {/* Tabs + Save */}
+      <div className="sticky top-[41px] z-20 border-b border-stone-200 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
+          <div className="flex gap-1">
+            {(
+              [
+                { id: "Menu", icon: UtensilsCrossed },
+                { id: "Hours", icon: Clock },
+                { id: "Photos", icon: Camera },
+                { id: "Settings", icon: Settings },
+              ] as const
+            ).map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id as Tab)}
+                className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition ${
+                  tab === t.id ? "bg-amber-600 text-white" : "text-stone-500 hover:bg-stone-100"
+                }`}
+              >
+                <t.icon className="h-3 w-3" /> {t.id}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={tab === "Menu" ? saveMenu : tab === "Hours" ? saveHours : tab === "Photos" ? savePhotos : saveSettings}
+            className="inline-flex items-center gap-1 rounded-full bg-amber-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-amber-700"
+          >
+            <Save className="h-3 w-3" /> Save {tab}
+          </button>
         </div>
       </div>
 
-      <main className="mx-auto max-w-6xl px-4 py-6 pb-24">
+      <main className="mx-auto max-w-7xl px-4 py-4 pb-24">
+        {/* MENU TAB — Grid view */}
         {tab === "Menu" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="font-serif text-xl font-semibold">Menu</h2>
-              <button onClick={saveMenu} className="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-5 py-2 text-sm font-semibold text-white hover:bg-amber-700">
-                <Save className="h-4 w-4" /> Save
-              </button>
-            </div>
-            {Object.entries(menu).map(([cat, items]) => (
-              <div key={cat} className="rounded-2xl border border-stone-200 bg-white overflow-hidden">
-                <button onClick={() => setEditingCat(editingCat === cat ? null : cat)} className="flex w-full items-center justify-between px-6 py-4 text-left transition hover:bg-stone-50">
-                  <div className="flex items-center gap-3">
-                    <h3 className="font-serif text-lg font-semibold">{cat}</h3>
-                    <span className="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-500">{items.length} items</span>
-                  </div>
-                  <span className={`text-sm text-stone-400 transition ${editingCat === cat ? "rotate-180" : ""}`}>▾</span>
+          <div>
+            {/* Category filter */}
+            <div className="mb-4 flex flex-wrap gap-1">
+              {categories.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setCatFilter(c)}
+                  className={`rounded-full px-3 py-1 text-xs font-medium transition ${
+                    catFilter === c ? "bg-zinc-900 text-white" : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                  }`}
+                >
+                  {c}
                 </button>
-                {editingCat === cat && (
-                  <div className="border-t border-stone-100 px-6 py-4 space-y-3">
-                    {items.map((item, idx) => (
-                      <div key={idx} className="rounded-xl border border-stone-100 bg-stone-50/60 p-4">
-                        <div className="grid gap-3 sm:grid-cols-[1fr_120px]">
-                          <input
-                            value={item.name}
-                            onChange={(e) => {
-                              const copy = { ...menu };
-                              copy[cat] = [...copy[cat]];
-                              copy[cat][idx] = { ...copy[cat][idx], name: e.target.value };
-                              setMenu(copy);
-                            }}
-                            placeholder="Dish name"
-                            className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-amber-400"
-                          />
-                          <input
-                            value={item.price}
-                            onChange={(e) => {
-                              const copy = { ...menu };
-                              copy[cat] = [...copy[cat]];
-                              copy[cat][idx] = { ...copy[cat][idx], price: e.target.value };
-                              setMenu(copy);
-                            }}
-                            placeholder="₱0"
-                            className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-amber-400"
-                          />
-                        </div>
-                        <input
-                          value={item.desc}
-                          onChange={(e) => {
-                            const copy = { ...menu };
-                            copy[cat] = [...copy[cat]];
-                            copy[cat][idx] = { ...copy[cat][idx], desc: e.target.value };
-                            setMenu(copy);
-                          }}
-                          placeholder="Description"
-                          className="mt-2 w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-amber-400"
-                        />
-                        <div className="mt-2 flex items-center justify-between">
-                          <label className="inline-flex items-center gap-2 text-sm">
-                            <input
-                              type="checkbox"
-                              checked={item.popular}
-                              onChange={(e) => {
-                                const copy = { ...menu };
-                                copy[cat] = [...copy[cat]];
-                                copy[cat][idx] = { ...copy[cat][idx], popular: e.target.checked };
-                                setMenu(copy);
-                              }}
-                              className="h-4 w-4 rounded border-stone-300 text-amber-600 focus:ring-amber-500"
-                            />
-                            Popular
-                          </label>
-                          <button
-                            onClick={() => {
-                              const copy = { ...menu };
-                              copy[cat] = copy[cat].filter((_, i) => i !== idx);
-                              setMenu(copy);
-                            }}
-                            className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-white px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" /> Delete
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                    <button
-                      onClick={() => {
-                        const copy = { ...menu };
-                        copy[cat] = [...copy[cat], { name: "New Item", price: "₱0", desc: "", img: "/photos/google/placejoys-1.jpg", popular: false }];
-                        setMenu(copy);
-                      }}
-                      className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-stone-300 bg-white py-2.5 text-sm font-medium text-stone-600 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700"
-                    >
-                      <Plus className="h-4 w-4" /> Add Item
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
 
-        {tab === "Hours" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="font-serif text-xl font-semibold">Hours</h2>
-              <button onClick={saveHours} className="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-5 py-2 text-sm font-semibold text-white hover:bg-amber-700">
-                <Save className="h-4 w-4" /> Save
-              </button>
+            {/* Stats */}
+            <div className="mb-4 flex items-center gap-4 text-xs text-stone-500">
+              <span>{filteredItems.length} dishes</span>
+              <span>{flatItems.filter((i) => i.popular).length} popular</span>
+              <span>{flatItems.filter((i) => i.img.includes("placejoys") || i.img.includes("wanderlog")).length} need photos</span>
             </div>
-            <div className="rounded-2xl border border-stone-200 bg-white p-6">
-              <p className="text-sm text-stone-500">Two service windows per day. Leave second window empty if closed.</p>
-              <div className="mt-4 space-y-3">
-                {HOURS_ORDER.map((day) => {
-                  const h = hours[day] ?? { open: "", close: "", open2: "", close2: "" };
-                  return (
-                    <div key={day} className="grid gap-2 rounded-xl border border-stone-100 bg-stone-50/50 p-4 sm:grid-cols-[110px_1fr_1fr_1fr_1fr]">
-                      <div className="flex items-center font-medium text-sm">{day}</div>
-                      {[
-                        { key: "open", label: "Open" },
-                        { key: "close", label: "Close" },
-                        { key: "open2", label: "Open 2" },
-                        { key: "close2", label: "Close 2" },
-                      ].map((f) => (
-                        <label key={f.key} className="space-y-1">
-                          <span className="text-[11px] font-medium uppercase tracking-wide text-stone-500">{f.label}</span>
-                          <input
-                            value={h[f.key as keyof typeof h] ?? ""}
-                            onChange={(e) => {
-                              setHours((prev) => ({
-                                ...prev,
-                                [day]: { ...prev[day], [f.key]: e.target.value } as typeof prev[typeof day],
-                              }));
-                            }}
-                            placeholder={f.label}
-                            className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-amber-400"
-                          />
-                        </label>
-                      ))}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
 
-        {tab === "Photos" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="font-serif text-xl font-semibold">Photos</h2>
-              <button onClick={savePhotos} className="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-5 py-2 text-sm font-semibold text-white hover:bg-amber-700">
-                <Save className="h-4 w-4" /> Save
-              </button>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {photos.map((p, i) => (
-                <div key={i} className="rounded-2xl border border-stone-200 bg-white p-4">
-                  <div className="overflow-hidden rounded-xl bg-stone-100">
+            {/* Dish grid */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+              {filteredItems.map((item) => (
+                <div key={`${item.category}-${item.index}`} className="group rounded-2xl border border-stone-200 bg-white overflow-hidden transition hover:shadow-md">
+                  {/* Image */}
+                  <div className="relative h-32 overflow-hidden bg-stone-100">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={p}
-                      alt={`Photo ${i + 1}`}
-                      className="h-40 w-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = DEFAULT_PHOTOS[i % DEFAULT_PHOTOS.length];
-                      }}
+                      src={item.img}
+                      alt={item.name}
+                      className="h-full w-full object-cover"
+                      onError={(e) => { (e.target as HTMLImageElement).src = "/photos/google/placejoys-1.jpg"; }}
                     />
+                    {/* Overlay actions */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center gap-1">
+                      <button
+                        onClick={() => { setEditingImg(`${item.category}-${item.index}`); setImgUrl(item.img); }}
+                        className="rounded-full bg-white/90 p-1.5 text-zinc-900 hover:bg-white"
+                      >
+                        <Image className="h-3 w-3" />
+                      </button>
+                      <button
+                        onClick={() => togglePopular(item.category, item.index)}
+                        className={`rounded-full p-1.5 hover:bg-white ${item.popular ? "bg-amber-400 text-white" : "bg-white/90 text-zinc-900"}`}
+                      >
+                        <Star className="h-3 w-3" fill={item.popular ? "currentColor" : "none"} />
+                      </button>
+                      <button
+                        onClick={() => deleteDish(item.category, item.index)}
+                        className="rounded-full bg-white/90 p-1.5 text-red-500 hover:bg-white"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </button>
+                    </div>
+                    {/* Popular badge */}
+                    {item.popular && (
+                      <span className="absolute left-1.5 top-1.5 rounded bg-amber-500 px-1.5 py-0.5 text-[8px] font-bold uppercase text-white">Popular</span>
+                    )}
+                    {/* Category badge */}
+                    <span className="absolute right-1.5 top-1.5 rounded bg-black/50 px-1.5 py-0.5 text-[8px] font-medium text-white backdrop-blur-sm">{item.category}</span>
                   </div>
-                  <div className="mt-3 space-y-2">
-                    <label className="block">
-                      <span className="text-xs font-medium text-stone-500">Upload image</span>
+
+                  {/* Info */}
+                  <div className="p-2.5">
+                    <p className="text-xs font-semibold leading-tight line-clamp-1">{item.name}</p>
+                    <p className="mt-0.5 text-[10px] text-stone-400 line-clamp-1">{item.desc}</p>
+                    <p className="mt-1 text-xs font-bold text-amber-700">{item.price}</p>
+                  </div>
+
+                  {/* Inline image URL editor */}
+                  {editingImg === `${item.category}-${item.index}` && (
+                    <div className="border-t border-stone-100 p-2.5 space-y-1.5">
+                      <p className="text-[10px] font-medium text-stone-500">Image URL</p>
+                      <input
+                        value={imgUrl}
+                        onChange={(e) => setImgUrl(e.target.value)}
+                        placeholder="https://..."
+                        className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-[11px] outline-none focus:border-amber-400"
+                        autoFocus
+                      />
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => updateDishImg(item.category, item.index, imgUrl)}
+                          className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-amber-600 py-1 text-[10px] font-medium text-white hover:bg-amber-700"
+                        >
+                          <Check className="h-2.5 w-2.5" /> Apply
+                        </button>
+                        <button
+                          onClick={() => setEditingImg(null)}
+                          className="rounded-lg border border-stone-200 px-2 py-1 text-[10px] text-stone-500 hover:bg-stone-50"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* Add new dish */}
+              {catFilter !== "All" && (
+                <button
+                  onClick={() => addDish(catFilter)}
+                  className="flex h-[220px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-stone-300 text-stone-400 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-600"
+                >
+                  <Plus className="h-5 w-5" />
+                  <span className="mt-1 text-xs font-medium">Add dish</span>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* HOURS TAB */}
+        {tab === "Hours" && (
+          <div className="rounded-2xl border border-stone-200 bg-white p-4">
+            <p className="mb-3 text-xs text-stone-500">Two service windows per day.</p>
+            <div className="space-y-2">
+              {HOURS_ORDER.map((day) => {
+                const h = hours[day] ?? { open: "", close: "", open2: "", close2: "" };
+                return (
+                  <div key={day} className="grid grid-cols-[90px_1fr_1fr_1fr_1fr] gap-2 items-center rounded-xl bg-stone-50 p-2.5">
+                    <span className="text-xs font-medium">{day}</span>
+                    {[
+                      { key: "open", label: "Open" },
+                      { key: "close", label: "Close" },
+                      { key: "open2", label: "Open 2" },
+                      { key: "close2", label: "Close 2" },
+                    ].map((f) => (
+                      <input
+                        key={f.key}
+                        value={h[f.key as keyof typeof h] ?? ""}
+                        onChange={(e) => {
+                          setHours((prev) => ({
+                            ...prev,
+                            [day]: { ...prev[day], [f.key]: e.target.value } as typeof prev[typeof day],
+                          }));
+                        }}
+                        placeholder={f.label}
+                        className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-xs outline-none focus:border-amber-400"
+                      />
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* PHOTOS TAB */}
+        {tab === "Photos" && (
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+            {photos.map((p, i) => (
+              <div key={i} className="group relative overflow-hidden rounded-2xl bg-stone-100">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={p}
+                  alt={`Photo ${i + 1}`}
+                  className="h-32 w-full object-cover sm:h-40"
+                  onError={(e) => { (e.target as HTMLImageElement).src = DEFAULT_PHOTOS[i % DEFAULT_PHOTOS.length]; }}
+                />
+                <div className="absolute inset-0 bg-black/50 opacity-0 transition-opacity group-hover:opacity-100 flex flex-col items-center justify-center gap-1.5 p-2">
+                  <input
+                    value={p?.startsWith("data:") ? "" : p || ""}
+                    placeholder="Image URL"
+                    onChange={(e) => {
+                      setPhotos((prev) => {
+                        const next = [...prev];
+                        next[i] = e.target.value || DEFAULT_PHOTOS[i % DEFAULT_PHOTOS.length];
+                        return next;
+                      });
+                    }}
+                    className="w-full rounded-lg bg-white/90 px-2 py-1 text-[10px] outline-none"
+                  />
+                  <div className="flex gap-1">
+                    <label className="cursor-pointer rounded-lg bg-white/90 px-2 py-1 text-[10px] font-medium text-zinc-900 hover:bg-white">
+                      Upload
                       <input
                         type="file"
                         accept="image/*"
+                        className="hidden"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
                           if (!file) return;
                           const reader = new FileReader();
                           reader.onload = () => {
-                            const dataUrl = reader.result as string;
-                            setPhotos((prev) => {
-                              const next = [...prev];
-                              next[i] = dataUrl;
-                              return next;
-                            });
+                            setPhotos((prev) => { const next = [...prev]; next[i] = reader.result as string; return next; });
                           };
                           reader.readAsDataURL(file);
                         }}
-                        className="mt-1 block w-full cursor-pointer rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs file:mr-3 file:rounded-full file:border-0 file:bg-amber-600 file:px-3 file:py-1 file:text-xs file:font-medium file:text-white hover:file:bg-amber-700"
-                      />
-                    </label>
-                    <label className="block space-y-1">
-                      <span className="text-xs font-medium text-stone-500">Or image URL</span>
-                      <input
-                        value={p?.startsWith("data:") ? "" : p || ""}
-                        placeholder="https://..."
-                        onChange={(e) => {
-                          setPhotos((prev) => {
-                            const next = [...prev];
-                            next[i] = e.target.value || DEFAULT_PHOTOS[i % DEFAULT_PHOTOS.length];
-                            return next;
-                          });
-                        }}
-                        className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-xs outline-none focus:border-amber-400"
                       />
                     </label>
                     <button
                       onClick={() => setPhotos((prev) => prev.filter((_, idx) => idx !== i))}
-                      className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-white px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
+                      className="rounded-lg bg-red-500/90 px-2 py-1 text-[10px] font-medium text-white hover:bg-red-500"
                     >
-                      <Trash2 className="h-3 w-3" /> Remove
+                      Remove
                     </button>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
             <button
               onClick={() => setPhotos((prev) => [...prev, "/photos/google/placejoys-1.jpg"])}
-              className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-stone-300 bg-white px-5 py-2.5 text-sm font-medium text-stone-600 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700"
+              className="flex h-32 items-center justify-center rounded-2xl border-2 border-dashed border-stone-300 text-stone-400 transition hover:border-amber-300 hover:text-amber-600 sm:h-40"
             >
-              <Plus className="h-4 w-4" /> Add Photo
+              <Plus className="h-5 w-5" />
             </button>
           </div>
         )}
 
+        {/* SETTINGS TAB */}
         {tab === "Settings" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="font-serif text-xl font-semibold">Settings</h2>
-              <button onClick={saveSettings} className="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-5 py-2 text-sm font-semibold text-white hover:bg-amber-700">
-                <Save className="h-4 w-4" /> Save
-              </button>
-            </div>
-            <div className="rounded-2xl border border-stone-200 bg-white p-6">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="space-y-1">
-                  <span className="text-xs font-medium uppercase tracking-wide text-stone-500">Restaurant name</span>
-                  <input
-                    value={settings.name}
-                    onChange={(e) => setSettings((s) => ({ ...s, name: e.target.value }))}
-                    className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
-                  />
-                </label>
-                <label className="space-y-1">
-                  <span className="text-xs font-medium uppercase tracking-wide text-stone-500">Phone</span>
-                  <input
-                    value={settings.phone}
-                    onChange={(e) => setSettings((s) => ({ ...s, phone: e.target.value }))}
-                    className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
-                  />
-                </label>
-                <label className="space-y-1 sm:col-span-2">
-                  <span className="text-xs font-medium uppercase tracking-wide text-stone-500">Address</span>
-                  <input
-                    value={settings.address}
-                    onChange={(e) => setSettings((s) => ({ ...s, address: e.target.value }))}
-                    className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
-                  />
-                </label>
-                <label className="space-y-1">
-                  <span className="text-xs font-medium uppercase tracking-wide text-stone-500">Price range</span>
-                  <input
-                    value={settings.price}
-                    onChange={(e) => setSettings((s) => ({ ...s, price: e.target.value }))}
-                    placeholder="₱500–2,000"
-                    className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
-                  />
-                </label>
-              </div>
+          <div className="rounded-2xl border border-stone-200 bg-white p-4">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="space-y-1">
+                <span className="text-[10px] font-medium uppercase tracking-wide text-stone-500">Name</span>
+                <input
+                  value={settings.name}
+                  onChange={(e) => setSettings((s) => ({ ...s, name: e.target.value }))}
+                  className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+                />
+              </label>
+              <label className="space-y-1">
+                <span className="text-[10px] font-medium uppercase tracking-wide text-stone-500">Phone</span>
+                <input
+                  value={settings.phone}
+                  onChange={(e) => setSettings((s) => ({ ...s, phone: e.target.value }))}
+                  className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+                />
+              </label>
+              <label className="space-y-1 sm:col-span-2">
+                <span className="text-[10px] font-medium uppercase tracking-wide text-stone-500">Address</span>
+                <input
+                  value={settings.address}
+                  onChange={(e) => setSettings((s) => ({ ...s, address: e.target.value }))}
+                  className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+                />
+              </label>
+              <label className="space-y-1">
+                <span className="text-[10px] font-medium uppercase tracking-wide text-stone-500">Price range</span>
+                <input
+                  value={settings.price}
+                  onChange={(e) => setSettings((s) => ({ ...s, price: e.target.value }))}
+                  placeholder="₱500–2,000"
+                  className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+                />
+              </label>
+              <label className="space-y-1">
+                <span className="text-[10px] font-medium uppercase tracking-wide text-stone-500">Rating</span>
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="5"
+                  value={settings.rating}
+                  onChange={(e) => setSettings((s) => ({ ...s, rating: parseFloat(e.target.value) || 0 }))}
+                  className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+                />
+              </label>
             </div>
           </div>
         )}
       </main>
 
+      {/* Toast */}
       {toast && (
-        <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full bg-zinc-900 px-5 py-3 text-sm font-medium text-white shadow-xl">
+        <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white shadow-xl">
           <span>{toast}</span>
           <Link href="/" className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-semibold text-zinc-900 hover:bg-stone-100">
-            View site <ExternalLink className="h-3 w-3" />
+            View <ExternalLink className="h-3 w-3" />
           </Link>
         </div>
       )}
