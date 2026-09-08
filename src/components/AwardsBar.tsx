@@ -63,13 +63,52 @@ export function AwardsBar() {
 
         {/* Featured in */}
         <Reveal delay={0.2}>
-          <div className="mt-10 text-center">
+          <div className="mt-12 text-center">
             <p className="text-xs font-medium tracking-widest uppercase text-stone-400">As featured in</p>
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-8 text-stone-400">
-              <span className="font-serif text-lg font-bold italic text-stone-300">Manila Bulletin</span>
-              <span className="font-serif text-lg font-bold italic text-stone-300">Out of Town Blog</span>
-              <span className="font-serif text-lg font-bold italic text-stone-300">TripAdvisor</span>
-              <span className="font-serif text-lg font-bold italic text-stone-300">HeyPlaces</span>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+              {/* Manila Bulletin */}
+              <div className="flex items-center gap-2 opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0">
+                <svg viewBox="0 0 40 40" className="h-8 w-8" fill="none">
+                  <rect width="40" height="40" rx="8" fill="#1a365d"/>
+                  <text x="20" y="16" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold" fontFamily="serif">MB</text>
+                  <text x="20" y="30" textAnchor="middle" fill="white" fontSize="6" fontFamily="sans-serif">BULLETIN</text>
+                </svg>
+                <span className="text-sm font-bold tracking-tight text-stone-600">Manila Bulletin</span>
+              </div>
+
+              {/* Out of Town Blog */}
+              <div className="flex items-center gap-2 opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0">
+                <svg viewBox="0 0 40 40" className="h-8 w-8" fill="none">
+                  <rect width="40" height="40" rx="8" fill="#059669"/>
+                  <text x="20" y="17" textAnchor="middle" fill="white" fontSize="16" fontWeight="bold" fontFamily="sans-serif">O</text>
+                  <text x="20" y="30" textAnchor="middle" fill="white" fontSize="5" fontFamily="sans-serif">TOWN</text>
+                </svg>
+                <span className="text-sm font-bold tracking-tight text-stone-600">Out of Town Blog</span>
+              </div>
+
+              {/* TripAdvisor */}
+              <div className="flex items-center gap-2 opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0">
+                <svg viewBox="0 0 40 40" className="h-8 w-8" fill="none">
+                  <rect width="40" height="40" rx="8" fill="#34e0a1"/>
+                  <circle cx="14" cy="22" r="5" fill="white"/>
+                  <circle cx="26" cy="22" r="5" fill="white"/>
+                  <circle cx="14" cy="22" r="2.5" fill="#000"/>
+                  <circle cx="26" cy="22" r="2.5" fill="#000"/>
+                  <path d="M10 16 Q20 8 30 16" stroke="white" strokeWidth="2" fill="none"/>
+                  <circle cx="20" cy="12" r="2.5" fill="#fbbf24"/>
+                </svg>
+                <span className="text-sm font-bold tracking-tight text-stone-600">TripAdvisor</span>
+              </div>
+
+              {/* HeyPlaces */}
+              <div className="flex items-center gap-2 opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0">
+                <svg viewBox="0 0 40 40" className="h-8 w-8" fill="none">
+                  <rect width="40" height="40" rx="8" fill="#6366f1"/>
+                  <text x="20" y="18" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold" fontFamily="sans-serif">HP</text>
+                  <text x="20" y="30" textAnchor="middle" fill="white" fontSize="5" fontFamily="sans-serif">PLACES</text>
+                </svg>
+                <span className="text-sm font-bold tracking-tight text-stone-600">HeyPlaces</span>
+              </div>
             </div>
           </div>
         </Reveal>
