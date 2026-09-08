@@ -67,7 +67,7 @@ export function AwardsBar() {
             <p className="text-xs font-medium tracking-widest uppercase text-stone-400">As featured in</p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
               {/* Manila Bulletin */}
-              <div className="flex items-center gap-2 opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0">
+              <div className="flex items-center gap-2 transition-all hover:scale-105">
                 <svg viewBox="0 0 40 40" className="h-8 w-8" fill="none">
                   <rect width="40" height="40" rx="8" fill="#1a365d"/>
                   <text x="20" y="16" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold" fontFamily="serif">MB</text>
@@ -77,7 +77,7 @@ export function AwardsBar() {
               </div>
 
               {/* Out of Town Blog */}
-              <div className="flex items-center gap-2 opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0">
+              <div className="flex items-center gap-2 transition-all hover:scale-105">
                 <svg viewBox="0 0 40 40" className="h-8 w-8" fill="none">
                   <rect width="40" height="40" rx="8" fill="#059669"/>
                   <text x="20" y="17" textAnchor="middle" fill="white" fontSize="16" fontWeight="bold" fontFamily="sans-serif">O</text>
@@ -87,7 +87,7 @@ export function AwardsBar() {
               </div>
 
               {/* TripAdvisor */}
-              <div className="flex items-center gap-2 opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0">
+              <div className="flex items-center gap-2 transition-all hover:scale-105">
                 <svg viewBox="0 0 40 40" className="h-8 w-8" fill="none">
                   <rect width="40" height="40" rx="8" fill="#34e0a1"/>
                   <circle cx="14" cy="22" r="5" fill="white"/>
@@ -101,7 +101,7 @@ export function AwardsBar() {
               </div>
 
               {/* HeyPlaces */}
-              <div className="flex items-center gap-2 opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0">
+              <div className="flex items-center gap-2 transition-all hover:scale-105">
                 <svg viewBox="0 0 40 40" className="h-8 w-8" fill="none">
                   <rect width="40" height="40" rx="8" fill="#6366f1"/>
                   <text x="20" y="18" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold" fontFamily="sans-serif">HP</text>
