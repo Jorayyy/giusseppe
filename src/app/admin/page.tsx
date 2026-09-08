@@ -82,6 +82,7 @@ export default function AdminPage() {
   const [editingImg, setEditingImg] = useState<string | null>(null);
   const [imgUrl, setImgUrl] = useState("");
   const [catFilter, setCatFilter] = useState<string>("All");
+  const [editingDish, setEditingDish] = useState<string | null>(null);
 
   const [menu, setMenu] = useState<MenuData>(initMenu);
   const [hours, setHours] = useState<HoursData>(initHours);
@@ -120,6 +121,13 @@ export default function AdminPage() {
     copy[category][index] = { ...copy[category][index], img: newImg };
     setMenu(copy);
     setEditingImg(null);
+  };
+
+  const updateDishField = (category: string, index: number, field: string, value: string | boolean) => {
+    const copy = { ...menu };
+    copy[category] = [...copy[category]];
+    copy[category][index] = { ...copy[category][index], [field]: value };
+    setMenu(copy);
   };
 
   const togglePopular = (category: string, index: number) => {
@@ -256,89 +264,140 @@ export default function AdminPage() {
             </div>
 
             {/* Dish grid */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-              {filteredItems.map((item) => (
-                <div key={`${item.category}-${item.index}`} className="group rounded-2xl border border-stone-200 bg-white overflow-hidden transition hover:shadow-md">
-                  {/* Image */}
-                  <div className="relative h-32 overflow-hidden bg-stone-100">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={item.img}
-                      alt={item.name}
-                      className="h-full w-full object-cover"
-                      onError={(e) => { (e.target as HTMLImageElement).src = "/photos/google/placejoys-1.jpg"; }}
-                    />
-                    {/* Overlay actions */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center gap-1">
-                      <button
-                        onClick={() => { setEditingImg(`${item.category}-${item.index}`); setImgUrl(item.img); }}
-                        className="rounded-full bg-white/90 p-1.5 text-zinc-900 hover:bg-white"
-                      >
-                        <Image className="h-3 w-3" />
-                      </button>
-                      <button
-                        onClick={() => togglePopular(item.category, item.index)}
-                        className={`rounded-full p-1.5 hover:bg-white ${item.popular ? "bg-amber-400 text-white" : "bg-white/90 text-zinc-900"}`}
-                      >
-                        <Star className="h-3 w-3" fill={item.popular ? "currentColor" : "none"} />
-                      </button>
-                      <button
-                        onClick={() => deleteDish(item.category, item.index)}
-                        className="rounded-full bg-white/90 p-1.5 text-red-500 hover:bg-white"
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </button>
-                    </div>
-                    {/* Popular badge */}
-                    {item.popular && (
-                      <span className="absolute left-1.5 top-1.5 rounded bg-amber-500 px-1.5 py-0.5 text-[8px] font-bold uppercase text-white">Popular</span>
-                    )}
-                    {/* Category badge */}
-                    <span className="absolute right-1.5 top-1.5 rounded bg-black/50 px-1.5 py-0.5 text-[8px] font-medium text-white backdrop-blur-sm">{item.category}</span>
-                  </div>
-
-                  {/* Info */}
-                  <div className="p-2.5">
-                    <p className="text-xs font-semibold leading-tight line-clamp-1">{item.name}</p>
-                    <p className="mt-0.5 text-[10px] text-stone-400 line-clamp-1">{item.desc}</p>
-                    <p className="mt-1 text-xs font-bold text-amber-700">{item.price}</p>
-                  </div>
-
-                  {/* Inline image URL editor */}
-                  {editingImg === `${item.category}-${item.index}` && (
-                    <div className="border-t border-stone-100 p-2.5 space-y-1.5">
-                      <p className="text-[10px] font-medium text-stone-500">Image URL</p>
-                      <input
-                        value={imgUrl}
-                        onChange={(e) => setImgUrl(e.target.value)}
-                        placeholder="https://..."
-                        className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-[11px] outline-none focus:border-amber-400"
-                        autoFocus
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {filteredItems.map((item) => {
+                const isEditing = editingDish === `${item.category}-${item.index}`;
+                return (
+                  <div key={`${item.category}-${item.index}`} className={`rounded-2xl border bg-white overflow-hidden transition ${isEditing ? "border-amber-400 shadow-lg ring-2 ring-amber-100" : "border-stone-200 hover:shadow-md"}`}>
+                    {/* Image */}
+                    <div className="relative h-36 overflow-hidden bg-stone-100">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.img}
+                        alt={item.name}
+                        className="h-full w-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).src = "/photos/google/placejoys-1.jpg"; }}
                       />
-                      <div className="flex gap-1">
+                      {/* Overlay actions */}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center gap-1">
                         <button
-                          onClick={() => updateDishImg(item.category, item.index, imgUrl)}
-                          className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-amber-600 py-1 text-[10px] font-medium text-white hover:bg-amber-700"
+                          onClick={() => { setEditingImg(`${item.category}-${item.index}`); setImgUrl(item.img); }}
+                          className="rounded-full bg-white/90 p-1.5 text-zinc-900 hover:bg-white"
                         >
-                          <Check className="h-2.5 w-2.5" /> Apply
+                          <Image className="h-3 w-3" />
                         </button>
                         <button
-                          onClick={() => setEditingImg(null)}
-                          className="rounded-lg border border-stone-200 px-2 py-1 text-[10px] text-stone-500 hover:bg-stone-50"
+                          onClick={() => togglePopular(item.category, item.index)}
+                          className={`rounded-full p-1.5 hover:bg-white ${item.popular ? "bg-amber-400 text-white" : "bg-white/90 text-zinc-900"}`}
                         >
-                          Cancel
+                          <Star className="h-3 w-3" fill={item.popular ? "currentColor" : "none"} />
+                        </button>
+                        <button
+                          onClick={() => deleteDish(item.category, item.index)}
+                          className="rounded-full bg-white/90 p-1.5 text-red-500 hover:bg-white"
+                        >
+                          <Trash2 className="h-3 w-3" />
                         </button>
                       </div>
+                      {item.popular && (
+                        <span className="absolute left-1.5 top-1.5 rounded bg-amber-500 px-1.5 py-0.5 text-[8px] font-bold uppercase text-white">Popular</span>
+                      )}
+                      <span className="absolute right-1.5 top-1.5 rounded bg-black/50 px-1.5 py-0.5 text-[8px] font-medium text-white backdrop-blur-sm">{item.category}</span>
                     </div>
-                  )}
-                </div>
-              ))}
+
+                    {/* Info — editable when clicked */}
+                    {isEditing ? (
+                      <div className="p-3 space-y-2">
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-medium text-stone-500">Name</label>
+                          <input
+                            value={item.name}
+                            onChange={(e) => updateDishField(item.category, item.index, "name", e.target.value)}
+                            className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-amber-400"
+                            autoFocus
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-medium text-stone-500">Price</label>
+                          <input
+                            value={item.price}
+                            onChange={(e) => updateDishField(item.category, item.index, "price", e.target.value)}
+                            className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-amber-400"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-medium text-stone-500">Description</label>
+                          <textarea
+                            value={item.desc}
+                            onChange={(e) => updateDishField(item.category, item.index, "desc", e.target.value)}
+                            rows={2}
+                            className="w-full resize-none rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-amber-400"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-medium text-stone-500">Image URL</label>
+                          <input
+                            value={item.img}
+                            onChange={(e) => updateDishField(item.category, item.index, "img", e.target.value)}
+                            placeholder="https://..."
+                            className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-amber-400"
+                          />
+                        </div>
+                        <button
+                          onClick={() => setEditingDish(null)}
+                          className="w-full rounded-lg bg-zinc-900 py-1.5 text-xs font-medium text-white hover:bg-black"
+                        >
+                          Done
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setEditingDish(`${item.category}-${item.index}`)}
+                        className="w-full p-2.5 text-left transition hover:bg-stone-50"
+                      >
+                        <p className="text-xs font-semibold leading-tight line-clamp-1">{item.name}</p>
+                        <p className="mt-0.5 text-[10px] text-stone-400 line-clamp-1">{item.desc}</p>
+                        <p className="mt-1 text-xs font-bold text-amber-700">{item.price}</p>
+                        <p className="mt-1 text-[9px] text-stone-300">Click to edit</p>
+                      </button>
+                    )}
+
+                    {/* Inline image URL editor (separate from full edit) */}
+                    {editingImg === `${item.category}-${item.index}` && !isEditing && (
+                      <div className="border-t border-stone-100 p-2.5 space-y-1.5">
+                        <p className="text-[10px] font-medium text-stone-500">Image URL</p>
+                        <input
+                          value={imgUrl}
+                          onChange={(e) => setImgUrl(e.target.value)}
+                          placeholder="https://..."
+                          className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-[11px] outline-none focus:border-amber-400"
+                          autoFocus
+                        />
+                        <div className="flex gap-1">
+                          <button
+                            onClick={() => updateDishImg(item.category, item.index, imgUrl)}
+                            className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-amber-600 py-1 text-[10px] font-medium text-white hover:bg-amber-700"
+                          >
+                            <Check className="h-2.5 w-2.5" /> Apply
+                          </button>
+                          <button
+                            onClick={() => setEditingImg(null)}
+                            className="rounded-lg border border-stone-200 px-2 py-1 text-[10px] text-stone-500 hover:bg-stone-50"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
 
               {/* Add new dish */}
               {catFilter !== "All" && (
                 <button
                   onClick={() => addDish(catFilter)}
-                  className="flex h-[220px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-stone-300 text-stone-400 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-600"
+                  className="flex h-[280px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-stone-300 text-stone-400 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-600"
                 >
                   <Plus className="h-5 w-5" />
                   <span className="mt-1 text-xs font-medium">Add dish</span>
