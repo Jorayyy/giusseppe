@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
 import type { MenuData, MenuItem } from "@/lib/types";
 import { DishCard } from "./DishCard";
 
@@ -78,64 +77,110 @@ export function MenuSection({ menu, onSelectDish }: MenuSectionProps) {
       </section>
 
       {/* Full Menu Modal */}
-      {showFullMenu && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-white">
-          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-stone-200 bg-white/90 backdrop-blur-md px-4 py-3">
-            <button onClick={() => setShowFullMenu(false)} className="inline-flex items-center gap-1.5 text-sm font-medium text-stone-600 hover:text-amber-600">
-              <ArrowLeft className="h-4 w-4" /> Back
-            </button>
-            <h2 className="text-lg font-bold">Full Menu</h2>
-            <div className="w-16" />
-          </div>
-          <div className="mx-auto max-w-2xl p-4">
-            <div className="flex gap-2 overflow-x-auto pb-4 sticky top-14 bg-white z-10 py-3">
-              {categories.map((c) => (
+      <AnimatePresence>
+        {showFullMenu && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+          >
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setShowFullMenu(false)}
+            />
+
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="relative flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
+            >
+              {/* Header */}
+              <div className="sticky top-0 z-10 flex items-center justify-between border-b border-stone-200 bg-white/90 px-6 py-4 backdrop-blur-md">
+                <h2 className="font-serif text-xl font-bold">Full Menu</h2>
                 <button
-                  key={c}
-                  onClick={() => setCat(c)}
-                  className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
-                    cat === c ? "bg-zinc-900 text-white" : "bg-stone-100"
-                  }`}
+                  onClick={() => setShowFullMenu(false)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-stone-100 text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-700"
                 >
-                  {c}
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
-              ))}
-            </div>
-            <div className="space-y-4">
-              {(menu[cat] ?? []).map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => { onSelectDish(item); setShowFullMenu(false); }}
-                  className="flex w-full gap-4 rounded-xl bg-stone-50 p-3 text-left transition-all hover:bg-stone-100 hover:shadow-sm"
-                >
-                  <img
-                    src={item.img}
-                    alt={item.name}
-                    className="h-20 w-20 shrink-0 rounded-lg object-cover"
-                    loading="lazy"
-                    onError={(e) => { (e.target as HTMLImageElement).src = fallbackImg; }}
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-semibold">
-                      {item.name}
-                      {item.popular && (
-                        <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 text-xs font-bold text-amber-700">
-                          Popular
-                        </span>
-                      )}
-                    </h3>
-                    <p className="text-sm text-stone-500">{item.desc}</p>
-                    <p className="mt-1 text-sm font-bold text-amber-700">{item.price}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
-            <p className="mt-6 text-center text-xs text-stone-400">
-              Prices may vary. Full menu available at the restaurant.
-            </p>
-          </div>
-        </div>
-      )}
+              </div>
+
+              {/* Category tabs */}
+              <div className="flex gap-2 overflow-x-auto border-b border-stone-100 px-6 py-3 scrollbar-hide">
+                {categories.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => setCat(c)}
+                    className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
+                      cat === c ? "bg-zinc-900 text-white" : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                    }`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+
+              {/* Menu items */}
+              <div className="flex-1 overflow-y-auto px-6 py-4">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={cat}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="space-y-3"
+                  >
+                    {(menu[cat] ?? []).map((item) => (
+                      <button
+                        key={item.name}
+                        onClick={() => { onSelectDish(item); setShowFullMenu(false); }}
+                        className="flex w-full gap-4 rounded-xl bg-stone-50 p-3 text-left transition-all hover:bg-stone-100 hover:shadow-sm"
+                      >
+                        <img
+                          src={item.img}
+                          alt={item.name}
+                          className="h-20 w-20 shrink-0 rounded-lg object-cover"
+                          loading="lazy"
+                          onError={(e) => { (e.target as HTMLImageElement).src = fallbackImg; }}
+                        />
+                        <div className="flex-1">
+                          <h3 className="font-semibold">
+                            {item.name}
+                            {item.popular && (
+                              <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 text-xs font-bold text-amber-700">
+                                Popular
+                              </span>
+                            )}
+                          </h3>
+                          <p className="text-sm text-stone-500">{item.desc}</p>
+                          <p className="mt-1 text-sm font-bold text-amber-700">{item.price}</p>
+                        </div>
+                      </button>
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Footer */}
+              <div className="border-t border-stone-100 px-6 py-3">
+                <p className="text-center text-xs text-stone-400">
+                  Prices may vary. Full menu available at the restaurant.
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
