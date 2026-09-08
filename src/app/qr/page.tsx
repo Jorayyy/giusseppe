@@ -1,26 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Link from "next/link";
 import { ArrowLeft, Printer, QrCode } from "lucide-react";
 
-export default function QrPage() {
-  const [origin, setOrigin] = useState("");
+function getOrigin(): string {
+  if (typeof window === "undefined") return "";
+  return window.location.origin;
+}
 
-  useEffect(() => {
-    setOrigin(window.location.origin);
-  }, []);
+export default function QrPage() {
+  const [origin] = useState<string>(getOrigin);
 
   const menuUrl = origin ? `${origin}#menu` : "https://giusseppe.vercel.app#menu";
   const menuQr = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(menuUrl)}`;
 
   return (
     <div className="min-h-screen bg-white text-zinc-900 print:bg-white">
-      {/* Top bar - hidden on print */}
       <nav className="border-b border-stone-200 bg-white/80 backdrop-blur print:hidden">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-          <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-stone-600 hover:text-amber-600">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm font-medium text-stone-600 hover:text-amber-600">
             <ArrowLeft className="h-4 w-4" /> Back to site
-          </a>
+          </Link>
           <button
             onClick={() => window.print()}
             className="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-5 py-2 text-sm font-semibold text-white hover:bg-amber-700"
@@ -31,7 +32,6 @@ export default function QrPage() {
       </nav>
 
       <main className="mx-auto max-w-3xl px-4 py-8 print:px-0 print:py-4">
-        {/* Header */}
         <div className="text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-600 font-serif text-2xl font-bold text-white shadow-sm">
             G
@@ -41,7 +41,6 @@ export default function QrPage() {
           <p className="text-xs text-stone-400">173 Avenida Veteranos, Tacloban City</p>
         </div>
 
-        {/* QR Card */}
         <div className="mt-10 rounded-3xl border border-stone-200 bg-white p-8 text-center shadow-sm print:border-stone-300 print:shadow-none">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700">
             <QrCode className="h-3.5 w-3.5" /> Table QR Code
@@ -71,7 +70,6 @@ export default function QrPage() {
           <p className="mt-3 hidden text-xs text-stone-500 print:block">Cut out and place on each table.</p>
         </div>
 
-        {/* Instructions */}
         <div className="mt-8 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-6 print:border-amber-300">
           <h3 className="font-serif font-semibold text-amber-900">How to use</h3>
           <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-6 text-amber-900/80">

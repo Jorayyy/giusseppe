@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Link from "next/link";
 import {
   ArrowLeft,
   Save,
@@ -14,119 +15,62 @@ import {
   Eye,
   ExternalLink,
 } from "lucide-react";
-
-const DEFAULT_MENU: Record<string, { name: string; price: string; desc: string; img?: string; popular?: boolean }[]> = {
-  "Antipasto": [
-    { name: "Antipasto Italiano", price: "₱480", desc: "Prosciutto, crostini, olives, cheese", img: "/photos/google/placejoys-5.jpg" },
-    { name: "Baked Scallops", price: "₱380", desc: "Fresh Guiuan scallops, garlic butter, herbs", img: "/photos/google/placejoys-8.jpg", popular: true },
-    { name: "Insalata di Mare", price: "₱420", desc: "Mixed seafood salad, lemon vinaigrette", img: "/photos/google/placejoys-8.jpg" },
-    { name: "Garlic Bread", price: "₱120", desc: "Toasted sourdough, garlic butter, parsley", img: "/photos/google/placejoys-8.jpg" },
-    { name: "Crostini Alla Livornese", price: "₱280", desc: "Tomato, olive, caper topping on crostini", img: "/photos/google/placejoys-5.jpg" },
-  ],
-  "Homemade Pasta": [
-    { name: "Ravioli Alla Panna", price: "₱380", desc: "Cheese ravioli, cream sauce", img: "/photos/google/wanderlog-2.jpg" },
-    { name: "Fettuccine Alfredo", price: "₱350", desc: "Fresh fettuccine, parmesan cream sauce", img: "/photos/google/wanderlog-2.jpg", popular: true },
-    { name: "Fettuccine Puttanesca", price: "₱350", desc: "Tomato, olive, caper, anchovy sauce", img: "/photos/google/wanderlog-2.jpg" },
-    { name: "Spaghetti Carbonara", price: "₱340", desc: "Egg, pancetta, pecorino, black pepper", img: "/photos/google/wanderlog-2.jpg" },
-    { name: "Pasta Supreme w/ Salsiccia", price: "₱380", desc: "Mixed pasta, Italian sausage, tomato sauce", img: "/photos/google/wanderlog-2.jpg" },
-  ],
-  "Pizza": [
-    { name: "Giuseppe's Special No. 1", price: "₱380", desc: "House specialty, wood-fired", img: "/photos/google/placejoys-3.jpg", popular: true },
-    { name: "Pizza Margherita", price: "₱320", desc: "San Marzano tomato, mozzarella, basil", img: "/photos/google/wanderlog-3.jpg" },
-    { name: "4 Cheese Pizza", price: "₱420", desc: "Mozzarella, parmesan, gorgonzola, fontina", img: "/photos/google/wanderlog-3.jpg" },
-    { name: "Pizza w/ Salsiccia", price: "₱400", desc: "Italian sausage, tomato sauce, mozzarella", img: "/photos/google/wanderlog-3.jpg" },
-    { name: "Hawaiian Pizza", price: "₱350", desc: "Ham, pineapple, cheese", img: "/photos/google/placejoys-7.jpg" },
-  ],
-  "Beef": [
-    { name: "Tenderloin alla Sorrentino", price: "₱680", desc: "USDA Choice tenderloin, tomato, mozzarella, herbs", img: "/photos/google/placejoys-2.jpg", popular: true },
-    { name: "Saltimbocca alla Romana", price: "₱620", desc: "Veal, prosciutto, sage, white wine", img: "/photos/google/placejoys-2.jpg" },
-    { name: "Ossobuco", price: "₱720", desc: "Braised veal shank, gremolata, risotto", img: "/photos/google/placejoys-2.jpg" },
-    { name: "Tenderloin w/ Marsala", price: "₱650", desc: "Mushroom marsala wine sauce", img: "/photos/google/placejoys-2.jpg" },
-  ],
-  "Seafood": [
-    { name: "Grilled Prawns", price: "₱580", desc: "Jumbo prawns, garlic butter, lemon", img: "/photos/google/placejoys-8.jpg" },
-    { name: "Lapu-Lapu Francese", price: "₱520", desc: "Fresh grouper, egg batter, lemon butter", img: "/photos/google/placejoys-8.jpg", popular: true },
-    { name: "Seafood Platter", price: "₱880", desc: "Calamari, lapu-lapu, shrimp, sword fish", img: "/photos/google/placejoys-8.jpg" },
-    { name: "Surf & Turf", price: "₱1,200", desc: "Sword fish, prawns, salsiccia, tenderloin (good for 2)", img: "/photos/google/placejoys-2.jpg" },
-  ],
-  "Pork": [
-    { name: "Grilled Porkchop", price: "₱420", desc: "Monterey pork, herb marinade, grilled", img: "/photos/google/placejoys-2.jpg", popular: true },
-    { name: "Porkchop Milanese", price: "₱450", desc: "Breaded pork chop, arugula, lemon", img: "/photos/google/placejoys-2.jpg" },
-    { name: "Porkchop w/ Mushroom Sauce", price: "₱450", desc: "Cream of mushroom, pan-grilled", img: "/photos/google/placejoys-2.jpg" },
-  ],
-  "Chicken": [
-    { name: "Chicken Milanese", price: "₱380", desc: "Breaded chicken breast, mushroom marsala", img: "/photos/google/placejoys-8.jpg" },
-    { name: "Chicken Parmigiana", price: "₱380", desc: "Breaded chicken, tomato sauce, melted cheese", img: "/photos/google/placejoys-8.jpg" },
-    { name: "Grilled Chicken Breast", price: "₱350", desc: "Herb-marinated, grilled, seasonal vegetables", img: "/photos/google/placejoys-8.jpg" },
-  ],
-  "Desserts": [
-    { name: "Tiramisu", price: "₱280", desc: "Espresso-soaked ladyfingers, mascarpone, cocoa", img: "/photos/google/placejoys-4.jpg", popular: true },
-    { name: "Zabaglione w/ Ice Cream", price: "₱250", desc: "Marsala wine custard, vanilla gelato", img: "/photos/google/wanderlog-1.jpg" },
-    { name: "Blueberry Cheesecake", price: "₱220", desc: "New York style, fresh blueberry compote", img: "/photos/google/wanderlog-1.jpg" },
-    { name: "Peaches & Ice Cream", price: "₱180", desc: "Fresh peaches, vanilla gelato", img: "/photos/google/wanderlog-1.jpg" },
-  ],
-  "Drinks": [
-    { name: "House Wine (Red/White)", price: "₱180/glass", desc: "Italian table wine, glass or carafe", img: "/photos/google/placejoys-1.jpg" },
-    { name: "Espresso", price: "₱120", desc: "Double-shot Italian espresso", img: "/photos/google/placejoys-1.jpg" },
-    { name: "Cappuccino", price: "₱150", desc: "Espresso, steamed milk, foam", img: "/photos/google/placejoys-1.jpg" },
-    { name: "Fresh Lemonade", price: "₱120", desc: "House-made, refreshing", img: "/photos/google/placejoys-1.jpg" },
-  ],
-};
-
-const DEFAULT_HOURS: Record<string, { open: string; close: string; open2?: string; close2?: string }> = {
-  Monday: { open: "11:00 AM", close: "4:00 PM", open2: "5:00 PM", close2: "9:30 PM" },
-  Tuesday: { open: "11:00 AM", close: "4:00 PM", open2: "5:00 PM", close2: "9:30 PM" },
-  Wednesday: { open: "11:00 AM", close: "4:00 PM", open2: "5:00 PM", close2: "9:30 PM" },
-  Thursday: { open: "11:00 AM", close: "4:00 PM", open2: "5:00 PM", close2: "9:30 PM" },
-  Friday: { open: "11:00 AM", close: "4:00 PM", open2: "5:00 PM", close2: "9:30 PM" },
-  Saturday: { open: "11:00 AM", close: "4:00 PM", open2: "5:00 PM", close2: "9:30 PM" },
-  Sunday: { open: "11:00 AM", close: "4:00 PM", open2: "5:00 PM", close2: "9:30 PM" },
-};
-
-const HOURS_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-const DEFAULT_PHOTOS = ["/photos/google/placejoys-1.jpg", "/photos/google/placejoys-10.jpg", "/photos/google/placejoys-3.jpg", "/photos/google/placejoys-2.jpg", "/photos/google/placejoys-4.jpg", "/photos/google/placejoys-5.jpg"];
-
-const DEFAULT_SETTINGS = {
-  name: "Giuseppe's",
-  phone: "0945 841 9400",
-  address: "173 Avenida Veteranos, Tacloban City, 6500 Leyte",
-  priceRange: "₱500–2,000",
-};
+import type { MenuData, HoursData, RestaurantSettings } from "@/lib/types";
+import { DEFAULT_MENU, DEFAULT_HOURS, DEFAULT_PHOTOS, DEFAULT_SETTINGS, HOURS_ORDER } from "@/lib/data";
 
 type Tab = "Menu" | "Hours" | "Photos" | "Settings";
 
+const STORAGE_KEY = "giuseppe_admin";
+
+function load<T>(key: string, fallback: T): T {
+  if (typeof window === "undefined") return fallback;
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function save(key: string, value: unknown) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+}
+
+function initAuth(): boolean {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem(STORAGE_KEY) === "1";
+}
+
+function initMenu(): MenuData {
+  return load("giuseppe_menu", DEFAULT_MENU);
+}
+
+function initHours(): HoursData {
+  return load("giuseppe_hours", DEFAULT_HOURS);
+}
+
+function initPhotos(): string[] {
+  const p = load<string[]>("giuseppe_photos", DEFAULT_PHOTOS);
+  return Array.isArray(p) && p.length > 0 ? p : DEFAULT_PHOTOS;
+}
+
+function initSettings(): RestaurantSettings {
+  return { ...DEFAULT_SETTINGS, ...load("giuseppe_settings", {}) };
+}
+
 export default function AdminPage() {
-  const [authed, setAuthed] = useState(false);
-  const [checking, setChecking] = useState(true);
+  const [authed, setAuthed] = useState<boolean>(initAuth);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [tab, setTab] = useState<Tab>("Menu");
   const [toast, setToast] = useState<string | null>(null);
 
-  const [menu, setMenu] = useState<typeof DEFAULT_MENU>(DEFAULT_MENU);
-  const [hours, setHours] = useState<typeof DEFAULT_HOURS>(DEFAULT_HOURS);
-  const [photos, setPhotos] = useState<string[]>(DEFAULT_PHOTOS);
-  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+  const [menu, setMenu] = useState<MenuData>(initMenu);
+  const [hours, setHours] = useState<HoursData>(initHours);
+  const [photos, setPhotos] = useState<string[]>(initPhotos);
+  const [settings, setSettings] = useState<RestaurantSettings>(initSettings);
   const [editingCat, setEditingCat] = useState<string | null>(null);
-
-  useEffect(() => {
-    try {
-      if (localStorage.getItem("giuseppe_admin") === "1") setAuthed(true);
-      const m = localStorage.getItem("giuseppe_menu");
-      if (m) setMenu(JSON.parse(m));
-      const h = localStorage.getItem("giuseppe_hours");
-      if (h) setHours(JSON.parse(h));
-      const p = localStorage.getItem("giuseppe_photos");
-      if (p) {
-        const parsed = JSON.parse(p);
-        if (Array.isArray(parsed) && parsed.length >= 1) setPhotos(parsed);
-      }
-      const s = localStorage.getItem("giuseppe_settings");
-      if (s) setSettings(JSON.parse(s));
-    } catch {}
-    setChecking(false);
-  }, []);
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -136,7 +80,7 @@ export default function AdminPage() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === "giuseppe2025") {
-      localStorage.setItem("giuseppe_admin", "1");
+      localStorage.setItem(STORAGE_KEY, "1");
       setAuthed(true);
       setError("");
     } else {
@@ -145,35 +89,15 @@ export default function AdminPage() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("giuseppe_admin");
+    localStorage.removeItem(STORAGE_KEY);
     setAuthed(false);
     setPassword("");
   };
 
-  const saveMenu = () => {
-    localStorage.setItem("giuseppe_menu", JSON.stringify(menu));
-    showToast("Menu saved");
-  };
-  const saveHours = () => {
-    localStorage.setItem("giuseppe_hours", JSON.stringify(hours));
-    showToast("Hours saved");
-  };
-  const savePhotos = () => {
-    localStorage.setItem("giuseppe_photos", JSON.stringify(photos));
-    showToast("Photos saved");
-  };
-  const saveSettings = () => {
-    localStorage.setItem("giuseppe_settings", JSON.stringify(settings));
-    showToast("Settings saved");
-  };
-
-  if (checking) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-white">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-amber-600 border-t-transparent" />
-      </div>
-    );
-  }
+  const saveMenu = () => { save("giuseppe_menu", menu); showToast("Menu saved"); };
+  const saveHours = () => { save("giuseppe_hours", hours); showToast("Hours saved"); };
+  const savePhotos = () => { save("giuseppe_photos", photos); showToast("Photos saved"); };
+  const saveSettings = () => { save("giuseppe_settings", settings); showToast("Settings saved"); };
 
   if (!authed) {
     return (
@@ -194,13 +118,12 @@ export default function AdminPage() {
               autoFocus
             />
             {error && <p className="text-xs font-medium text-red-600">{error}</p>}
-            <p className="text-xs text-stone-400">Hint: giuseppe2025</p>
             <button type="submit" className="flex w-full items-center justify-center rounded-full bg-amber-600 py-2.5 text-sm font-semibold text-white hover:bg-amber-700">
               Enter
             </button>
-            <a href="/" className="flex items-center justify-center gap-1.5 pt-2 text-sm text-stone-500 hover:text-amber-600">
+            <Link href="/" className="flex items-center justify-center gap-1.5 pt-2 text-sm text-stone-500 hover:text-amber-600">
               <ArrowLeft className="h-4 w-4" /> Back to site
-            </a>
+            </Link>
           </div>
         </form>
       </div>
@@ -209,7 +132,6 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-stone-50 text-zinc-900">
-      {/* Header */}
       <header className="sticky top-0 z-30 border-b border-stone-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
@@ -220,9 +142,9 @@ export default function AdminPage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <a href="/" className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-4 py-1.5 text-sm font-medium transition hover:bg-stone-50">
+            <Link href="/" className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-4 py-1.5 text-sm font-medium transition hover:bg-stone-50">
               <Eye className="h-4 w-4" /> View site
-            </a>
+            </Link>
             <button onClick={handleLogout} className="inline-flex items-center gap-1.5 rounded-full bg-zinc-900 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-black">
               <LogOut className="h-4 w-4" /> Logout
             </button>
@@ -230,7 +152,6 @@ export default function AdminPage() {
         </div>
       </header>
 
-      {/* Tabs */}
       <div className="mx-auto max-w-6xl px-4 pt-6">
         <div className="flex flex-wrap gap-2">
           {(
@@ -253,7 +174,6 @@ export default function AdminPage() {
       </div>
 
       <main className="mx-auto max-w-6xl px-4 py-6 pb-24">
-        {/* Menu tab */}
         {tab === "Menu" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -314,7 +234,7 @@ export default function AdminPage() {
                           <label className="inline-flex items-center gap-2 text-sm">
                             <input
                               type="checkbox"
-                              checked={!!item.popular}
+                              checked={item.popular}
                               onChange={(e) => {
                                 const copy = { ...menu };
                                 copy[cat] = [...copy[cat]];
@@ -341,7 +261,7 @@ export default function AdminPage() {
                     <button
                       onClick={() => {
                         const copy = { ...menu };
-                        copy[cat] = [...copy[cat], { name: "New Item", price: "₱0", desc: "", img: "/photos/real/food-1.jpg", popular: false }];
+                        copy[cat] = [...copy[cat], { name: "New Item", price: "₱0", desc: "", img: "/photos/google/placejoys-1.jpg", popular: false }];
                         setMenu(copy);
                       }}
                       className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-stone-300 bg-white py-2.5 text-sm font-medium text-stone-600 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700"
@@ -355,7 +275,6 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Hours tab */}
         {tab === "Hours" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -381,11 +300,11 @@ export default function AdminPage() {
                         <label key={f.key} className="space-y-1">
                           <span className="text-[11px] font-medium uppercase tracking-wide text-stone-500">{f.label}</span>
                           <input
-                            value={(h as any)[f.key] ?? ""}
+                            value={h[f.key as keyof typeof h] ?? ""}
                             onChange={(e) => {
                               setHours((prev) => ({
                                 ...prev,
-                                [day]: { ...prev[day], [f.key]: e.target.value },
+                                [day]: { ...prev[day], [f.key]: e.target.value } as typeof prev[typeof day],
                               }));
                             }}
                             placeholder={f.label}
@@ -401,7 +320,6 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Photos tab */}
         {tab === "Photos" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -473,7 +391,7 @@ export default function AdminPage() {
               ))}
             </div>
             <button
-              onClick={() => setPhotos((prev) => [...prev, "/photos/real/food-1.jpg"])}
+              onClick={() => setPhotos((prev) => [...prev, "/photos/google/placejoys-1.jpg"])}
               className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-stone-300 bg-white px-5 py-2.5 text-sm font-medium text-stone-600 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700"
             >
               <Plus className="h-4 w-4" /> Add Photo
@@ -481,7 +399,6 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Settings tab */}
         {tab === "Settings" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -519,8 +436,8 @@ export default function AdminPage() {
                 <label className="space-y-1">
                   <span className="text-xs font-medium uppercase tracking-wide text-stone-500">Price range</span>
                   <input
-                    value={settings.priceRange}
-                    onChange={(e) => setSettings((s) => ({ ...s, priceRange: e.target.value }))}
+                    value={settings.price}
+                    onChange={(e) => setSettings((s) => ({ ...s, price: e.target.value }))}
                     placeholder="₱500–2,000"
                     className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
                   />
@@ -531,13 +448,12 @@ export default function AdminPage() {
         )}
       </main>
 
-      {/* Toast */}
       {toast && (
         <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full bg-zinc-900 px-5 py-3 text-sm font-medium text-white shadow-xl">
           <span>{toast}</span>
-          <a href="/" className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-semibold text-zinc-900 hover:bg-stone-100">
+          <Link href="/" className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-semibold text-zinc-900 hover:bg-stone-100">
             View site <ExternalLink className="h-3 w-3" />
-          </a>
+          </Link>
         </div>
       )}
     </div>
