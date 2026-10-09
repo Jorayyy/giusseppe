@@ -97,12 +97,15 @@ export const DEFAULT_REVIEWS: Review[] = [
 ];
 
 export const PHOTOS = [
-  "/photos/1.jpg",
-  "/photos/2.jpg",
-  "/photos/3.jpg",
+  "/photos/interior-1.jpg",
   "/photos/4.jpg",
+  "/photos/dish-caesar.jpg",
+  "/photos/dish-cannoli.jpg",
+  "/photos/dish-pizza-pan.jpg",
   "/photos/5.jpg",
-  "/photos/6.jpg",
+  "/photos/dish-focaccia.jpg",
+  "/photos/dish-flatbread.jpg",
+  "/photos/dish-salad.jpg",
 ];
 
 export async function fetchMenu(): Promise<Record<string, MenuItem[]>> {

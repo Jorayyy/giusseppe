@@ -1,45 +1,49 @@
 "use client";
 
 import { useState } from "react";
-import { Phone, Navigation, Menu, X, MapPin, Clock, MessageSquare } from "lucide-react";
-import { RESTAURANT } from "@/lib/data";
+import Link from "next/link";
+import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { label: "Menu", href: "#menu", icon: MapPin },
-  { label: "Hours", href: "#hours", icon: Clock },
-  { label: "Contact", href: "#contact", icon: Phone },
-  { label: "Reserve", href: "#booking", icon: MessageSquare },
+  { label: "Menu", href: "/menu" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Visit", href: "#visit" },
 ];
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-40 border-b border-stone-200 bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-        <a href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-serif text-sm font-bold text-white">G</div>
-          <span className="font-serif text-lg font-bold tracking-tight">Giuseppe&apos;s</span>
-          <span className="hidden text-xs text-stone-500 sm:inline">· Tacloban</span>
-        </a>
+    <nav className="sticky top-0 z-50 border-b border-stone-200/70 bg-background/90 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-6">
+        <Link href="/" className="font-serif text-xl font-semibold tracking-tight text-stone-900">
+          Giuseppe&apos;s
+        </Link>
 
-        <div className="flex items-center gap-1.5">
-          <a href={RESTAURANT.phoneHref} className="inline-flex items-center justify-center rounded-full bg-primary p-2 text-white hover:bg-primary-light" aria-label="Call">
-            <Phone className="h-4 w-4" />
-          </a>
-          <a href={RESTAURANT.phoneHref} className="hidden items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-xs font-medium text-white hover:bg-primary-light md:inline-flex">
-            <Phone className="h-3.5 w-3.5" /> Call
-          </a>
-          <a href={RESTAURANT.mapsUrl} target="_blank" className="inline-flex items-center justify-center rounded-full border border-stone-200 bg-white p-2 text-stone-700 hover:bg-stone-50" aria-label="Directions">
-            <Navigation className="h-4 w-4" />
-          </a>
-          <a href={RESTAURANT.mapsUrl} target="_blank" className="hidden items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 md:inline-flex">
-            <Navigation className="h-3.5 w-3.5" /> Directions
+        <div className="hidden items-center gap-8 md:flex">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="link-underline text-sm font-medium text-stone-600 transition-colors hover:text-stone-900"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-3">
+          <a
+            href="#reserve"
+            className="hidden rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-light sm:inline-block"
+          >
+            Reserve a table
           </a>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-stone-100"
-            aria-label="Menu"
+            className="flex h-10 w-10 items-center justify-center rounded-md text-stone-700 hover:bg-stone-100 md:hidden"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -47,23 +51,24 @@ export default function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-stone-100 bg-white px-4 py-3">
-          <div className="flex flex-col gap-0.5">
-            {NAV_LINKS.map((link) => {
-              const Icon = link.icon;
-              return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-50 active:bg-stone-100"
-                >
-                  <Icon className="h-4 w-4 text-primary" />
-                  {link.label}
-                </a>
-              );
-            })}
-          </div>
+        <div className="border-t border-stone-200/70 bg-background px-6 pb-6 pt-2 md:hidden">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className="block border-b border-stone-200/60 py-3 text-sm font-medium text-stone-700"
+            >
+              {link.label}
+            </Link>
+          ))}
+          <a
+            href="#reserve"
+            onClick={() => setMobileOpen(false)}
+            className="mt-4 block rounded-md bg-primary px-4 py-3 text-center text-sm font-medium text-white"
+          >
+            Reserve a table
+          </a>
         </div>
       )}
     </nav>

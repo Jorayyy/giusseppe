@@ -1,4 +1,16 @@
-import RestaurantPage from "@/components/restaurant-page";
+import Navbar from "@/components/navbar";
+import Hero from "@/components/hero";
+import Story from "@/components/story";
+import MenuHighlights from "@/components/menu-highlights";
+import Gallery from "@/components/gallery";
+import ReviewQuote from "@/components/review-quote";
+import Visit from "@/components/visit";
+import Reserve from "@/components/reserve";
+import PrivateDining from "@/components/private-dining";
+import Perks from "@/components/perks";
+import Footer from "@/components/footer";
+
+export const revalidate = 60;
 
 export const metadata = {
   title: "Giuseppe's — Italian Restaurant · Tacloban City",
@@ -14,5 +26,21 @@ export const metadata = {
 };
 
 export default function Home() {
-  return <RestaurantPage />;
+  return (
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <Story />
+        <MenuHighlights />
+        <Gallery />
+        <ReviewQuote />
+        <Visit />
+        <Reserve />
+        <PrivateDining />
+        <Perks />
+      </main>
+      <Footer />
+    </>
+  );
 }
