@@ -1,86 +1,159 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Save,
   Plus,
   Trash2,
-  GripVertical,
   Star,
-  Image as ImageIcon,
   X,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
 import ImageUpload from "@/components/image-upload";
+import { MENU } from "@/lib/data";
 
-type MenuItem = { name: string; price: string; desc: string; popular?: boolean; image?: string };
-
-const DEFAULT_MENU: Record<string, MenuItem[]> = {
-  Antipasti: [
-    { name: "Focaccia", price: "₱180", desc: "Warm house-baked flatbread, rosemary, olive oil", popular: true, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop" },
-    { name: "Bruschetta al Pomodoro", price: "₱320", desc: "Grilled sourdough, fresh tomatoes, basil, extra virgin olive oil", popular: true, image: "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=400&h=300&fit=crop" },
-    { name: "Calamari Fritti", price: "₱480", desc: "Lightly fried squid, lemon aioli, marinara", image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&h=300&fit=crop" },
-    { name: "Antipasto Platter", price: "₱680", desc: "Prosciutto, salami, olives, cheese, artichokes, grilled bread", image: "https://images.unsplash.com/photo-1541014741259-de529411b96a?w=400&h=300&fit=crop" },
-    { name: "Baked Scallops", price: "₱580", desc: "Fresh scallops, garlic butter, parmesan crust", image: "https://images.unsplash.com/photo-1635146037526-a164a3b84f9b?w=400&h=300&fit=crop" },
-  ],
-  "Wood-Fired Pizza": [
-    { name: "Margherita", price: "₱420", desc: "San Marzano tomato, fresh mozzarella, basil", popular: true, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop" },
-    { name: "Prosciutto e Rucola", price: "₱520", desc: "Parma ham, wild arugula, parmesan shavings", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop" },
-    { name: "Hawaiian", price: "₱480", desc: "Ham, pineapple, mozzarella, tomato sauce", image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop" },
-    { name: "Quattro Formaggi", price: "₱520", desc: "Mozzarella, gorgonzola, parmesan, fontina", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop" },
-    { name: "Capricciosa", price: "₱520", desc: "Ham, mushrooms, artichokes, olives, mozzarella", image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=400&h=300&fit=crop" },
-  ],
-  Primi: [
-    { name: "Spaghetti Puttanesca", price: "₱420", desc: "Tomato sauce, olives, capers, anchovies, garlic", popular: true, image: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=400&h=300&fit=crop" },
-    { name: "Lasagna", price: "₱480", desc: "Layers of pasta, beef ragù, béchamel, mozzarella, parmesan", popular: true, image: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&h=300&fit=crop" },
-    { name: "Ravioli", price: "₱520", desc: "House-made ricotta & spinach pasta, sage butter", image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&h=300&fit=crop" },
-    { name: "Spaghetti al Salsiccia", price: "₱450", desc: "Italian sausage, garlic, chili flakes, olive oil", image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop" },
-    { name: "Risotto ai Funghi", price: "₱580", desc: "Creamy carnaroli rice, porcini, wild mushrooms, thyme", image: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=400&h=300&fit=crop" },
-    { name: "Cacio e Pepe", price: "₱420", desc: "Tonarelli, black pepper, Pecorino Romano DOP", image: "https://images.unsplash.com/photo-1677756119517-756a6a555c7f?w=400&h=300&fit=crop" },
-  ],
-  Secondi: [
-    { name: "Grilled Pork Chop", price: "₱580", desc: "Marinated bone-in pork chop, garlic mashed potatoes, vegetables", popular: true, image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop" },
-    { name: "Chicken Milanese", price: "₱480", desc: "Crispy breaded chicken breast, Marsala sauce, pasta", popular: true, image: "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=400&h=300&fit=crop" },
-    { name: "Grilled Salmon", price: "₱680", desc: "Fresh salmon fillet, lemon butter, seasonal vegetables", image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=300&fit=crop" },
-    { name: "Ribeye Steak", price: "₱980", desc: "USDA ribeye, your choice of peppercorn or mushroom sauce", image: "https://images.unsplash.com/photo-1600891964092-4316c288032e?w=400&h=300&fit=crop" },
-    { name: "Pork Ribs", price: "₱780", desc: "Slow-cooked spare ribs, BBQ glaze, coleslaw", image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop" },
-    { name: "Melanzane alla Parmigiana", price: "₱420", desc: "Baked eggplant, San Marzano tomato, mozzarella, basil", image: "https://images.unsplash.com/photo-1625943553852-781c6dd46faa?w=400&h=300&fit=crop" },
-  ],
-  Dolci: [
-    { name: "Tiramisu", price: "₱320", desc: "Espresso-soaked savoiardi, mascarpone cream, cocoa", popular: true, image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop" },
-    { name: "Panna Cotta", price: "₱280", desc: "Vanilla panna cotta, warm berry compote", image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=300&fit=crop" },
-  ],
-  Drinks: [
-    { name: "House Wine (Red/White)", price: "₱280", desc: "Selected Italian wine, glass", image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=300&fit=crop" },
-    { name: "Negroni", price: "₱380", desc: "Campari, sweet vermouth, gin", image: "https://images.unsplash.com/photo-1514362545857-3bc16c1c57e7?w=400&h=300&fit=crop" },
-    { name: "Amalfi Spritz", price: "₱350", desc: "Limoncello, prosecco, soda, basil", image: "https://images.unsplash.com/photo-1560512823-829485b8bf24?w=400&h=300&fit=crop" },
-    { name: "San Pellegrino", price: "₱120", desc: "Sparkling mineral water, 500ml", image: "https://images.unsplash.com/photo-1523362628745-0c100fc988a5?w=400&h=300&fit=crop" },
-  ],
+type MenuItem = {
+  id?: string;
+  name: string;
+  price: string;
+  desc: string;
+  popular?: boolean;
+  image?: string;
 };
 
+type ApiItem = {
+  id: string;
+  name: string;
+  price: string;
+  description: string;
+  category: string;
+  image: string | null;
+  popular: boolean;
+};
+
+const CACHE_KEY = "giuseppe_menu";
+
+function mapGrouped(grouped: Record<string, ApiItem[]>): Record<string, MenuItem[]> {
+  const mapped: Record<string, MenuItem[]> = {};
+  for (const [cat, items] of Object.entries(grouped)) {
+    mapped[cat] = items.map((i) => ({
+      id: i.id,
+      name: i.name,
+      price: i.price,
+      desc: i.description,
+      popular: i.popular,
+      image: i.image ?? undefined,
+    }));
+  }
+  return mapped;
+}
+
+function flatten(menu: Record<string, MenuItem[]>) {
+  return Object.entries(menu).flatMap(([category, items]) =>
+    items.map((item, index) => ({ category, item, index }))
+  );
+}
+
 export default function MenuEditorPage() {
-  const [menu, setMenu] = useState<Record<string, MenuItem[]>>(DEFAULT_MENU);
+  const [menu, setMenu] = useState<Record<string, MenuItem[]>>(MENU);
   const [toast, setToast] = useState<string | null>(null);
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(Object.keys(DEFAULT_MENU)));
+  const [saving, setSaving] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(Object.keys(MENU)));
   const [newCategoryName, setNewCategoryName] = useState("");
   const [showNewCategory, setShowNewCategory] = useState(false);
 
-  useEffect(() => {
-    try {
-      const m = localStorage.getItem("giuseppe_menu");
-      if (m) setMenu(JSON.parse(m));
-    } catch {}
-  }, []);
-
-  const showToast = (msg: string) => {
+  const showToast = useCallback((msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(null), 3000);
-  };
+  }, []);
 
-  const save = () => {
-    localStorage.setItem("giuseppe_menu", JSON.stringify(menu));
-    showToast("Menu saved successfully");
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/menu");
+        if (!res.ok) throw new Error("bad status");
+        const json = await res.json();
+        const grouped = json.data as Record<string, ApiItem[]> | undefined;
+        if (!grouped || Object.keys(grouped).length === 0) throw new Error("empty");
+        if (cancelled) return;
+        const mapped = mapGrouped(grouped);
+        setMenu(mapped);
+        setExpandedCategories(new Set(Object.keys(mapped)));
+        return;
+      } catch {}
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached && !cancelled) {
+          const parsed = JSON.parse(cached);
+          setMenu(parsed);
+          setExpandedCategories(new Set(Object.keys(parsed)));
+        }
+      } catch {}
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const save = async () => {
+    if (saving) return;
+    setSaving(true);
+    try {
+      const entries = flatten(menu);
+      const keepIds = new Set(entries.map((e) => e.item.id).filter(Boolean));
+
+      const currentRes = await fetch("/api/menu");
+      if (!currentRes.ok) throw new Error("db down");
+      const currentJson = await currentRes.json();
+      const remote: ApiItem[] = Object.values(currentJson.data ?? {}) as ApiItem[];
+
+      for (const [i, { category, item }] of entries.entries()) {
+        const payload = {
+          name: item.name,
+          price: item.price,
+          description: item.desc,
+          category,
+          image: item.image || null,
+          popular: !!item.popular,
+          sortOrder: i,
+        };
+        const res = await fetch("/api/menu", {
+          method: item.id ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(item.id ? { id: item.id, ...payload } : payload),
+        });
+        if (!res.ok) throw new Error("write failed");
+      }
+
+      for (const r of remote) {
+        if (!keepIds.has(r.id)) {
+          const res = await fetch(`/api/menu?id=${r.id}`, { method: "DELETE" });
+          if (!res.ok) throw new Error("delete failed");
+        }
+      }
+
+      const again = await fetch("/api/menu");
+      if (again.ok) {
+        const json = await again.json();
+        if (json.data && Object.keys(json.data).length > 0) {
+          setMenu(mapGrouped(json.data));
+        }
+      }
+      try {
+        localStorage.removeItem(CACHE_KEY);
+      } catch {}
+      showToast("Menu saved");
+    } catch {
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(menu));
+        showToast("Saved locally — database unreachable");
+      } catch {
+        showToast("Couldn't save — try again");
+      }
+    }
+    setSaving(false);
   };
 
   const toggleCategory = (cat: string) => {
@@ -150,9 +223,10 @@ export default function MenuEditorPage() {
         </div>
         <button
           onClick={save}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition"
+          disabled={saving}
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition disabled:opacity-60"
         >
-          <Save className="h-4 w-4" /> Save Changes
+          <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
         </button>
       </div>
 
@@ -174,11 +248,12 @@ export default function MenuEditorPage() {
         {Object.entries(menu).map(([cat, items]) => (
           <div key={cat} className="rounded-2xl border border-stone-200 bg-white">
             {/* Category header */}
-            <button
-              onClick={() => toggleCategory(cat)}
-              className="flex w-full items-center justify-between p-4 text-left"
-            >
-              <div className="flex items-center gap-3">
+            <div className="flex w-full items-center justify-between p-4 text-left">
+              <button
+                onClick={() => toggleCategory(cat)}
+                className="flex flex-1 items-center gap-3 text-left"
+                aria-expanded={expandedCategories.has(cat)}
+              >
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-100">
                   {expandedCategories.has(cat) ? (
                     <ChevronUp className="h-4 w-4 text-stone-600" />
@@ -190,17 +265,15 @@ export default function MenuEditorPage() {
                   <h3 className="font-serif text-lg font-semibold text-stone-900">{cat}</h3>
                   <p className="text-xs text-stone-500">{items.length} items</p>
                 </div>
-              </div>
+              </button>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deleteCategory(cat);
-                }}
+                onClick={() => deleteCategory(cat)}
+                aria-label={`Delete ${cat}`}
                 className="rounded-lg p-2 text-stone-400 hover:bg-red-50 hover:text-red-500 transition"
               >
                 <Trash2 className="h-4 w-4" />
               </button>
-            </button>
+            </div>
 
             {/* Items */}
             {expandedCategories.has(cat) && (
@@ -211,13 +284,14 @@ export default function MenuEditorPage() {
                     className="group rounded-xl border border-stone-100 bg-stone-50/50 p-4 transition hover:border-stone-200"
                   >
                     <div className="flex items-start gap-3">
-                      {/* Drag handle & image */}
+                      {/* Order & image */}
                       <div className="flex flex-col items-center gap-2">
                         <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition">
                           <button
                             onClick={() => moveItem(cat, idx, -1)}
                             disabled={idx === 0}
                             className="rounded p-0.5 text-stone-400 hover:text-stone-600 disabled:opacity-30"
+                            aria-label="Move up"
                           >
                             <ChevronUp className="h-3 w-3" />
                           </button>
@@ -225,6 +299,7 @@ export default function MenuEditorPage() {
                             onClick={() => moveItem(cat, idx, 1)}
                             disabled={idx === items.length - 1}
                             className="rounded p-0.5 text-stone-400 hover:text-stone-600 disabled:opacity-30"
+                            aria-label="Move down"
                           >
                             <ChevronDown className="h-3 w-3" />
                           </button>
@@ -326,6 +401,7 @@ export default function MenuEditorPage() {
           <button
             onClick={() => { setShowNewCategory(false); setNewCategoryName(""); }}
             className="rounded-lg p-2 text-stone-400 hover:text-stone-600"
+            aria-label="Cancel"
           >
             <X className="h-4 w-4" />
           </button>
@@ -343,9 +419,10 @@ export default function MenuEditorPage() {
       <div className="flex justify-end pb-8">
         <button
           onClick={save}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-light transition"
+          disabled={saving}
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-light transition disabled:opacity-60"
         >
-          <Save className="h-4 w-4" /> Save Changes
+          <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
         </button>
       </div>
 

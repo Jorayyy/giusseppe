@@ -6,8 +6,8 @@ import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "Menu", href: "/menu" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Visit", href: "#visit" },
+  { label: "Gallery", href: "/#gallery" },
+  { label: "Visit", href: "/#visit" },
 ];
 
 export default function Navbar() {
@@ -33,12 +33,12 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <a
-            href="#reserve"
+          <Link
+            href="/#reserve"
             className="hidden rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-light sm:inline-block"
           >
             Reserve a table
-          </a>
+          </Link>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="flex h-10 w-10 items-center justify-center rounded-md text-stone-700 hover:bg-stone-100 md:hidden"
@@ -62,13 +62,13 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <a
-            href="#reserve"
+          <Link
+            href="/#reserve"
             onClick={() => setMobileOpen(false)}
             className="mt-4 block rounded-md bg-primary px-4 py-3 text-center text-sm font-medium text-white"
           >
             Reserve a table
-          </a>
+          </Link>
         </div>
       )}
     </nav>

@@ -177,9 +177,8 @@ export default function Perks() {
                 </div>
               </div>
             )}
-            {!card && phone.trim() === "" && null}
             {loyaltyMsg && <p className="mt-3 text-sm text-stone-600">{loyaltyMsg}</p>}
-            {card === null && phone.trim() !== "" && !loyaltyMsg && (
+            {card === null && phone.trim() !== "" && (
               <button
                 type="button"
                 onClick={() => addStamp(true)}

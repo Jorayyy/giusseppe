@@ -64,13 +64,13 @@ export default function Footer() {
             <Link href="/menu" className="transition-colors hover:text-white">
               Menu
             </Link>
-            <Link href="#gallery" className="transition-colors hover:text-white">
+            <Link href="/#gallery" className="transition-colors hover:text-white">
               Gallery
             </Link>
-            <Link href="#visit" className="transition-colors hover:text-white">
+            <Link href="/#visit" className="transition-colors hover:text-white">
               Visit
             </Link>
-            <Link href="#reserve" className="transition-colors hover:text-white">
+            <Link href="/#reserve" className="transition-colors hover:text-white">
               Reserve
             </Link>
           </nav>
