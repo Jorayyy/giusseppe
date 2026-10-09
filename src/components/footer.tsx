@@ -45,9 +45,9 @@ export default async function Footer() {
             ]
               .filter((row): row is { dt: string; dd: string } => row !== null)
               .map((row) => (
-                <div key={row.dt} className="flex justify-between gap-4">
-                  <dt>{row.dt}</dt>
-                  <dd className="text-right tabular-nums text-stone-300">{row.dd}</dd>
+                <div key={row.dt} className="grid grid-cols-[4.75rem_1fr] items-baseline gap-x-4">
+                  <dt className="text-stone-500">{row.dt}</dt>
+                  <dd className="text-right tabular-nums leading-relaxed text-stone-300">{row.dd}</dd>
                 </div>
               ))}
           </dl>
