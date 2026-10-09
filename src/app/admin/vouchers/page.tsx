@@ -15,12 +15,14 @@ import {
 } from "lucide-react";
 
 interface Voucher {
+  id?: string;
   code: string;
   type: "discount" | "free-item";
   value: number;
   description: string;
   active: boolean;
   createdAt: number;
+  redeemCount?: number;
 }
 
 const VOUCHERS_KEY = "giuseppe_vouchers";
@@ -32,33 +34,72 @@ const DEFAULT_VOUCHERS: Voucher[] = [
   { code: "WINE50", type: "discount", value: 50, description: "₱50 off wine selection", active: true, createdAt: Date.now() },
 ];
 
+type ApiVoucher = {
+  id: string;
+  code: string;
+  type: "discount" | "free-item";
+  value: number;
+  description: string | null;
+  active: boolean;
+  createdAt: string;
+  _count?: { redemptions: number };
+};
+
+function mapApiVoucher(v: ApiVoucher): Voucher {
+  return {
+    id: v.id,
+    code: v.code,
+    type: v.type,
+    value: v.value,
+    description: v.description || "",
+    active: v.active,
+    createdAt: Date.parse(v.createdAt) || Date.now(),
+    redeemCount: v._count?.redemptions ?? 0,
+  };
+}
+
 export default function VouchersPage() {
   const [vouchers, setVouchers] = useState<Voucher[]>(DEFAULT_VOUCHERS);
   const [redeemed, setRedeemed] = useState<Record<string, number>>({});
   const [toast, setToast] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [newCode, setNewCode] = useState("");
   const [newType, setNewType] = useState<"discount" | "free-item">("discount");
   const [newValue, setNewValue] = useState("");
   const [newDesc, setNewDesc] = useState("");
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(VOUCHERS_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved) as Voucher[];
-        setVouchers(parsed.length > 0 ? parsed : DEFAULT_VOUCHERS);
-      }
-      const savedRedeemed = localStorage.getItem(REDEEMED_KEY);
-      if (savedRedeemed) {
-        const list = JSON.parse(savedRedeemed) as { code: string }[];
-        const counts: Record<string, number> = {};
-        list.forEach((r) => {
-          counts[r.code] = (counts[r.code] || 0) + 1;
-        });
-        setRedeemed(counts);
-      }
-    } catch {}
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/vouchers");
+        if (!res.ok) throw new Error("db down");
+        const json = await res.json();
+        if (!Array.isArray(json.data) || json.data.length === 0) throw new Error("empty");
+        if (!cancelled) setVouchers(json.data.map(mapApiVoucher));
+        return;
+      } catch {}
+      try {
+        const saved = localStorage.getItem(VOUCHERS_KEY);
+        if (saved && !cancelled) {
+          const parsed = JSON.parse(saved) as Voucher[];
+          if (parsed.length > 0) setVouchers(parsed);
+        }
+        const savedRedeemed = localStorage.getItem(REDEEMED_KEY);
+        if (savedRedeemed && !cancelled) {
+          const list = JSON.parse(savedRedeemed) as { code: string }[];
+          const counts: Record<string, number> = {};
+          list.forEach((r) => {
+            counts[r.code] = (counts[r.code] || 0) + 1;
+          });
+          setRedeemed(counts);
+        }
+      } catch {}
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const showToast = (msg: string) => {
@@ -66,9 +107,59 @@ export default function VouchersPage() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const save = () => {
-    localStorage.setItem(VOUCHERS_KEY, JSON.stringify(vouchers));
-    showToast("Vouchers saved successfully");
+  const save = async () => {
+    if (saving) return;
+    setSaving(true);
+    try {
+      const currentRes = await fetch("/api/vouchers");
+      if (!currentRes.ok) throw new Error("db down");
+      const currentJson = await currentRes.json();
+      const remote: ApiVoucher[] = Array.isArray(currentJson.data) ? currentJson.data : [];
+      const remoteById = new Map(remote.map((r) => [r.id, r]));
+      const localIds = new Set(vouchers.map((v) => v.id).filter(Boolean) as string[]);
+
+      for (const v of vouchers) {
+        const payload = { code: v.code, type: v.type, value: v.value, description: v.description };
+        if (v.id) {
+          const before = remoteById.get(v.id);
+          if (before && before.active !== v.active) {
+            const res = await fetch("/api/vouchers", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id: v.id, active: v.active }),
+            });
+            if (!res.ok) throw new Error("update failed");
+          }
+        } else {
+          const res = await fetch("/api/vouchers", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...payload, active: v.active }),
+          });
+          if (!res.ok) throw new Error("create failed");
+        }
+      }
+
+      for (const r of remote) {
+        if (!localIds.has(r.id)) {
+          const res = await fetch(`/api/vouchers/${r.id}`, { method: "DELETE" });
+          if (!res.ok) throw new Error("delete failed");
+        }
+      }
+
+      const again = await fetch("/api/vouchers");
+      if (again.ok) {
+        const json = await again.json();
+        if (Array.isArray(json.data) && json.data.length > 0) {
+          setVouchers(json.data.map(mapApiVoucher));
+        }
+      }
+      showToast("Vouchers saved");
+    } catch {
+      localStorage.setItem(VOUCHERS_KEY, JSON.stringify(vouchers));
+      showToast("Saved locally — database unreachable");
+    }
+    setSaving(false);
   };
 
   const addVoucher = () => {
@@ -105,7 +196,7 @@ export default function VouchersPage() {
     showToast("Voucher deleted");
   };
 
-  const totalRedeemed = Object.values(redeemed).reduce((a, b) => a + b, 0);
+  const totalRedeemed = vouchers.reduce((sum, v) => sum + (v.redeemCount ?? redeemed[v.code] ?? 0), 0);
   const activeCount = vouchers.filter((v) => v.active).length;
 
   return (
@@ -116,10 +207,10 @@ export default function VouchersPage() {
           <p className="mt-1 text-stone-500">Manage voucher codes and track redemptions.</p>
         </div>
         <button
-          onClick={save}
+          onClick={save} disabled={saving}
           className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition"
         >
-          <Save className="h-4 w-4" /> Save Changes
+          <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
         </button>
       </div>
 
@@ -172,7 +263,7 @@ export default function VouchersPage() {
                   <div className="mt-1 flex items-center gap-3 text-xs text-stone-400">
                     <span>{v.type === "discount" ? `₱${v.value} off` : "Free item"}</span>
                     <span>•</span>
-                    <span>{redeemed[v.code] || 0} redeemed</span>
+                    <span>{v.redeemCount ?? redeemed[v.code] ?? 0} redeemed</span>
                   </div>
                 </div>
               </div>
@@ -279,10 +370,10 @@ export default function VouchersPage() {
       {/* Save button bottom */}
       <div className="flex justify-end pb-8">
         <button
-          onClick={save}
+          onClick={save} disabled={saving}
           className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-light transition"
         >
-          <Save className="h-4 w-4" /> Save Changes
+          <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
         </button>
       </div>
 

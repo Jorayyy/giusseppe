@@ -11,37 +11,11 @@ import {
   Star,
   Copy,
   ExternalLink,
-  QrCode,
   ArrowRight,
   CheckCircle2,
   BarChart3,
 } from "lucide-react";
-
-const DEFAULT_MENU: Record<string, { name: string; price: string; desc: string; popular?: boolean; image?: string }[]> = {
-  Antipasti: [
-    { name: "Focaccia", price: "₱180", desc: "Warm house-baked flatbread, rosemary, olive oil", popular: true },
-    { name: "Bruschetta al Pomodoro", price: "₱320", desc: "Grilled sourdough, fresh tomatoes, basil, extra virgin olive oil", popular: true },
-    { name: "Calamari Fritti", price: "₱480", desc: "Lightly fried squid, lemon aioli, marinara" },
-  ],
-  "Wood-Fired Pizza": [
-    { name: "Margherita", price: "₱420", desc: "San Marzano tomato, fresh mozzarella, basil", popular: true },
-    { name: "Prosciutto e Rucola", price: "₱520", desc: "Parma ham, wild arugula, parmesan shavings" },
-  ],
-  Primi: [
-    { name: "Spaghetti Puttanesca", price: "₱420", desc: "Tomato sauce, olives, capers, anchovies, garlic", popular: true },
-    { name: "Lasagna", price: "₱480", desc: "Layers of pasta, beef ragù, béchamel, mozzarella, parmesan", popular: true },
-  ],
-  Secondi: [
-    { name: "Grilled Pork Chop", price: "₱580", desc: "Marinated bone-in pork chop, garlic mashed potatoes, vegetables", popular: true },
-    { name: "Chicken Milanese", price: "₱480", desc: "Crispy breaded chicken breast, Marsala sauce, pasta", popular: true },
-  ],
-  Dolci: [
-    { name: "Tiramisu", price: "₱320", desc: "Espresso-soaked savoiardi, mascarpone cream, cocoa", popular: true },
-  ],
-  Drinks: [
-    { name: "House Wine (Red/White)", price: "₱280", desc: "Selected Italian wine, glass" },
-  ],
-};
+import { MENU } from "@/lib/data";
 
 const QUICK_ACTIONS = [
   { label: "Sales Dashboard", href: "/admin/sales", icon: BarChart3, color: "bg-primary text-white" },
@@ -52,14 +26,28 @@ const QUICK_ACTIONS = [
 ];
 
 export default function AdminDashboard() {
-  const [menu, setMenu] = useState(DEFAULT_MENU);
+  const [menu, setMenu] = useState(MENU);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    try {
-      const m = localStorage.getItem("giuseppe_menu");
-      if (m) setMenu(JSON.parse(m));
-    } catch {}
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/menu");
+        if (!res.ok) throw new Error("db down");
+        const json = await res.json();
+        if (!json.data || Object.keys(json.data).length === 0) throw new Error("empty");
+        if (!cancelled) setMenu(json.data);
+        return;
+      } catch {}
+      try {
+        const m = localStorage.getItem("giuseppe_menu");
+        if (m && !cancelled) setMenu(JSON.parse(m));
+      } catch {}
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const totalItems = Object.values(menu).flat().length;
@@ -172,7 +160,7 @@ export default function AdminDashboard() {
               className="flex items-center gap-2 rounded-xl bg-stone-50 px-4 py-3 text-sm text-stone-700 hover:bg-stone-100 transition"
             >
               <UtensilsCrossed className="h-4 w-4 text-stone-400" />
-              Photo Menu — giusseppe.vercel.app/menu
+              Menu — giusseppe.vercel.app/menu
             </a>
           </div>
           <button

@@ -3,7 +3,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const vouchers = await prisma.voucher.findMany({ orderBy: { createdAt: "desc" } });
+    const vouchers = await prisma.voucher.findMany({
+      orderBy: { createdAt: "desc" },
+      include: { _count: { select: { redemptions: true } } },
+    });
     return NextResponse.json({ data: vouchers });
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch vouchers" }, { status: 500 });

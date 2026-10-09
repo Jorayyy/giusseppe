@@ -26,10 +26,25 @@ export default function SettingsEditorPage() {
   const [toast, setToast] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const s = localStorage.getItem("giuseppe_settings");
-      if (s) setSettings(JSON.parse(s));
-    } catch {}
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/settings");
+        if (!res.ok) throw new Error("db down");
+        const json = await res.json();
+        const data = json.data as Record<string, string> | undefined;
+        if (!data || Object.keys(data).length === 0) throw new Error("empty");
+        if (!cancelled) setSettings((prev) => ({ ...prev, ...data }));
+        return;
+      } catch {}
+      try {
+        const s = localStorage.getItem("giuseppe_settings");
+        if (s && !cancelled) setSettings(JSON.parse(s));
+      } catch {}
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const showToast = (msg: string) => {
@@ -37,9 +52,22 @@ export default function SettingsEditorPage() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const save = () => {
-    localStorage.setItem("giuseppe_settings", JSON.stringify(settings));
-    showToast("Settings saved successfully");
+  const save = async () => {
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          settings: Object.entries(settings).map(([key, value]) => ({ key, value })),
+        }),
+      });
+      if (!res.ok) throw new Error("db down");
+      localStorage.removeItem("giuseppe_settings");
+      showToast("Settings saved");
+    } catch {
+      localStorage.setItem("giuseppe_settings", JSON.stringify(settings));
+      showToast("Saved locally — database unreachable");
+    }
   };
 
   const resetToDefault = () => {

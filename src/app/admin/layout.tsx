@@ -18,6 +18,7 @@ import {
   X,
   BarChart3,
   MessageSquare,
+  Users,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -28,6 +29,7 @@ const NAV_ITEMS = [
   { href: "/admin/photos", label: "Photos", icon: Camera },
   { href: "/admin/loyalty", label: "Loyalty", icon: Gift },
   { href: "/admin/vouchers", label: "Vouchers", icon: Ticket },
+  { href: "/admin/waitlist", label: "Waitlist", icon: Users },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];

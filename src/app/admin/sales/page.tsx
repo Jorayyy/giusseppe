@@ -137,7 +137,7 @@ export default function AdminSalesPage() {
       </div>
 
       {/* Date Range */}
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {(Object.keys(DATE_LABELS) as DateRange[]).map((r) => (
           <button
             key={r}

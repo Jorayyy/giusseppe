@@ -14,14 +14,25 @@ import {
   Bell,
 } from "lucide-react";
 
-interface WaitlistEntry {
+type WaitlistEntry = {
   id: string;
   name: string;
   phone: string;
   partySize: number;
-  preferredTime: string;
+  preferredTime: string | null;
   joinedAt: number;
-}
+  position?: number;
+};
+
+type ApiEntry = {
+  id: string;
+  name: string;
+  phone: string;
+  partySize: number;
+  preferredTime: string | null;
+  createdAt: string;
+  position: number;
+};
 
 const STORAGE_KEY = "giuseppe_waitlist";
 const SERVED_KEY = "giuseppe_waitlist_served";
@@ -43,37 +54,80 @@ function formatTime(ts: number) {
   });
 }
 
+function readServedToday(): number {
+  try {
+    const s = localStorage.getItem(SERVED_KEY);
+    const served: number[] = s ? JSON.parse(s) : [];
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    return served.filter((ts) => ts >= todayStart.getTime()).length;
+  } catch {
+    return 0;
+  }
+}
+
+function bumpServed() {
+  try {
+    const s = localStorage.getItem(SERVED_KEY);
+    const served: number[] = s ? JSON.parse(s) : [];
+    served.push(Date.now());
+    localStorage.setItem(SERVED_KEY, JSON.stringify(served.slice(-100)));
+  } catch {}
+}
+
 export default function AdminWaitlistPage() {
   const [entries, setEntries] = useState<WaitlistEntry[]>([]);
   const [servedToday, setServedToday] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [apiMode, setApiMode] = useState(false);
 
-  const load = useCallback(() => {
+  const load = useCallback(async () => {
+    const now = Date.now();
+    try {
+      const res = await fetch("/api/waitlist");
+      if (!res.ok) throw new Error("db down");
+      const json = await res.json();
+      if (!Array.isArray(json.data)) throw new Error("bad payload");
+      const all: ApiEntry[] = json.data;
+      const expired = all.filter((e) => now - Date.parse(e.createdAt) > AUTO_REMOVE_MS);
+      for (const e of expired) {
+        fetch("/api/waitlist", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: e.id, status: "left" }),
+        }).catch(() => {});
+      }
+      const active = all
+        .filter((e) => now - Date.parse(e.createdAt) <= AUTO_REMOVE_MS)
+        .map((e) => ({
+          id: e.id,
+          name: e.name,
+          phone: e.phone,
+          partySize: e.partySize,
+          preferredTime: e.preferredTime,
+          joinedAt: Date.parse(e.createdAt),
+          position: e.position,
+        }));
+      setEntries(active);
+      setApiMode(true);
+      setServedToday(readServedToday());
+      setLoading(false);
+      return;
+    } catch {}
+    setApiMode(false);
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       let list: WaitlistEntry[] = raw ? JSON.parse(raw) : [];
-
-      const now = Date.now();
-      const expired = list.filter((e) => now - e.joinedAt > AUTO_REMOVE_MS);
-      if (expired.length > 0) {
+      const expiredLocal = list.filter((e) => now - e.joinedAt > AUTO_REMOVE_MS);
+      if (expiredLocal.length > 0) {
         list = list.filter((e) => now - e.joinedAt <= AUTO_REMOVE_MS);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
       }
-
       setEntries(list);
     } catch {
       setEntries([]);
     }
-    try {
-      const s = localStorage.getItem(SERVED_KEY);
-      const served: number[] = s ? JSON.parse(s) : [];
-      const todayStart = new Date();
-      todayStart.setHours(0, 0, 0, 0);
-      const todayServed = served.filter((ts) => ts >= todayStart.getTime()).length;
-      setServedToday(todayServed);
-    } catch {
-      setServedToday(0);
-    }
+    setServedToday(readServedToday());
     setLoading(false);
   }, []);
 
@@ -83,22 +137,52 @@ export default function AdminWaitlistPage() {
     return () => clearInterval(interval);
   }, [load]);
 
-  const persist = (list: WaitlistEntry[]) => {
+  const persistLocal = (list: WaitlistEntry[]) => {
     setEntries(list);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
   };
 
-  const seat = (id: string) => {
+  const swapPositions = async (idx: number, otherIdx: number) => {
+    const list = [...entries];
+    const a = list[idx];
+    const b = list[otherIdx];
+    [list[idx], list[otherIdx]] = [b, a];
+    if (apiMode) {
+      setEntries(list);
+      const payloads = [
+        { id: a.id, position: b.position ?? otherIdx + 1 },
+        { id: b.id, position: a.position ?? idx + 1 },
+      ];
+      const results = await Promise.all(
+        payloads.map((p) =>
+          fetch("/api/waitlist", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(p),
+          }).then((r) => r.ok)
+        )
+      );
+      if (results.every(Boolean)) load();
+      return;
+    }
+    persistLocal(list);
+  };
+
+  const seat = async (id: string) => {
     const entry = entries.find((e) => e.id === id);
     if (!entry) return;
-    persist(entries.filter((e) => e.id !== id));
-    try {
-      const s = localStorage.getItem(SERVED_KEY);
-      const served: number[] = s ? JSON.parse(s) : [];
-      served.push(Date.now());
-      localStorage.setItem(SERVED_KEY, JSON.stringify(served.slice(-100)));
-      setServedToday((p) => p + 1);
-    } catch {}
+    bumpServed();
+    setServedToday((p) => p + 1);
+    if (apiMode) {
+      setEntries(entries.filter((e) => e.id !== id));
+      fetch("/api/waitlist", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status: "seated" }),
+      }).catch(() => {});
+      return;
+    }
+    persistLocal(entries.filter((e) => e.id !== id));
   };
 
   const notify = (entry: WaitlistEntry) => {
@@ -107,20 +191,21 @@ export default function AdminWaitlistPage() {
 
   const moveUp = (idx: number) => {
     if (idx === 0) return;
-    const list = [...entries];
-    [list[idx - 1], list[idx]] = [list[idx], list[idx - 1]];
-    persist(list);
+    swapPositions(idx, idx - 1);
   };
 
   const moveDown = (idx: number) => {
     if (idx >= entries.length - 1) return;
-    const list = [...entries];
-    [list[idx], list[idx + 1]] = [list[idx + 1], list[idx]];
-    persist(list);
+    swapPositions(idx, idx + 1);
   };
 
-  const remove = (id: string) => {
-    persist(entries.filter((e) => e.id !== id));
+  const remove = async (id: string) => {
+    if (apiMode) {
+      setEntries(entries.filter((e) => e.id !== id));
+      fetch(`/api/waitlist?id=${id}`, { method: "DELETE" }).catch(() => {});
+      return;
+    }
+    persistLocal(entries.filter((e) => e.id !== id));
   };
 
   const avgWait = entries.length > 0

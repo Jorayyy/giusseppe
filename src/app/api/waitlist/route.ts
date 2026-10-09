@@ -42,16 +42,19 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    const { id, status } = body;
-    if (!id || !status) {
-      return NextResponse.json({ error: "Missing id or status" }, { status: 400 });
+    const { id, status, position } = body;
+    if (!id || (!status && position === undefined)) {
+      return NextResponse.json({ error: "Missing id or update" }, { status: 400 });
     }
-    if (!["waiting", "seated", "left"].includes(status)) {
+    if (status && !["waiting", "seated", "left"].includes(status)) {
       return NextResponse.json({ error: "Invalid status" }, { status: 400 });
     }
     const entry = await prisma.waitlistEntry.update({
       where: { id },
-      data: { status },
+      data: {
+        ...(status ? { status } : {}),
+        ...(position !== undefined ? { position } : {}),
+      },
     });
     return NextResponse.json({ data: entry });
   } catch (error) {
