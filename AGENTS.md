@@ -47,13 +47,15 @@ src/
     ├── data.ts            # Static fallbacks: RESTAURANT, HOURS, MENU, PHOTOS, reviews
     ├── menu.ts            # getMenu(): DB → fallback static MENU
     ├── prisma.ts          # Prisma client
-    └── sales-data.ts      # Mock generator for sales dashboard (demo data)
+    ├── site.ts            # getRestaurant()/getHours(): DB settings over static defaults
+    └── sales-data.ts      # buildSalesData(): SalesRecord[] → dashboard aggregates
 ```
 
 ## Key Conventions
 - Server components by default; `"use client"` only when needed
 - Server mutations via API routes (Prisma); admin pages fetch `/api/*` with localStorage fallback when DB unreachable
 - Public pages: `getMenu()`/`fetchPhotos()` fall back to static `data.ts` so the site builds offline
+- Public settings/hours: `getRestaurant()`/`getHours()` in `lib/site.ts` merge DB `Setting` rows over static defaults (hours stored as JSON under Setting key `hours` — no schema migration)
 - Admin auth via localStorage (`giuseppe_admin`), password: `giuseppe2025` (visible in source — known limitation)
 - Booking/inquiry forms POST `/api/messages` with emoji-prefixed `content` (`📅 BOOKING REQUEST`, `🎉 PRIVATE DINING...`); admin messages page parses these
 - Philippine locale (en-PH), PHP prices
@@ -65,7 +67,7 @@ src/
 - Another AI session has force-pushed rewrites before — local main wins; backup branch `backup/remote-rewrite`
 
 ## Known Limitations
-- Hours editor and Settings admin persist to DB/localStorage but the public site still reads static `data.ts` (not yet consumed publicly)
-- Sales dashboard and Loyalty admin show demo/generated data (SalesRecord/LoyaltyCard APIs exist but no real data entry yet)
+- Sales dashboard and Loyalty admin read real DB tables but stay empty until records exist (no sales-entry UI yet — POST `/api/sales` accepts `{date,total,orders,items}`; loyalty cards self-register from the public Perks section)
 - Public waitlist removed (no honest "full" signal); admin waitlist page stays and is API-backed
 - Roadmap, chat widget, and AI lib removed in the redesign
+- Navbar/footer wordmark still hardcodes "Giuseppe's" in places (client components)

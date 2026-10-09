@@ -6,7 +6,8 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const phone = searchParams.get("phone");
     if (!phone) {
-      return NextResponse.json({ error: "Missing phone query param" }, { status: 400 });
+      const cards = await prisma.loyaltyCard.findMany({ orderBy: { createdAt: "desc" } });
+      return NextResponse.json({ data: cards });
     }
     const card = await prisma.loyaltyCard.findUnique({ where: { phone } });
     if (!card) {

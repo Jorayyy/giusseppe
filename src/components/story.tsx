@@ -1,14 +1,15 @@
 import Image from "next/image";
 import SectionHeader from "@/components/section-header";
-import { RESTAURANT } from "@/lib/data";
+import { getRestaurant } from "@/lib/site";
 
-const STATS = [
-  { value: `${RESTAURANT.rating}`, label: `${RESTAURANT.reviewCount} Google reviews` },
-  { value: "★", label: RESTAURANT.priceRange },
-  { value: "Daily", label: "11 AM – late" },
-];
+export default async function Story() {
+  const r = await getRestaurant();
+  const stats = [
+    { value: `${r.rating}`, label: `${r.reviewCount} Google reviews` },
+    { value: "★", label: r.priceRange },
+    { value: "Daily", label: "11 AM – late" },
+  ];
 
-export default function Story() {
   return (
     <section id="story" className="bg-background">
       <div className="mx-auto grid max-w-[1200px] items-center gap-12 px-6 py-20 md:py-28 lg:grid-cols-12 lg:gap-16">
@@ -31,7 +32,7 @@ export default function Story() {
           </div>
 
           <dl className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-stone-200 pt-8" data-reveal>
-            {STATS.map((stat) => (
+            {stats.map((stat) => (
               <div key={stat.label}>
                 <dt className="sr-only">{stat.label}</dt>
                 <dd className="font-serif text-2xl font-semibold text-stone-900">{stat.value}</dd>

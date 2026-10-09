@@ -130,15 +130,25 @@ export async function fetchPhotos(): Promise<string[]> {
   return PHOTOS;
 }
 
-export function isOpen(now: Date): boolean {
+function toHours(t: string): number {
+  const m = t.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!m) return 0;
+  let h = parseInt(m[1], 10) % 12;
+  if (m[3].toUpperCase() === "PM") h += 12;
+  return h + parseInt(m[2], 10) / 60;
+}
+
+export function isOpen(
+  now: Date,
+  hours: Record<string, { open: string; close: string; open2?: string; close2?: string }> = HOURS
+): boolean {
   const day = now.toLocaleDateString("en-US", { weekday: "long" });
-  const h = now.getHours();
-  const m = now.getMinutes();
-  const time = h + m / 60;
-
-  if (time >= 11 && time < 16) return true;
-
-  const isLateNight = day === "Friday" || day === "Saturday";
-  const closeTime = isLateNight ? 22.5 : 21.5;
-  return time >= 17 && time < closeTime;
+  const h = hours[day];
+  if (!h) return false;
+  const t = now.getHours() + now.getMinutes() / 60;
+  const inLunch = t >= toHours(h.open) && t < toHours(h.close);
+  if (h.open2 && h.close2) {
+    return inLunch || (t >= toHours(h.open2) && t < toHours(h.close2));
+  }
+  return inLunch;
 }

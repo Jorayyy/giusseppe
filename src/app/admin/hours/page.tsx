@@ -27,10 +27,25 @@ export default function HoursEditorPage() {
   const [toast, setToast] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const h = localStorage.getItem("giuseppe_hours");
-      if (h) setHours(JSON.parse(h));
-    } catch {}
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/settings");
+        if (!res.ok) throw new Error("db down");
+        const json = await res.json();
+        const raw = json.data?.hours;
+        if (!raw) throw new Error("empty");
+        if (!cancelled) setHours(JSON.parse(raw));
+        return;
+      } catch {}
+      try {
+        const h = localStorage.getItem("giuseppe_hours");
+        if (h && !cancelled) setHours(JSON.parse(h));
+      } catch {}
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const showToast = (msg: string) => {
@@ -38,9 +53,20 @@ export default function HoursEditorPage() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const save = () => {
-    localStorage.setItem("giuseppe_hours", JSON.stringify(hours));
-    showToast("Hours saved successfully");
+  const save = async () => {
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ settings: [{ key: "hours", value: JSON.stringify(hours) }] }),
+      });
+      if (!res.ok) throw new Error("db down");
+      localStorage.removeItem("giuseppe_hours");
+      showToast("Hours saved");
+    } catch {
+      localStorage.setItem("giuseppe_hours", JSON.stringify(hours));
+      showToast("Saved locally — database unreachable");
+    }
   };
 
   const resetToDefault = () => {

@@ -4,25 +4,28 @@ import { Star, Phone } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { getMenu } from "@/lib/menu";
-import { RESTAURANT } from "@/lib/data";
+import { getRestaurant } from "@/lib/site";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: `Menu — ${RESTAURANT.name}`,
-  description: `View the full menu at ${RESTAURANT.name}. Wood-fired pizzas, handmade pasta, grilled meats, and more. Authentic Italian in Tacloban City.`,
-  openGraph: {
-    title: `Menu — ${RESTAURANT.name}`,
-    description: `Wood-fired pizzas, handmade pasta, grilled meats, and more.`,
-    url: "https://giusseppe.vercel.app/menu",
-    siteName: "Giuseppe's",
-    locale: "en_PH",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const r = await getRestaurant();
+  return {
+    title: `Menu — ${r.name}`,
+    description: `View the full menu at ${r.name}. Wood-fired pizzas, handmade pasta, grilled meats, and more. Authentic Italian in Tacloban City.`,
+    openGraph: {
+      title: `Menu — ${r.name}`,
+      description: `Wood-fired pizzas, handmade pasta, grilled meats, and more.`,
+      url: "https://giusseppe.vercel.app/menu",
+      siteName: r.name,
+      locale: "en_PH",
+      type: "website",
+    },
+  };
+}
 
 export default async function MenuPage() {
-  const menu = await getMenu();
+  const [menu, r] = await Promise.all([getMenu(), getRestaurant()]);
   const categories = Object.entries(menu).filter(([, items]) => items.length > 0);
 
   return (
@@ -31,7 +34,7 @@ export default async function MenuPage() {
       <main className="bg-background">
         <header className="border-b border-stone-200/70">
           <div className="mx-auto max-w-4xl px-6 py-16 text-center md:py-24">
-            <p className="eyebrow text-primary">Giuseppe&apos;s · Tacloban City</p>
+            <p className="eyebrow text-primary">{r.name} · Tacloban City</p>
             <h1 className="mt-4 font-serif text-display text-stone-900">The menu</h1>
             <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-stone-600">
               Wood-fired pizza, handmade pasta, and everything we&apos;d order ourselves.
@@ -98,11 +101,11 @@ export default async function MenuPage() {
             <p className="text-sm text-stone-500">
               Reservations &amp; takeout:{" "}
               <a
-                href={RESTAURANT.phoneHref}
+                href={r.phoneHref}
                 className="link-underline inline-flex items-center gap-1.5 font-semibold text-primary"
               >
                 <Phone className="h-3.5 w-3.5" />
-                {RESTAURANT.phone}
+                {r.phone}
               </a>
             </p>
           </div>

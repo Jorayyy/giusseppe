@@ -1,17 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { isOpen } from "@/lib/data";
+import { isOpen, HOURS } from "@/lib/data";
 
-export default function OpenPill() {
+type Hours = typeof HOURS;
+
+export default function OpenPill({ hours = HOURS }: { hours?: Hours }) {
   const [open, setOpen] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const tick = () => setOpen(isOpen(new Date()));
+    const tick = () => setOpen(isOpen(new Date(), hours));
     tick();
     const id = setInterval(tick, 60000);
     return () => clearInterval(id);
-  }, []);
+  }, [hours]);
 
   if (open === null) return <span className="sr-only" aria-hidden />;
 
