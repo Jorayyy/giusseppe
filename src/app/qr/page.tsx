@@ -17,7 +17,7 @@ export default function QrPage() {
   const chatQr = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(chatUrl)}`;
 
   return (
-    <div className="min-h-screen bg-[#FFFBF5] text-zinc-900 print:bg-white">
+    <div className="min-h-screen bg-background text-stone-900 print:bg-white">
       <nav className="border-b border-stone-200 bg-white/80 backdrop-blur print:hidden">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
           <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-stone-600 hover:text-primary">

@@ -124,8 +124,8 @@ export default function SettingsEditorPage() {
       {/* Contact */}
       <div className="rounded-2xl border border-stone-200 bg-white p-6">
         <div className="flex items-center gap-3 mb-5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
-            <Phone className="h-5 w-5 text-blue-600" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+            <Phone className="h-5 w-5 text-primary" />
           </div>
           <div>
             <h2 className="font-serif text-lg font-semibold text-stone-900">Contact Details</h2>
@@ -160,8 +160,8 @@ export default function SettingsEditorPage() {
       {/* Links */}
       <div className="rounded-2xl border border-stone-200 bg-white p-6">
         <div className="flex items-center gap-3 mb-5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50">
-            <Globe className="h-5 w-5 text-emerald-600" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-100">
+            <Globe className="h-5 w-5 text-stone-600" />
           </div>
           <div>
             <h2 className="font-serif text-lg font-semibold text-stone-900">Online Links</h2>

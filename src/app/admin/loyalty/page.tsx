@@ -7,8 +7,8 @@ const STATS = [
     label: "Total Members",
     value: 47,
     icon: Users,
-    color: "bg-blue-50",
-    iconColor: "text-blue-600",
+    color: "bg-primary/10",
+    iconColor: "text-primary",
   },
   {
     label: "Stamps Distributed",
@@ -21,15 +21,15 @@ const STATS = [
     label: "Rewards Claimed",
     value: 18,
     icon: Gift,
-    color: "bg-emerald-50",
-    iconColor: "text-emerald-600",
+    color: "bg-accent/25",
+    iconColor: "text-stone-800",
   },
   {
     label: "Avg. Visits/Member",
     value: "6.6",
     icon: TrendingUp,
-    color: "bg-purple-50",
-    iconColor: "text-purple-600",
+    color: "bg-stone-100",
+    iconColor: "text-stone-600",
   },
 ];
 

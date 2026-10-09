@@ -44,11 +44,11 @@ const DEFAULT_MENU: Record<string, { name: string; price: string; desc: string; 
 };
 
 const QUICK_ACTIONS = [
-  { label: "Sales Dashboard", href: "/admin/sales", icon: BarChart3, color: "bg-primary" },
-  { label: "Edit Menu", href: "/admin/menu", icon: UtensilsCrossed, color: "bg-blue-500" },
-  { label: "Edit Hours", href: "/admin/hours", icon: Clock, color: "bg-emerald-500" },
-  { label: "Edit Photos", href: "/admin/photos", icon: Camera, color: "bg-purple-500" },
-  { label: "Settings", href: "/admin/settings", icon: Settings, color: "bg-stone-600" },
+  { label: "Sales Dashboard", href: "/admin/sales", icon: BarChart3, color: "bg-primary text-white" },
+  { label: "Edit Menu", href: "/admin/menu", icon: UtensilsCrossed, color: "bg-surface text-primary" },
+  { label: "Edit Hours", href: "/admin/hours", icon: Clock, color: "bg-surface text-primary" },
+  { label: "Edit Photos", href: "/admin/photos", icon: Camera, color: "bg-surface text-primary" },
+  { label: "Settings", href: "/admin/settings", icon: Settings, color: "bg-surface text-primary" },
 ];
 
 export default function AdminDashboard() {
@@ -97,8 +97,8 @@ export default function AdminDashboard() {
 
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
-              <UtensilsCrossed className="h-5 w-5 text-blue-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+              <UtensilsCrossed className="h-5 w-5 text-primary" />
             </div>
           </div>
           <p className="mt-3 text-2xl font-bold text-stone-900">{totalCategories}</p>
@@ -117,8 +117,8 @@ export default function AdminDashboard() {
 
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50">
-              <Camera className="h-5 w-5 text-purple-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/25">
+              <Camera className="h-5 w-5 text-stone-800" />
             </div>
           </div>
           <p className="mt-3 text-2xl font-bold text-stone-900">4.4</p>
@@ -136,7 +136,7 @@ export default function AdminDashboard() {
               href={action.href}
               className="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 transition hover:shadow-md"
             >
-              <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${action.color} text-white`}>
+              <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${action.color}`}>
                 <action.icon className="h-6 w-6" />
               </div>
               <div className="flex-1">

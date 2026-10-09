@@ -138,7 +138,7 @@ export default function GiftVoucher() {
 
         {/* Success */}
         {success && (
-          <div className="mb-4 flex items-center gap-2 rounded-xl bg-green-50 p-3 text-sm text-green-700">
+          <div className="mb-4 flex items-center gap-2 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700">
             <Check className="h-4 w-4 shrink-0" />
             {success}
           </div>
@@ -149,8 +149,8 @@ export default function GiftVoucher() {
           <div className="mb-4 overflow-hidden rounded-xl border-2 border-stone-300 bg-white">
             {/* Ribbon */}
             <div className="relative bg-gradient-to-r from-accent to-primary px-4 py-3">
-              <div className="absolute -left-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-[#FFFBF5]" />
-              <div className="absolute -right-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-[#FFFBF5]" />
+              <div className="absolute -left-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-white" />
+              <div className="absolute -right-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-white" />
               <div className="flex items-center justify-center gap-2">
                 <Gift className="h-5 w-5 text-white" />
                 <span className="font-serif text-lg font-bold text-white">{foundVoucher.code}</span>
@@ -186,7 +186,7 @@ export default function GiftVoucher() {
               {[...redeemed].reverse().map((r, i) => (
                 <div key={i} className="flex items-center justify-between rounded-xl bg-white/80 px-3 py-2 border border-stone-100">
                   <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-green-600" />
+                    <Check className="h-4 w-4 text-emerald-600" />
                     <div>
                       <span className="text-xs font-bold text-stone-900">{r.code}</span>
                       <p className="text-xs text-stone-500">{r.description}</p>

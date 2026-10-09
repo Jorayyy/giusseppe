@@ -26,7 +26,7 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
             { icon: CreditCard, title: "Loyalty Card", desc: "Earn stamps, unlock free tiramisu & wine nights. Digital, no plastic.", live: true, href: "/#loyalty" },
             { icon: Camera, title: "Instagram Feed", desc: "Live #GiuseppesTacloban wall — your photos on our homepage.", live: false },
           ].map((item) => (
-            <div key={item.title} className="rounded-2xl border border-stone-200 bg-[#FFFBF5] p-5">
+            <div key={item.title} className="rounded-2xl border border-stone-200 bg-background p-5">
               <div className="flex items-start justify-between">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
                   <item.icon className="h-5 w-5 text-primary" />
@@ -63,7 +63,7 @@ export default function Roadmap({ onToast }: { onToast: (msg: string) => void })
             { icon: Clock3, title: "Waitlist & Reminders", desc: "Join the waitlist from your phone, get notified when your table is ready.", live: true, href: "/#waitlist" },
             { icon: BarChart3, title: "Sales Dashboard", desc: "For owners: daily sales, bestsellers & peak hours at a glance.", live: true, href: "/admin/sales" },
           ].map((item) => (
-            <div key={item.title} className="rounded-2xl border border-stone-200 bg-[#FFFBF5] p-5">
+            <div key={item.title} className="rounded-2xl border border-stone-200 bg-background p-5">
               <div className="flex items-start justify-between">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
                   <item.icon className="h-5 w-5 text-primary" />

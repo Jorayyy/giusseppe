@@ -51,7 +51,7 @@ export default function RestaurantPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFBF5] text-zinc-900">
+    <div className="min-h-screen bg-background text-stone-900">
       <Navbar />
       <Hero photos={photos} photoIdx={photoIdx} setPhotoIdx={setPhotoIdx} open={open} onShowLightbox={() => setShowLightbox(true)} />
       <div className="mx-auto max-w-6xl px-4">

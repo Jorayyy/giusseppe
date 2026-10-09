@@ -23,10 +23,10 @@ export default function Hero({ photos, photoIdx, setPhotoIdx, open, onShowLightb
               <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-5xl">Giuseppe&apos;s</h1>
               <p className="mt-1 text-white/80">{RESTAURANT.tagline} · {RESTAURANT.priceRange} · Restaurant</p>
               <div className="mt-3 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-sm font-medium text-zinc-900">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-sm font-medium text-stone-900">
                   <Star className="h-4 w-4 fill-accent text-accent" /> {RESTAURANT.rating} · {RESTAURANT.reviewCount} Google reviews
                 </span>
-                <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium ${open ? "bg-emerald-500 text-white" : "bg-white/90 text-zinc-900"}`}>
+                <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium ${open ? "bg-emerald-500 text-white" : "bg-white/90 text-stone-900"}`}>
                   <Clock className="h-4 w-4" /> {open ? "Open now" : "Closed"} · Opens 11 AM
                 </span>
               </div>

@@ -182,7 +182,7 @@ export default function ReviewsCard({
             <Star className="h-5 w-5 fill-accent text-accent" />
           </div>
           <div className="flex-1">
-            <h3 className="font-serif text-base font-semibold text-zinc-900">
+            <h3 className="font-serif text-base font-semibold text-stone-900">
               Loved your meal? Help us grow
             </h3>
             <p className="mt-1 text-sm leading-5 text-stone-600">

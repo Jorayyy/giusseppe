@@ -172,8 +172,8 @@ export default function AdminWaitlistPage() {
 
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
-              <Users className="h-5 w-5 text-blue-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+              <Users className="h-5 w-5 text-primary" />
             </div>
           </div>
           <p className="mt-3 text-2xl font-bold text-stone-900">{totalGuests}</p>
@@ -192,8 +192,8 @@ export default function AdminWaitlistPage() {
 
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50">
-              <Clock className="h-5 w-5 text-purple-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/25">
+              <Clock className="h-5 w-5 text-stone-800" />
             </div>
           </div>
           <p className="mt-3 text-2xl font-bold text-stone-900">{avgWait}m</p>

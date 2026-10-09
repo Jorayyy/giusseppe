@@ -171,8 +171,8 @@ export default function AdminSalesPage() {
 
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
-              <ShoppingBag className="h-5 w-5 text-blue-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+              <ShoppingBag className="h-5 w-5 text-primary" />
             </div>
             <span className="flex items-center gap-1 text-xs font-medium text-emerald-600">
               <ArrowUpRight className="h-3 w-3" /> +8%
@@ -184,8 +184,8 @@ export default function AdminSalesPage() {
 
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50">
-              <BarChart3 className="h-5 w-5 text-emerald-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-100">
+              <BarChart3 className="h-5 w-5 text-stone-600" />
             </div>
             <span className="flex items-center gap-1 text-xs font-medium text-red-600">
               <ArrowDownRight className="h-3 w-3" /> -2%
@@ -197,8 +197,8 @@ export default function AdminSalesPage() {
 
         <div className="rounded-2xl border border-stone-200 bg-white p-5">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50">
-              <Crown className="h-5 w-5 text-purple-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/25">
+              <Crown className="h-5 w-5 text-stone-800" />
             </div>
           </div>
           <p className="mt-3 text-lg font-bold text-stone-900 truncate">{data.topItem.name}</p>
@@ -280,7 +280,7 @@ export default function AdminSalesPage() {
           <div className="space-y-4">
             {data.categoryData.map((cat, idx) => {
               const width = (cat.revenue / maxCatRevenue) * 100;
-              const colors = ["bg-accent", "bg-stone-500", "bg-orange-500", "bg-emerald-500", "bg-purple-500", "bg-red-500"];
+              const colors = ["bg-primary", "bg-accent", "bg-stone-500", "bg-orange-600", "bg-emerald-600", "bg-stone-800"];
               return (
                 <div key={cat.name}>
                   <div className="flex items-center justify-between mb-1">
@@ -349,7 +349,7 @@ export default function AdminSalesPage() {
               className="h-full w-full rounded-full"
               style={{
                 background: (() => {
-                  const colors = ["#d97706", "#78716c", "#ea580c", "#059669", "#7c3aed", "#dc2626"];
+                  const colors = ["#B4522E", "#C9A96E", "#78716c", "#ea580c", "#059669", "#44403c"];
                   let accumulated = 0;
                   const stops: string[] = [];
                   for (let i = 0; i < data.categoryData.length; i++) {
@@ -370,7 +370,7 @@ export default function AdminSalesPage() {
           </div>
           <div className="flex-1 grid grid-cols-2 gap-3">
             {data.categoryData.map((cat, idx) => {
-              const colors = ["bg-accent", "bg-stone-500", "bg-orange-500", "bg-emerald-500", "bg-purple-500", "bg-red-500"];
+              const colors = ["bg-primary", "bg-accent", "bg-stone-500", "bg-orange-600", "bg-emerald-600", "bg-stone-800"];
               return (
                 <div key={cat.name} className="flex items-center gap-2 rounded-xl bg-stone-50 px-3 py-2">
                   <div className={`h-3 w-3 rounded-full ${colors[idx % colors.length]}`} />

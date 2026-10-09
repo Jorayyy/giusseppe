@@ -81,7 +81,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (checking) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#FFFBF5]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
@@ -89,7 +89,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!authed) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#FFFBF5] p-4">
+      <div className="flex min-h-screen items-center justify-center bg-background p-4">
         <form onSubmit={handleLogin} className="w-full max-w-sm rounded-2xl border border-stone-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col items-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary font-serif text-xl font-bold text-white">G</div>

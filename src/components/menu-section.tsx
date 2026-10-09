@@ -39,7 +39,7 @@ export default function MenuSection() {
               </div>
               <p className="mt-0.5 text-xs leading-5 text-stone-500">{item.desc}</p>
             </div>
-            <span className="text-sm font-semibold text-zinc-900">{item.price}</span>
+            <span className="text-sm font-semibold text-stone-900">{item.price}</span>
           </div>
         ))}
       </div>

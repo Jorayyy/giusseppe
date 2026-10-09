@@ -128,7 +128,7 @@ export default function VouchersPage() {
         <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
           {vouchers.length} vouchers
         </span>
-        <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+        <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
           {activeCount} active
         </span>
         <span className="rounded-full bg-surface px-3 py-1 text-xs font-medium text-primary-light">
@@ -162,7 +162,7 @@ export default function VouchersPage() {
                     <span className="font-serif text-lg font-bold text-stone-900">{v.code}</span>
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                        v.active ? "bg-green-100 text-green-700" : "bg-stone-100 text-stone-500"
+                        v.active ? "bg-emerald-100 text-emerald-700" : "bg-stone-100 text-stone-500"
                       }`}
                     >
                       {v.active ? "Active" : "Inactive"}
@@ -182,7 +182,7 @@ export default function VouchersPage() {
                 <button
                   onClick={() => toggleActive(v.code)}
                   className={`rounded-lg p-2 transition ${
-                    v.active ? "text-green-600 hover:bg-green-50" : "text-stone-400 hover:bg-stone-50"
+                    v.active ? "text-emerald-600 hover:bg-emerald-50" : "text-stone-400 hover:bg-stone-50"
                   }`}
                   title={v.active ? "Deactivate" : "Activate"}
                 >
