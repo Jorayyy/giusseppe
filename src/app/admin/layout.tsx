@@ -91,70 +91,69 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!authed) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background p-4">
-        <form onSubmit={handleLogin} className="w-full max-w-sm rounded-2xl border border-stone-200 bg-white p-8 shadow-sm">
-          <div className="flex flex-col items-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary font-serif text-xl font-bold text-white">G</div>
-            <h1 className="mt-4 font-serif text-2xl font-bold">Owner Login</h1>
-            <p className="mt-1 text-center text-sm text-stone-500">Enter the owner password to access the dashboard.</p>
-          </div>
-          <div className="mt-6 space-y-3">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
-              autoFocus
-            />
-            {error && <p className="text-xs font-medium text-red-600">{error}</p>}
-            <button type="submit" className="flex w-full items-center justify-center rounded-xl bg-primary py-3 text-sm font-semibold text-white hover:bg-primary-light transition">
-              Sign In
+      <div className="flex min-h-screen items-center justify-center bg-background px-6">
+        <div className="w-full max-w-sm">
+          <p className="eyebrow text-stone-400">Giuseppe&apos;s / Owner</p>
+          <h1 className="mt-3 font-serif text-4xl text-foreground">Owner access</h1>
+          <p className="mt-2 text-sm text-muted">Enter the owner password to open the dashboard.</p>
+
+          <form onSubmit={handleLogin} className="mt-10">
+            <label className="block">
+              <span className="eyebrow text-stone-400">Password</span>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className="mt-2 w-full border-b border-stone-300 bg-transparent pb-2 text-[15px] text-foreground outline-none transition-colors placeholder:text-stone-400 focus:border-primary"
+                autoFocus
+              />
+            </label>
+            {error && <p className="mt-2 text-xs font-medium text-red-600">{error}</p>}
+            <button type="submit" className="mt-6 w-full bg-foreground py-3 text-sm font-medium text-background transition-colors hover:bg-primary">
+              Sign in
             </button>
-            <Link href="/" className="flex items-center justify-center gap-1.5 pt-2 text-sm text-stone-500 hover:text-primary">
+            <Link
+              href="/"
+              className="mt-6 flex items-center justify-center gap-1.5 text-sm text-muted transition-colors hover:text-primary"
+            >
               <ChevronLeft className="h-4 w-4" /> Back to site
             </Link>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen bg-background">
       {/* Mobile header */}
-      <header className="sticky top-0 z-40 flex items-center border-b border-stone-200 bg-white/90 backdrop-blur-md lg:hidden">
-        <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-3"
-        >
+      <header className="sticky top-0 z-40 flex items-center gap-2 border-b border-stone-800 bg-foreground px-4 py-3 lg:hidden">
+        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-stone-300" aria-label="Toggle menu">
           {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-serif text-sm font-bold text-white">G</div>
-          <span className="font-serif text-lg font-semibold text-stone-900">Admin</span>
-        </div>
+        <span className="font-serif text-lg text-background">
+          Giuseppe<span className="text-primary">’s</span>
+        </span>
+        <span className="eyebrow ml-2 text-stone-500">Admin</span>
       </header>
 
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed inset-y-0 left-0 z-30 w-64 border-r border-stone-200 bg-white transition-transform lg:translate-x-0 lg:static lg:block ${
+          className={`fixed inset-y-0 left-0 z-30 w-64 bg-foreground transition-transform lg:static lg:block lg:translate-x-0 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <div className="flex h-full flex-col">
-            {/* Logo */}
-            <div className="flex items-center gap-3 border-b border-stone-200 p-5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary font-serif text-lg font-bold text-white">G</div>
-              <div>
-                <h1 className="font-serif text-lg font-bold leading-none text-stone-900">Giuseppe&apos;s</h1>
-                <p className="text-xs text-stone-500">Owner Dashboard</p>
-              </div>
+            <div className="border-b border-stone-800 px-5 py-6">
+              <p className="font-serif text-2xl text-background">
+                Giuseppe<span className="text-primary">’s</span>
+              </p>
+              <p className="eyebrow mt-1 text-stone-500">Owner Dashboard</p>
             </div>
 
-            {/* Nav */}
-            <nav className="flex-1 space-y-1 p-3">
+            <nav className="flex-1 py-4">
               {NAV_ITEMS.map((item) => {
                 const isActive = pathname === item.href;
                 const showBadge = item.href === "/admin/messages" && unreadMessages > 0;
@@ -163,16 +162,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     key={item.href}
                     href={item.href}
                     onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
+                    className={`flex items-center gap-3 border-l-2 px-5 py-3 font-mono text-[12px] uppercase tracking-[0.12em] transition-colors ${
                       isActive
-                        ? "bg-surface text-primary-light"
-                        : "text-stone-600 hover:bg-stone-50 hover:text-stone-900"
+                        ? "border-primary bg-white/5 text-background"
+                        : "border-transparent text-stone-400 hover:bg-white/5 hover:text-background"
                     }`}
                   >
-                    <item.icon className={`h-5 w-5 ${isActive ? "text-primary" : "text-stone-400"}`} />
+                    <item.icon className={`h-4 w-4 ${isActive ? "text-primary" : "text-stone-500"}`} />
                     {item.label}
                     {showBadge && (
-                      <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                      <span className="ml-auto flex h-5 min-w-5 items-center justify-center bg-primary px-1.5 text-[10px] font-medium text-background">
                         {unreadMessages}
                       </span>
                     )}
@@ -181,40 +180,32 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               })}
             </nav>
 
-            {/* Footer */}
-            <div className="space-y-1 border-t border-stone-200 p-3">
+            <div className="border-t border-stone-800 py-3">
               <Link
                 href="/"
                 target="_blank"
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition"
+                className="flex items-center gap-3 px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] text-stone-400 transition-colors hover:text-background"
               >
-                <Eye className="h-5 w-5 text-stone-400" />
+                <Eye className="h-4 w-4 text-stone-500" />
                 View Site
               </Link>
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-600 hover:bg-red-50 hover:text-red-600 transition"
+                className="flex w-full items-center gap-3 px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] text-stone-400 transition-colors hover:text-red-400"
               >
-                <LogOut className="h-5 w-5 text-stone-400" />
+                <LogOut className="h-4 w-4 text-stone-500" />
                 Sign Out
               </button>
             </div>
           </div>
         </aside>
 
-        {/* Mobile overlay */}
         {sidebarOpen && (
-          <div
-            className="fixed inset-0 z-20 bg-black/50 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
+          <div className="fixed inset-0 z-20 bg-black/50 lg:hidden" onClick={() => setSidebarOpen(false)} />
         )}
 
-        {/* Main content */}
-        <main className="flex-1 overflow-auto">
-          <div className="p-4 lg:p-8">
-            {children}
-          </div>
+        <main className="min-w-0 flex-1">
+          <div className="mx-auto max-w-[1200px] px-5 py-8 lg:px-10 lg:py-10">{children}</div>
         </main>
       </div>
     </div>

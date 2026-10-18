@@ -7,22 +7,22 @@ import {
   Clock,
   Camera,
   Settings,
-  TrendingUp,
-  Star,
   Copy,
   ExternalLink,
   ArrowRight,
   CheckCircle2,
   BarChart3,
+  Star,
 } from "lucide-react";
 import { MENU } from "@/lib/data";
+import { PageHeader, Stat } from "@/components/admin/ui";
 
 const QUICK_ACTIONS = [
-  { label: "Sales Dashboard", href: "/admin/sales", icon: BarChart3, color: "bg-primary text-white" },
-  { label: "Edit Menu", href: "/admin/menu", icon: UtensilsCrossed, color: "bg-surface text-primary" },
-  { label: "Edit Hours", href: "/admin/hours", icon: Clock, color: "bg-surface text-primary" },
-  { label: "Edit Photos", href: "/admin/photos", icon: Camera, color: "bg-surface text-primary" },
-  { label: "Settings", href: "/admin/settings", icon: Settings, color: "bg-surface text-primary" },
+  { label: "Sales Dashboard", href: "/admin/sales", icon: BarChart3 },
+  { label: "Edit Menu", href: "/admin/menu", icon: UtensilsCrossed },
+  { label: "Edit Hours", href: "/admin/hours", icon: Clock },
+  { label: "Edit Photos", href: "/admin/photos", icon: Camera },
+  { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
 export default function AdminDashboard() {
@@ -62,160 +62,119 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="font-serif text-3xl font-bold text-stone-900">Dashboard</h1>
-        <p className="mt-1 text-stone-500">Welcome back. Here&apos;s an overview of your restaurant.</p>
-      </div>
+      <PageHeader
+        kicker="Admin / Overview"
+        title="Dashboard"
+        description="Welcome back. Here's an overview of your restaurant."
+      />
 
-      {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-stone-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface">
-              <UtensilsCrossed className="h-5 w-5 text-primary" />
-            </div>
-            <span className="flex items-center gap-1 text-xs font-medium text-emerald-600">
-              <TrendingUp className="h-3 w-3" /> Active
-            </span>
-          </div>
-          <p className="mt-3 text-2xl font-bold text-stone-900">{totalItems}</p>
-          <p className="text-sm text-stone-500">Menu Items</p>
-        </div>
-
-        <div className="rounded-2xl border border-stone-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-              <UtensilsCrossed className="h-5 w-5 text-primary" />
-            </div>
-          </div>
-          <p className="mt-3 text-2xl font-bold text-stone-900">{totalCategories}</p>
-          <p className="text-sm text-stone-500">Categories</p>
-        </div>
-
-        <div className="rounded-2xl border border-stone-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface">
-              <Star className="h-5 w-5 text-primary" />
-            </div>
-          </div>
-          <p className="mt-3 text-2xl font-bold text-stone-900">{popularItems}</p>
-          <p className="text-sm text-stone-500">Popular Items</p>
-        </div>
-
-        <div className="rounded-2xl border border-stone-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/25">
-              <Camera className="h-5 w-5 text-stone-800" />
-            </div>
-          </div>
-          <p className="mt-3 text-2xl font-bold text-stone-900">4.4</p>
-          <p className="text-sm text-stone-500">Google Rating</p>
-        </div>
+        <Stat label="Menu Items" value={totalItems} icon={<UtensilsCrossed className="h-4 w-4" />} />
+        <Stat label="Categories" value={totalCategories} icon={<BarChart3 className="h-4 w-4" />} />
+        <Stat label="Popular Items" value={popularItems} icon={<Star className="h-4 w-4" />} />
+        <Stat label="Google Rating" value="4.4" hint="328 reviews" icon={<Star className="h-4 w-4" />} />
       </div>
 
-      {/* Quick Actions */}
       <div>
-        <h2 className="mb-4 font-serif text-xl font-semibold text-stone-900">Quick Actions</h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <p className="eyebrow mb-4 text-stone-400">Quick actions</p>
+        <div className="grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
           {QUICK_ACTIONS.map((action) => (
             <Link
               key={action.href}
               href={action.href}
-              className="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 transition hover:shadow-md"
+              className="group flex items-center justify-between gap-3 bg-white px-5 py-5 transition-colors hover:bg-surface"
             >
-              <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${action.color}`}>
-                <action.icon className="h-6 w-6" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium text-stone-900 group-hover:text-primary-light transition">{action.label}</p>
-                <p className="text-xs text-stone-500">Manage</p>
-              </div>
-              <ArrowRight className="h-4 w-4 text-stone-400 group-hover:text-primary transition" />
+              <span className="flex items-center gap-3">
+                <action.icon className="h-4 w-4 text-primary" />
+                <span className="text-sm font-medium text-foreground">{action.label}</span>
+              </span>
+              <ArrowRight className="h-4 w-4 text-stone-300 transition-colors group-hover:text-primary" />
             </Link>
           ))}
         </div>
       </div>
 
-      {/* Live Preview & Links */}
       <div className="grid gap-4 lg:grid-cols-2">
-        {/* Website Preview */}
-        <div className="rounded-2xl border border-stone-200 bg-white p-6">
-          <h3 className="font-serif text-lg font-semibold text-stone-900">Website</h3>
-          <p className="mt-1 text-sm text-stone-500">Your restaurant website is live and ready.</p>
-          <div className="mt-4 space-y-2">
+        <div className="border border-line bg-white p-6">
+          <p className="eyebrow text-stone-400">Website</p>
+          <h3 className="mt-2 font-serif text-2xl text-foreground">Live and ready</h3>
+          <div className="mt-5 space-y-2">
             <a
               href="https://giusseppe.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-xl bg-stone-50 px-4 py-3 text-sm text-stone-700 hover:bg-stone-100 transition"
+              className="flex items-center justify-between border border-line px-4 py-3 text-sm text-foreground transition-colors hover:border-primary"
             >
-              <ExternalLink className="h-4 w-4 text-stone-400" />
-              giusseppe.vercel.app
+              <span className="flex items-center gap-2">
+                <ExternalLink className="h-4 w-4 text-stone-400" />
+                giusseppe.vercel.app
+              </span>
+              <ArrowRight className="h-4 w-4 text-stone-300" />
             </a>
             <a
               href="https://giusseppe.vercel.app/menu"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-xl bg-stone-50 px-4 py-3 text-sm text-stone-700 hover:bg-stone-100 transition"
+              className="flex items-center justify-between border border-line px-4 py-3 text-sm text-foreground transition-colors hover:border-primary"
             >
-              <UtensilsCrossed className="h-4 w-4 text-stone-400" />
-              Menu — giusseppe.vercel.app/menu
+              <span className="flex items-center gap-2">
+                <UtensilsCrossed className="h-4 w-4 text-stone-400" />
+                Menu page
+              </span>
+              <ArrowRight className="h-4 w-4 text-stone-300" />
             </a>
           </div>
           <button
             onClick={copyLink}
-            className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-50 transition"
+            className="mt-3 flex w-full items-center justify-center gap-2 border border-line px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-foreground"
           >
             {copied ? (
               <>
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                Copied!
+                <CheckCircle2 className="h-4 w-4 text-primary" />
+                Copied
               </>
             ) : (
               <>
                 <Copy className="h-4 w-4" />
-                Copy Website Link
+                Copy website link
               </>
             )}
           </button>
         </div>
 
-        {/* QR Code */}
-        <div className="rounded-2xl border border-stone-200 bg-white p-6">
-          <h3 className="font-serif text-lg font-semibold text-stone-900">QR Code</h3>
-          <p className="mt-1 text-sm text-stone-500">Scan to open the menu on a phone.</p>
-          <div className="mt-4 flex justify-center">
+        <div className="border border-line bg-white p-6">
+          <p className="eyebrow text-stone-400">QR Code</p>
+          <h3 className="mt-2 font-serif text-2xl text-foreground">Scan the menu</h3>
+          <div className="mt-5 flex justify-center border border-line bg-background p-5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://giusseppe.vercel.app/menu"
               alt="QR Code"
-              className="rounded-xl"
+              className="h-40 w-40"
             />
           </div>
-          <p className="mt-3 text-center text-xs text-stone-400">Points to /menu</p>
+          <p className="eyebrow mt-4 text-center text-stone-400">Points to /menu</p>
         </div>
       </div>
 
-      {/* Popular Items Preview */}
-      <div className="rounded-2xl border border-stone-200 bg-white p-6">
-        <div className="flex items-center justify-between">
-          <h3 className="font-serif text-lg font-semibold text-stone-900">Popular Items</h3>
-          <Link href="/admin/menu" className="text-sm font-medium text-primary hover:text-primary-light">
+      <div className="border border-line bg-white">
+        <div className="flex items-center justify-between border-b border-line px-6 py-4">
+          <h3 className="font-serif text-xl text-foreground">Popular Items</h3>
+          <Link href="/admin/menu" className="link-underline text-sm font-medium text-primary">
             View all →
           </Link>
         </div>
-        <div className="mt-4 space-y-2">
+        <div className="divide-y divide-line">
           {Object.entries(menu)
             .flatMap(([cat, items]) => items.filter((i) => i.popular).map((i) => ({ ...i, category: cat })))
             .slice(0, 5)
             .map((item, idx) => (
-              <div key={idx} className="flex items-center justify-between rounded-xl bg-stone-50 px-4 py-3">
+              <div key={idx} className="flex items-center justify-between px-6 py-4">
                 <div>
-                  <p className="font-medium text-stone-900">{item.name}</p>
-                  <p className="text-xs text-stone-500">{item.category}</p>
+                  <p className="font-medium text-foreground">{item.name}</p>
+                  <p className="eyebrow mt-1 text-stone-400">{item.category}</p>
                 </div>
-                <span className="font-semibold text-primary-light">{item.price}</span>
+                <span className="font-mono text-sm text-primary">{item.price}</span>
               </div>
             ))}
         </div>

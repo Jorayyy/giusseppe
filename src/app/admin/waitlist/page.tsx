@@ -13,6 +13,7 @@ import {
   AlertCircle,
   Bell,
 } from "lucide-react";
+import { PageHeader, Stat, Spinner, EmptyState, Badge, btnSecondary } from "@/components/admin/ui";
 
 type WaitlistEntry = {
   id: string;
@@ -214,142 +215,80 @@ export default function AdminWaitlistPage() {
 
   const totalGuests = entries.reduce((sum, e) => sum + e.partySize, 0);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-      </div>
-    );
-  }
+  if (loading) return <Spinner />;
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="font-serif text-3xl font-bold text-stone-900">Waitlist</h1>
-          <p className="mt-1 text-stone-500">Manage the current queue and notify guests.</p>
-        </div>
-        <button
-          onClick={load}
-          className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-600 hover:bg-stone-50 transition"
-        >
-          <RefreshCw className="h-4 w-4" /> Refresh
-        </button>
-      </div>
+      <PageHeader
+        kicker="Admin / Waitlist"
+        title="Waitlist"
+        description="Manage the current queue and notify guests."
+        actions={
+          <button onClick={load} className={btnSecondary}>
+            <RefreshCw className="h-4 w-4" /> Refresh
+          </button>
+        }
+      />
 
-      {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-stone-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface">
-              <Users className="h-5 w-5 text-primary" />
-            </div>
-            {entries.length > 0 && (
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-white animate-pulse">
-                {entries.length}
-              </span>
-            )}
-          </div>
-          <p className="mt-3 text-2xl font-bold text-stone-900">{entries.length}</p>
-          <p className="text-sm text-stone-500">In Queue</p>
-        </div>
-
-        <div className="rounded-2xl border border-stone-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-              <Users className="h-5 w-5 text-primary" />
-            </div>
-          </div>
-          <p className="mt-3 text-2xl font-bold text-stone-900">{totalGuests}</p>
-          <p className="text-sm text-stone-500">Total Guests</p>
-        </div>
-
-        <div className="rounded-2xl border border-stone-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50">
-              <UserCheck className="h-5 w-5 text-emerald-600" />
-            </div>
-          </div>
-          <p className="mt-3 text-2xl font-bold text-stone-900">{servedToday}</p>
-          <p className="text-sm text-stone-500">Served Today</p>
-        </div>
-
-        <div className="rounded-2xl border border-stone-200 bg-white p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/25">
-              <Clock className="h-5 w-5 text-stone-800" />
-            </div>
-          </div>
-          <p className="mt-3 text-2xl font-bold text-stone-900">{avgWait}m</p>
-          <p className="text-sm text-stone-500">Avg Wait</p>
-        </div>
+        <Stat label="In Queue" value={entries.length} icon={<Users className="h-4 w-4" />} />
+        <Stat label="Total Guests" value={totalGuests} icon={<Users className="h-4 w-4" />} />
+        <Stat label="Served Today" value={servedToday} icon={<UserCheck className="h-4 w-4" />} />
+        <Stat label="Avg Wait" value={`${avgWait}m`} icon={<Clock className="h-4 w-4" />} />
       </div>
 
-      {/* Queue List */}
-      <div className="rounded-2xl border border-stone-200 bg-white">
-        <div className="flex items-center justify-between border-b border-stone-100 px-6 py-4">
-          <h2 className="font-serif text-lg font-semibold text-stone-900">Current Queue</h2>
-          {entries.length > 0 && (
-            <p className="text-xs text-stone-400">Auto-removes after 2 hours</p>
-          )}
+      <div className="border border-line bg-white">
+        <div className="flex items-center justify-between border-b border-line px-6 py-4">
+          <h2 className="font-serif text-xl text-foreground">Current Queue</h2>
+          {entries.length > 0 && <p className="eyebrow text-stone-400">Auto-removes after 2 hours</p>}
         </div>
 
         {entries.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-stone-100">
-              <Users className="h-7 w-7 text-stone-400" />
-            </div>
-            <p className="mt-4 font-medium text-stone-900">No one in the queue</p>
-            <p className="mt-1 text-sm text-stone-500">The waitlist is empty. Guests will appear here when they join.</p>
-          </div>
+          <EmptyState
+            icon={<Users className="h-8 w-8" />}
+            title="No one in the queue"
+            description="The waitlist is empty. Guests will appear here when they join."
+          />
         ) : (
-          <div className="divide-y divide-stone-100">
+          <div className="divide-y divide-line">
             {entries.map((entry, idx) => {
               const waitMins = Math.floor((Date.now() - entry.joinedAt) / 60000);
               return (
-                <div key={entry.id} className="flex items-center gap-4 px-6 py-4 hover:bg-stone-50 transition">
-                  {/* Position */}
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface text-sm font-bold text-primary-light">
+                <div key={entry.id} className="flex items-center gap-4 px-6 py-4">
+                  <div className="flex h-10 w-10 items-center justify-center border border-primary/40 font-mono text-sm text-primary">
                     #{idx + 1}
                   </div>
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <p className="font-medium text-stone-900 truncate">{entry.name}</p>
+                      <p className="truncate font-medium text-foreground">{entry.name}</p>
                       {idx === 0 && (
-                        <span className="flex items-center gap-1 rounded-full bg-surface px-2 py-0.5 text-[10px] font-semibold text-primary-light">
+                        <Badge tone="primary">
                           <AlertCircle className="h-3 w-3" /> Next
-                        </span>
+                        </Badge>
                       )}
                     </div>
-                    <div className="mt-0.5 flex items-center gap-3 text-xs text-stone-500">
+                    <div className="mt-1 flex flex-wrap items-center gap-3 font-mono text-[11px] text-muted">
                       <span className="flex items-center gap-1"><Phone className="h-3 w-3" /> {entry.phone}</span>
                       <span>{entry.partySize} {entry.partySize === 1 ? "guest" : "guests"}</span>
                       <span>Pref: {entry.preferredTime}</span>
                     </div>
                   </div>
 
-                  {/* Wait Time */}
-                  <div className="hidden sm:block text-right">
-                    <p className="text-sm font-medium text-stone-700">{timeAgo(entry.joinedAt)}</p>
-                    <p className="text-xs text-stone-400">Joined {formatTime(entry.joinedAt)}</p>
-                    <div className="mt-1 h-1.5 w-20 rounded-full bg-stone-200 overflow-hidden ml-auto">
-                      <div
-                        className="h-full rounded-full bg-accent"
-                        style={{ width: `${Math.min((waitMins / 120) * 100, 100)}%` }}
-                      />
+                  <div className="hidden text-right sm:block">
+                    <p className="text-sm font-medium text-foreground">{timeAgo(entry.joinedAt)}</p>
+                    <p className="eyebrow mt-1 text-stone-400">Joined {formatTime(entry.joinedAt)}</p>
+                    <div className="ml-auto mt-1 h-1 w-20 bg-surface">
+                      <div className="h-full bg-accent" style={{ width: `${Math.min((waitMins / 120) * 100, 100)}%` }} />
                     </div>
                   </div>
 
-                  {/* Actions */}
                   <div className="flex items-center gap-1.5">
-                    <div className="hidden sm:flex items-center gap-1.5">
+                    <div className="hidden items-center gap-1.5 sm:flex">
                       <button
                         onClick={() => moveUp(idx)}
                         disabled={idx === 0}
-                        className="rounded-lg p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-600 disabled:opacity-30 disabled:cursor-not-allowed transition"
+                        className="p-2 text-stone-400 transition-colors hover:text-foreground disabled:cursor-not-allowed disabled:opacity-30"
                         title="Move up"
                       >
                         <ArrowUp className="h-4 w-4" />
@@ -357,31 +296,19 @@ export default function AdminWaitlistPage() {
                       <button
                         onClick={() => moveDown(idx)}
                         disabled={idx === entries.length - 1}
-                        className="rounded-lg p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-600 disabled:opacity-30 disabled:cursor-not-allowed transition"
+                        className="p-2 text-stone-400 transition-colors hover:text-foreground disabled:cursor-not-allowed disabled:opacity-30"
                         title="Move down"
                       >
                         <ArrowDown className="h-4 w-4" />
                       </button>
                     </div>
-                    <button
-                      onClick={() => notify(entry)}
-                      className="rounded-lg p-2 text-primary hover:bg-surface transition"
-                      title="Notify guest"
-                    >
+                    <button onClick={() => notify(entry)} className="p-2 text-primary transition-colors hover:bg-surface" title="Notify guest">
                       <Bell className="h-4 w-4" />
                     </button>
-                    <button
-                      onClick={() => seat(entry.id)}
-                      className="rounded-lg p-2 text-emerald-600 hover:bg-emerald-50 transition"
-                      title="Seat guest"
-                    >
+                    <button onClick={() => seat(entry.id)} className="p-2 text-primary transition-colors hover:bg-surface" title="Seat guest">
                       <UserCheck className="h-4 w-4" />
                     </button>
-                    <button
-                      onClick={() => remove(entry.id)}
-                      className="rounded-lg p-2 text-red-400 hover:bg-red-50 hover:text-red-600 transition"
-                      title="Remove"
-                    >
+                    <button onClick={() => remove(entry.id)} className="p-2 text-stone-400 transition-colors hover:text-red-600" title="Remove">
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>

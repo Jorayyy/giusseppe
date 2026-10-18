@@ -1,17 +1,10 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import {
-  Save,
-  Plus,
-  Trash2,
-  Star,
-  X,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { Save, Plus, Trash2, Star, X, ChevronDown, ChevronUp } from "lucide-react";
 import ImageUpload from "@/components/image-upload";
 import { MENU } from "@/lib/data";
+import { PageHeader, Toast, fieldClass, btnPrimary, btnDanger } from "@/components/admin/ui";
 
 type MenuItem = {
   id?: string;
@@ -214,164 +207,142 @@ export default function MenuEditorPage() {
     });
   };
 
+  const totalItems = Object.values(menu).flat().length;
+  const popularTotal = Object.values(menu).flat().filter((i) => i.popular).length;
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="font-serif text-3xl font-bold text-stone-900">Menu Editor</h1>
-          <p className="mt-1 text-stone-500">Manage your menu items, prices, and photos.</p>
-        </div>
-        <button
-          onClick={save}
-          disabled={saving}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition disabled:opacity-60"
-        >
-          <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
-        </button>
-      </div>
+      <PageHeader
+        kicker="Admin / Menu"
+        title="Menu Editor"
+        description="Manage your menu items, prices, and photos."
+        actions={
+          <button onClick={save} disabled={saving} className={btnPrimary}>
+            <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
+          </button>
+        }
+      />
 
-      {/* Summary */}
-      <div className="flex flex-wrap gap-3">
-        <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
-          {Object.keys(menu).length} categories
-        </span>
-        <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
-          {Object.values(menu).flat().length} items
-        </span>
-        <span className="rounded-full bg-surface px-3 py-1 text-xs font-medium text-primary-light">
-          {Object.values(menu).flat().filter((i) => i.popular).length} popular
-        </span>
-      </div>
+      <p className="eyebrow text-stone-400">
+        {Object.keys(menu).length} categories · {totalItems} items · {popularTotal} popular
+      </p>
 
-      {/* Categories */}
       <div className="space-y-4">
         {Object.entries(menu).map(([cat, items]) => (
-          <div key={cat} className="rounded-2xl border border-stone-200 bg-white">
-            {/* Category header */}
-            <div className="flex w-full items-center justify-between p-4 text-left">
+          <div key={cat} className="border border-line bg-white">
+            <div className="flex items-center justify-between px-4 py-3">
               <button
                 onClick={() => toggleCategory(cat)}
                 className="flex flex-1 items-center gap-3 text-left"
                 aria-expanded={expandedCategories.has(cat)}
               >
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-100">
-                  {expandedCategories.has(cat) ? (
-                    <ChevronUp className="h-4 w-4 text-stone-600" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4 text-stone-600" />
-                  )}
-                </div>
-                <div>
-                  <h3 className="font-serif text-lg font-semibold text-stone-900">{cat}</h3>
-                  <p className="text-xs text-stone-500">{items.length} items</p>
-                </div>
+                {expandedCategories.has(cat) ? (
+                  <ChevronUp className="h-4 w-4 text-stone-400" />
+                ) : (
+                  <ChevronDown className="h-4 w-4 text-stone-400" />
+                )}
+                <span className="font-serif text-xl text-foreground">{cat}</span>
+                <span className="eyebrow text-stone-400">{items.length} items</span>
               </button>
               <button
                 onClick={() => deleteCategory(cat)}
                 aria-label={`Delete ${cat}`}
-                className="rounded-lg p-2 text-stone-400 hover:bg-red-50 hover:text-red-500 transition"
+                className="p-2 text-stone-400 transition-colors hover:text-red-600"
               >
                 <Trash2 className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Items */}
             {expandedCategories.has(cat) && (
-              <div className="space-y-3 border-t border-stone-100 p-4 pt-3">
-                {items.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="group rounded-xl border border-stone-100 bg-stone-50/50 p-4 transition hover:border-stone-200"
-                  >
-                    <div className="flex items-start gap-3">
-                      {/* Order & image */}
-                      <div className="flex flex-col items-center gap-2">
-                        <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition">
-                          <button
-                            onClick={() => moveItem(cat, idx, -1)}
-                            disabled={idx === 0}
-                            className="rounded p-0.5 text-stone-400 hover:text-stone-600 disabled:opacity-30"
-                            aria-label="Move up"
-                          >
-                            <ChevronUp className="h-3 w-3" />
-                          </button>
-                          <button
-                            onClick={() => moveItem(cat, idx, 1)}
-                            disabled={idx === items.length - 1}
-                            className="rounded p-0.5 text-stone-400 hover:text-stone-600 disabled:opacity-30"
-                            aria-label="Move down"
-                          >
-                            <ChevronDown className="h-3 w-3" />
-                          </button>
-                        </div>
-                        {item.image && (
-                          <div className="h-16 w-16 overflow-hidden rounded-lg border border-stone-200">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+              <div className="border-t border-line">
+                <div className="divide-y divide-line">
+                  {items.map((item, idx) => (
+                    <div key={idx} className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => moveItem(cat, idx, -1)}
+                              disabled={idx === 0}
+                              className="p-0.5 text-stone-400 transition-colors hover:text-foreground disabled:opacity-30"
+                              aria-label="Move up"
+                            >
+                              <ChevronUp className="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                              onClick={() => moveItem(cat, idx, 1)}
+                              disabled={idx === items.length - 1}
+                              className="p-0.5 text-stone-400 transition-colors hover:text-foreground disabled:opacity-30"
+                              aria-label="Move down"
+                            >
+                              <ChevronDown className="h-3.5 w-3.5" />
+                            </button>
                           </div>
-                        )}
-                      </div>
+                          {item.image && (
+                            <div className="h-16 w-16 overflow-hidden border border-line">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                            </div>
+                          )}
+                        </div>
 
-                      {/* Fields */}
-                      <div className="flex-1 space-y-3">
-                        <div className="grid gap-3 sm:grid-cols-2">
-                          <input
-                            value={item.name}
-                            onChange={(e) => updateItem(cat, idx, "name", e.target.value)}
-                            placeholder="Item name"
-                            className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
-                          />
-                          <input
-                            value={item.price}
-                            onChange={(e) => updateItem(cat, idx, "price", e.target.value)}
-                            placeholder="₱0"
-                            className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
-                          />
-                        </div>
-                        <input
-                          value={item.desc}
-                          onChange={(e) => updateItem(cat, idx, "desc", e.target.value)}
-                          placeholder="Description"
-                          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
-                        />
-                        <div className="space-y-2">
-                          <ImageUpload
-                            type="menu"
-                            currentImage={item.image}
-                            onUpload={(url) => updateItem(cat, idx, "image", url)}
-                          />
-                          <input
-                            value={item.image || ""}
-                            onChange={(e) => updateItem(cat, idx, "image", e.target.value)}
-                            placeholder="Or paste image URL"
-                            className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-xs text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
-                          />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <label className="inline-flex items-center gap-2 text-sm">
+                        <div className="flex-1 space-y-3">
+                          <div className="grid gap-3 sm:grid-cols-2">
                             <input
-                              type="checkbox"
-                              checked={!!item.popular}
-                              onChange={(e) => updateItem(cat, idx, "popular", e.target.checked)}
-                              className="h-4 w-4 rounded border-stone-300 text-primary focus:ring-accent"
+                              value={item.name}
+                              onChange={(e) => updateItem(cat, idx, "name", e.target.value)}
+                              placeholder="Item name"
+                              className={fieldClass}
                             />
-                            <Star className={`h-3.5 w-3.5 ${item.popular ? "fill-accent text-accent" : "text-stone-400"}`} />
-                            <span className="font-medium">Popular</span>
-                          </label>
-                          <button
-                            onClick={() => deleteItem(cat, idx)}
-                            className="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 transition"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" /> Delete
-                          </button>
+                            <input
+                              value={item.price}
+                              onChange={(e) => updateItem(cat, idx, "price", e.target.value)}
+                              placeholder="₱0"
+                              className={fieldClass}
+                            />
+                          </div>
+                          <input
+                            value={item.desc}
+                            onChange={(e) => updateItem(cat, idx, "desc", e.target.value)}
+                            placeholder="Description"
+                            className={fieldClass}
+                          />
+                          <div className="space-y-2">
+                            <ImageUpload
+                              type="menu"
+                              currentImage={item.image}
+                              onUpload={(url) => updateItem(cat, idx, "image", url)}
+                            />
+                            <input
+                              value={item.image || ""}
+                              onChange={(e) => updateItem(cat, idx, "image", e.target.value)}
+                              placeholder="Or paste image URL"
+                              className={`${fieldClass} text-xs`}
+                            />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <label className="inline-flex items-center gap-2 text-sm text-foreground">
+                              <input
+                                type="checkbox"
+                                checked={!!item.popular}
+                                onChange={(e) => updateItem(cat, idx, "popular", e.target.checked)}
+                                className="h-4 w-4 accent-[var(--primary)]"
+                              />
+                              <Star className={`h-3.5 w-3.5 ${item.popular ? "fill-accent text-accent" : "text-stone-300"}`} />
+                              <span className="font-medium">Popular</span>
+                            </label>
+                            <button onClick={() => deleteItem(cat, idx)} className={btnDanger}>
+                              <Trash2 className="h-3.5 w-3.5" /> Delete
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
                 <button
                   onClick={() => addItem(cat)}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-stone-300 bg-white py-3 text-sm font-medium text-stone-600 hover:border-accent hover:bg-surface hover:text-primary-light transition"
+                  className="flex w-full items-center justify-center gap-2 border-t border-dashed border-line py-3 text-sm font-medium text-muted transition-colors hover:bg-surface hover:text-primary"
                 >
                   <Plus className="h-4 w-4" /> Add Item
                 </button>
@@ -381,26 +352,25 @@ export default function MenuEditorPage() {
         ))}
       </div>
 
-      {/* Add Category */}
       {showNewCategory ? (
-        <div className="flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4">
+        <div className="flex items-center gap-3 border border-line bg-white p-4">
           <input
             value={newCategoryName}
             onChange={(e) => setNewCategoryName(e.target.value)}
             placeholder="Category name"
             autoFocus
-            className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
+            className={fieldClass}
             onKeyDown={(e) => e.key === "Enter" && addCategory()}
           />
-          <button
-            onClick={addCategory}
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-light"
-          >
+          <button onClick={addCategory} className={btnPrimary}>
             Add
           </button>
           <button
-            onClick={() => { setShowNewCategory(false); setNewCategoryName(""); }}
-            className="rounded-lg p-2 text-stone-400 hover:text-stone-600"
+            onClick={() => {
+              setShowNewCategory(false);
+              setNewCategoryName("");
+            }}
+            className="p-2 text-stone-400 hover:text-foreground"
             aria-label="Cancel"
           >
             <X className="h-4 w-4" />
@@ -409,29 +379,19 @@ export default function MenuEditorPage() {
       ) : (
         <button
           onClick={() => setShowNewCategory(true)}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-stone-300 bg-white py-4 text-sm font-medium text-stone-600 hover:border-accent hover:bg-surface hover:text-primary-light transition"
+          className="flex w-full items-center justify-center gap-2 border border-dashed border-line py-4 text-sm font-medium text-muted transition-colors hover:border-primary hover:text-primary"
         >
           <Plus className="h-4 w-4" /> Add Category
         </button>
       )}
 
-      {/* Save button bottom */}
       <div className="flex justify-end pb-8">
-        <button
-          onClick={save}
-          disabled={saving}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-light transition disabled:opacity-60"
-        >
+        <button onClick={save} disabled={saving} className={btnPrimary}>
           <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
         </button>
       </div>
 
-      {/* Toast */}
-      {toast && (
-        <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-emerald-600 px-5 py-3 text-sm font-medium text-white shadow-xl">
-          <span>{toast}</span>
-        </div>
-      )}
+      <Toast message={toast} />
     </div>
   );
 }

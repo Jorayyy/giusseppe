@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { Upload, Image as ImageIcon, X, Loader2 } from "lucide-react";
+import { Upload, X, Loader2 } from "lucide-react";
 
 type ImageUploadProps = {
   type: "menu" | "gallery" | "avatar";
@@ -85,20 +85,17 @@ export default function ImageUpload({
   return (
     <div className={className}>
       {displaySrc && !uploading ? (
-        <div className="relative group">
-          <div className="h-32 w-full overflow-hidden rounded-xl border border-stone-200">
-            <img
-              src={displaySrc}
-              alt="Preview"
-              className="h-full w-full object-cover"
-            />
+        <div className="group relative">
+          <div className="h-32 w-full overflow-hidden border border-line bg-surface">
+            <img src={displaySrc} alt="Preview" className="h-full w-full object-cover" />
           </div>
           <button
             type="button"
             onClick={handleClear}
-            className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition"
+            className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center bg-foreground text-background opacity-0 transition-opacity group-hover:opacity-100"
+            aria-label="Remove image"
           >
-            <X className="h-3.5 w-3.5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
       ) : (
@@ -112,21 +109,23 @@ export default function ImageUpload({
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
           disabled={uploading}
-          className={`flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 transition ${
+          className={`flex w-full flex-col items-center justify-center gap-2 border border-dashed px-4 py-8 transition-colors ${
             dragOver
-              ? "border-accent bg-surface"
-              : "border-stone-300 bg-stone-50 hover:border-stone-400 hover:bg-surface"
-          } ${uploading ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
+              ? "border-primary bg-surface"
+              : "border-line bg-white hover:border-primary"
+          } ${uploading ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
         >
           {uploading ? (
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loader2 className="h-7 w-7 animate-spin text-primary" />
           ) : (
-            <Upload className="h-8 w-8 text-stone-400" />
+            <Upload className="h-7 w-7 text-stone-400" />
           )}
-          <span className="text-sm font-medium text-stone-600">
-            {uploading ? "Uploading..." : "Click to upload or drag & drop"}
+          <span className="text-sm font-medium text-foreground">
+            {uploading ? "Uploading…" : "Click to upload or drag & drop"}
           </span>
-          <span className="text-xs text-stone-400">JPG, PNG, WebP, GIF (max 5MB)</span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-stone-400">
+            JPG, PNG, WebP, GIF · max 5MB
+          </span>
         </button>
       )}
 
@@ -139,7 +138,7 @@ export default function ImageUpload({
       />
 
       {error && (
-        <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-600">
+        <div className="mt-2 flex items-center gap-1.5 border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-600">
           <X className="h-3.5 w-3.5 shrink-0" />
           {error}
         </div>

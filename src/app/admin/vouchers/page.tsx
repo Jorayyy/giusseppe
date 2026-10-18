@@ -1,18 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Save,
-  Plus,
-  Trash2,
-  Ticket,
-  Tag,
-  Gift,
-  Check,
-  X,
-  ToggleLeft,
-  ToggleRight,
-} from "lucide-react";
+import { Save, Plus, Trash2, Tag, Gift, X, ToggleLeft, ToggleRight } from "lucide-react";
+import { PageHeader, Toast, fieldClass, fieldMonoClass, btnPrimary, Badge } from "@/components/admin/ui";
 
 interface Voucher {
   id?: string;
@@ -201,79 +191,58 @@ export default function VouchersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="font-serif text-3xl font-bold text-stone-900">Gift Vouchers</h1>
-          <p className="mt-1 text-stone-500">Manage voucher codes and track redemptions.</p>
-        </div>
-        <button
-          onClick={save} disabled={saving}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-light transition"
-        >
-          <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
-        </button>
-      </div>
+      <PageHeader
+        kicker="Admin / Vouchers"
+        title="Gift Vouchers"
+        description="Manage voucher codes and track redemptions."
+        actions={
+          <button onClick={save} disabled={saving} className={btnPrimary}>
+            <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
+          </button>
+        }
+      />
 
-      {/* Summary */}
-      <div className="flex flex-wrap gap-3">
-        <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
-          {vouchers.length} vouchers
-        </span>
-        <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
-          {activeCount} active
-        </span>
-        <span className="rounded-full bg-surface px-3 py-1 text-xs font-medium text-primary-light">
-          {totalRedeemed} redeemed
-        </span>
-      </div>
+      <p className="eyebrow text-stone-400">
+        {vouchers.length} vouchers · {activeCount} active · {totalRedeemed} redeemed
+      </p>
 
-      {/* Voucher List */}
       <div className="space-y-3">
         {vouchers.map((v) => (
           <div
             key={v.code}
-            className={`rounded-2xl border bg-white p-4 transition ${
-              v.active ? "border-stone-200" : "border-stone-100 opacity-60"
+            className={`border bg-white p-4 transition-colors ${
+              v.active ? "border-line" : "border-line/60 opacity-60"
             }`}
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                {/* Icon */}
                 <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-xl ${
-                    v.active ? "bg-surface text-primary" : "bg-stone-100 text-stone-400"
+                  className={`flex h-11 w-11 items-center justify-center border ${
+                    v.active ? "border-primary/40 text-primary" : "border-line text-stone-400"
                   }`}
                 >
                   {v.type === "discount" ? <Tag className="h-5 w-5" /> : <Gift className="h-5 w-5" />}
                 </div>
 
-                {/* Info */}
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-serif text-lg font-bold text-stone-900">{v.code}</span>
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                        v.active ? "bg-emerald-100 text-emerald-700" : "bg-stone-100 text-stone-500"
-                      }`}
-                    >
-                      {v.active ? "Active" : "Inactive"}
-                    </span>
+                    <span className="font-mono text-base tracking-wider text-foreground">{v.code}</span>
+                    <Badge tone={v.active ? "primary" : "muted"}>{v.active ? "Active" : "Inactive"}</Badge>
                   </div>
-                  <p className="text-sm text-stone-500">{v.description}</p>
-                  <div className="mt-1 flex items-center gap-3 text-xs text-stone-400">
+                  <p className="mt-1 text-sm text-muted">{v.description}</p>
+                  <div className="mt-1 flex items-center gap-3 font-mono text-[11px] text-stone-400">
                     <span>{v.type === "discount" ? `₱${v.value} off` : "Free item"}</span>
-                    <span>•</span>
+                    <span>·</span>
                     <span>{v.redeemCount ?? redeemed[v.code] ?? 0} redeemed</span>
                   </div>
                 </div>
               </div>
 
-              {/* Actions */}
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => toggleActive(v.code)}
-                  className={`rounded-lg p-2 transition ${
-                    v.active ? "text-emerald-600 hover:bg-emerald-50" : "text-stone-400 hover:bg-stone-50"
+                  className={`p-2 transition-colors ${
+                    v.active ? "text-primary hover:bg-surface" : "text-stone-400 hover:text-foreground"
                   }`}
                   title={v.active ? "Deactivate" : "Activate"}
                 >
@@ -281,7 +250,8 @@ export default function VouchersPage() {
                 </button>
                 <button
                   onClick={() => deleteVoucher(v.code)}
-                  className="rounded-lg p-2 text-stone-400 hover:bg-red-50 hover:text-red-500 transition"
+                  className="p-2 text-stone-400 transition-colors hover:text-red-600"
+                  aria-label={`Delete ${v.code}`}
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -291,69 +261,65 @@ export default function VouchersPage() {
         ))}
       </div>
 
-      {/* Add Voucher */}
       {showAdd ? (
-        <div className="rounded-2xl border border-stone-200 bg-white p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-serif text-lg font-semibold text-stone-900">New Voucher</h3>
-            <button onClick={() => setShowAdd(false)} className="rounded-lg p-1 text-stone-400 hover:text-stone-600">
+        <div className="border border-line bg-white p-5">
+          <div className="mb-4 flex items-center justify-between border-b border-line pb-3">
+            <h3 className="font-serif text-xl text-foreground">New Voucher</h3>
+            <button onClick={() => setShowAdd(false)} className="p-1 text-stone-400 hover:text-foreground">
               <X className="h-5 w-5" />
             </button>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label className="block text-xs font-medium text-stone-500 mb-1">Code</label>
+            <label className="block space-y-1.5">
+              <span className="eyebrow text-stone-400">Code</span>
               <input
                 value={newCode}
                 onChange={(e) => setNewCode(e.target.value.toUpperCase())}
                 placeholder="e.g. SUMMER50"
-                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-900 uppercase tracking-wider placeholder:normal-case outline-none focus:border-accent focus:ring-2 focus:ring-surface"
+                className={fieldMonoClass}
               />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-stone-500 mb-1">Type</label>
+            </label>
+            <label className="block space-y-1.5">
+              <span className="eyebrow text-stone-400">Type</span>
               <select
                 value={newType}
                 onChange={(e) => setNewType(e.target.value as "discount" | "free-item")}
-                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
+                className={fieldClass}
               >
                 <option value="discount">Discount</option>
                 <option value="free-item">Free Item</option>
               </select>
-            </div>
+            </label>
             {newType === "discount" && (
-              <div>
-                <label className="block text-xs font-medium text-stone-500 mb-1">Value (₱)</label>
+              <label className="block space-y-1.5">
+                <span className="eyebrow text-stone-400">Value (₱)</span>
                 <input
                   type="number"
                   value={newValue}
                   onChange={(e) => setNewValue(e.target.value)}
                   placeholder="0"
-                  className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
+                  className={fieldClass}
                 />
-              </div>
+              </label>
             )}
-            <div>
-              <label className="block text-xs font-medium text-stone-500 mb-1">Description</label>
+            <label className="block space-y-1.5">
+              <span className="eyebrow text-stone-400">Description</span>
               <input
                 value={newDesc}
                 onChange={(e) => setNewDesc(e.target.value)}
                 placeholder="e.g. ₱50 off your order"
-                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-900 outline-none focus:border-accent focus:ring-2 focus:ring-surface"
+                className={fieldClass}
               />
-            </div>
+            </label>
           </div>
           <div className="mt-4 flex justify-end gap-2">
             <button
               onClick={() => setShowAdd(false)}
-              className="rounded-lg px-4 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 transition"
+              className="px-4 py-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
             >
               Cancel
             </button>
-            <button
-              onClick={addVoucher}
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-light transition"
-            >
+            <button onClick={addVoucher} className={btnPrimary}>
               <Plus className="h-4 w-4" /> Add Voucher
             </button>
           </div>
@@ -361,28 +327,19 @@ export default function VouchersPage() {
       ) : (
         <button
           onClick={() => setShowAdd(true)}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-stone-300 bg-white py-4 text-sm font-medium text-stone-600 hover:border-accent hover:bg-surface hover:text-primary-light transition"
+          className="flex w-full items-center justify-center gap-2 border border-dashed border-line py-4 text-sm font-medium text-muted transition-colors hover:border-primary hover:text-primary"
         >
           <Plus className="h-4 w-4" /> Add Voucher
         </button>
       )}
 
-      {/* Save button bottom */}
       <div className="flex justify-end pb-8">
-        <button
-          onClick={save} disabled={saving}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-light transition"
-        >
+        <button onClick={save} disabled={saving} className={btnPrimary}>
           <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
         </button>
       </div>
 
-      {/* Toast */}
-      {toast && (
-        <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-emerald-600 px-5 py-3 text-sm font-medium text-white shadow-xl">
-          <span>{toast}</span>
-        </div>
-      )}
+      <Toast message={toast} />
     </div>
   );
 }
