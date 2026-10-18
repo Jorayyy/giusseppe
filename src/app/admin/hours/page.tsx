@@ -119,7 +119,7 @@ export default function HoursEditorPage() {
         }
       />
 
-      <div className="flex items-start gap-3 border border-line bg-white p-5">
+      <div className="flex items-start gap-3 rounded-3xl border border-line bg-white p-5">
         <Clock className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
         <div>
           <p className="text-sm font-medium text-foreground">Two service windows</p>
@@ -226,7 +226,7 @@ export default function HoursEditorPage() {
         })}
       </div>
 
-      <div className="border border-line bg-white p-6">
+      <div className="rounded-3xl border border-line bg-white p-6">
         <h3 className="font-serif text-xl text-foreground">Weekly Summary</h3>
         <div className="mt-4 divide-y divide-line">
           {HOURS_ORDER.map((day) => {

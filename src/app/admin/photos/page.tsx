@@ -124,8 +124,8 @@ export default function PhotosEditorPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {photos.map((photo, idx) => (
-          <div key={photo.id} className="group border border-line bg-white p-4">
-            <div className="relative overflow-hidden bg-surface">
+          <div key={photo.id} className="group rounded-3xl border border-line bg-white p-4">
+            <div className="relative overflow-hidden rounded-2xl bg-surface">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={photo.url}
@@ -161,12 +161,12 @@ export default function PhotosEditorPage() {
         ))}
 
         {newSlot ? (
-          <div className="border border-primary/40 bg-surface p-4">
+          <div className="rounded-3xl border border-primary/40 bg-surface p-4">
             <p className="eyebrow mb-3 text-stone-400">Upload new photo</p>
             <ImageUpload type="gallery" onUpload={handleUpload} />
             <button
               onClick={() => setNewSlot(false)}
-              className="mt-2 w-full border border-line bg-white px-3 py-2 text-xs font-medium text-muted transition-colors hover:text-foreground"
+              className="mt-2 w-full rounded-3xl border border-line bg-white px-3 py-2 text-xs font-medium text-muted transition-colors hover:text-foreground"
             >
               Cancel
             </button>
@@ -174,7 +174,7 @@ export default function PhotosEditorPage() {
         ) : (
           <button
             onClick={() => setNewSlot(true)}
-            className="flex min-h-[280px] flex-col items-center justify-center gap-2 border border-dashed border-line bg-white text-muted transition-colors hover:border-primary hover:text-primary"
+            className="flex min-h-[280px] flex-col items-center justify-center gap-2 rounded-3xl border border-dashed border-line bg-white text-muted transition-colors hover:border-primary hover:text-primary"
           >
             <Plus className="h-8 w-8" />
             <span className="text-sm font-medium">Add Photo</span>
@@ -182,7 +182,7 @@ export default function PhotosEditorPage() {
         )}
       </div>
 
-      <div className="border border-line bg-white p-5">
+      <div className="rounded-3xl border border-line bg-white p-5">
         <h3 className="font-serif text-xl text-foreground">Tips</h3>
         <ul className="mt-3 space-y-1 text-sm text-muted">
           <li>· Click &quot;Add Photo&quot; to upload images to Vercel Blob storage</li>

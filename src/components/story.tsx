@@ -40,21 +40,21 @@ export default async function Story() {
           </div>
 
           <dl
-            className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-line pt-8"
+            className="mt-10 grid max-w-lg grid-cols-3 gap-3"
             data-reveal
           >
             {stats.map((stat) => (
-              <div key={stat.label}>
+              <div key={stat.label} className="rounded-2xl bg-surface px-4 py-4">
                 <dt className="sr-only">{stat.label}</dt>
                 <dd className="font-serif text-2xl text-foreground">{stat.value}</dd>
-                <dd className="eyebrow mt-2 text-stone-400">{stat.label}</dd>
+                <dd className="eyebrow mt-1.5 text-stone-500">{stat.label}</dd>
               </div>
             ))}
           </dl>
         </div>
 
         <figure className="lg:col-span-5" data-reveal style={{ transitionDelay: "120ms" }}>
-          <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-surface">
             <Image
               src="/photos/3.jpg"
               alt="Guests enjoying lunch at Giuseppe's"
@@ -63,7 +63,7 @@ export default async function Story() {
               className="object-cover"
             />
           </div>
-          <figcaption className="mt-4 font-serif text-sm italic text-muted">
+          <figcaption className="mt-4 font-serif text-sm text-muted">
             Lunch service on Avenida Veteranos.
           </figcaption>
         </figure>

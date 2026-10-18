@@ -77,12 +77,12 @@ export default function AdminDashboard() {
 
       <div>
         <p className="eyebrow mb-4 text-stone-400">Quick actions</p>
-        <div className="grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {QUICK_ACTIONS.map((action) => (
             <Link
               key={action.href}
               href={action.href}
-              className="group flex items-center justify-between gap-3 bg-white px-5 py-5 transition-colors hover:bg-surface"
+              className="group flex items-center justify-between gap-3 rounded-2xl border border-line bg-white px-5 py-5 transition-colors hover:border-primary hover:bg-surface"
             >
               <span className="flex items-center gap-3">
                 <action.icon className="h-4 w-4 text-primary" />
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <div className="border border-line bg-white p-6">
+        <div className="rounded-3xl border border-line bg-white p-6">
           <p className="eyebrow text-stone-400">Website</p>
           <h3 className="mt-2 font-serif text-2xl text-foreground">Live and ready</h3>
           <div className="mt-5 space-y-2">
@@ -103,7 +103,7 @@ export default function AdminDashboard() {
               href="https://giusseppe.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between border border-line px-4 py-3 text-sm text-foreground transition-colors hover:border-primary"
+              className="flex items-center justify-between rounded-2xl border border-line px-4 py-3 text-sm text-foreground transition-colors hover:border-primary"
             >
               <span className="flex items-center gap-2">
                 <ExternalLink className="h-4 w-4 text-stone-400" />
@@ -115,7 +115,7 @@ export default function AdminDashboard() {
               href="https://giusseppe.vercel.app/menu"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between border border-line px-4 py-3 text-sm text-foreground transition-colors hover:border-primary"
+              className="flex items-center justify-between rounded-2xl border border-line px-4 py-3 text-sm text-foreground transition-colors hover:border-primary"
             >
               <span className="flex items-center gap-2">
                 <UtensilsCrossed className="h-4 w-4 text-stone-400" />
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
           </div>
           <button
             onClick={copyLink}
-            className="mt-3 flex w-full items-center justify-center gap-2 border border-line px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-foreground"
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border border-line px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-foreground"
           >
             {copied ? (
               <>
@@ -142,10 +142,10 @@ export default function AdminDashboard() {
           </button>
         </div>
 
-        <div className="border border-line bg-white p-6">
+        <div className="rounded-3xl border border-line bg-white p-6">
           <p className="eyebrow text-stone-400">QR Code</p>
           <h3 className="mt-2 font-serif text-2xl text-foreground">Scan the menu</h3>
-          <div className="mt-5 flex justify-center border border-line bg-background p-5">
+          <div className="mt-5 flex justify-center rounded-2xl border border-line bg-background p-5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://giusseppe.vercel.app/menu"
@@ -157,7 +157,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="border border-line bg-white">
+      <div className="rounded-3xl border border-line bg-white">
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <h3 className="font-serif text-xl text-foreground">Popular Items</h3>
           <Link href="/admin/menu" className="link-underline text-sm font-medium text-primary">

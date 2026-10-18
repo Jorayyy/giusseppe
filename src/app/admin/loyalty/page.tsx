@@ -53,7 +53,7 @@ export default function AdminLoyaltyPage() {
       />
 
       {error && (
-        <div className="border border-dashed border-line bg-white px-6 py-4 text-center text-sm text-muted">
+        <div className="rounded-3xl border border-dashed border-line bg-white px-6 py-4 text-center text-sm text-muted">
           Couldn&apos;t reach the database — showing no cards. Try again later.
         </div>
       )}
@@ -65,7 +65,7 @@ export default function AdminLoyaltyPage() {
         <Stat label="Avg. Stamps/Member" value={avgStamps} icon={<TrendingUp className="h-4 w-4" />} />
       </div>
 
-      <div className="border border-line bg-white">
+      <div className="rounded-3xl border border-line bg-white">
         <div className="border-b border-line px-6 py-4">
           <h3 className="font-serif text-xl text-foreground">Members</h3>
         </div>

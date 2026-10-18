@@ -68,7 +68,7 @@ export default function Reserve() {
             title="Book a table"
             lede="Send a request and we'll confirm by phone. Friday and Saturday nights fill up fast."
           />
-          <p className="mt-8 max-w-sm border-t border-line pt-6 font-serif text-lg italic text-muted">
+          <p className="mt-8 max-w-sm rounded-2xl bg-background/60 px-5 py-4 font-serif text-base text-muted">
             Prefer to talk it through? Call the restaurant and we&apos;ll find you a seat.
           </p>
         </div>
@@ -116,7 +116,7 @@ export default function Reserve() {
             <button
               type="submit"
               disabled={status === "sending" || status === "sent"}
-              className="bg-foreground px-7 py-3.5 text-sm font-medium text-background transition-colors hover:bg-primary disabled:opacity-60"
+              className="rounded-full bg-foreground px-7 py-3.5 text-sm font-semibold text-background transition-colors hover:bg-primary hover:text-white disabled:opacity-60"
             >
               {status === "sending"
                 ? "Sending…"

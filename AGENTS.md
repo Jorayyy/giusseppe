@@ -20,12 +20,12 @@ npx prisma db push  # Sync schema (needs DATABASE_URL reachable)
 No test suite.
 
 ## Design System (globals.css)
-- Art direction: "Osteria Editoriale" — Italian editorial minimalism (type-first, paper field, sharp edges).
-- Palette: `--primary: #B4522E` terracotta, `--accent: #C9A96E` gold, `--background: #FBF7F0` paper, `--surface: #F3ECE1`, `--line: #E4DACB` hairlines, stone neutrals. Terracotta is the only filled band; gold only for tiny details (stars). No green/blue/purple.
-- Type: Instrument Serif display (`font-serif`, weight 400 only), Inter body (`font-sans`), IBM Plex Mono labels (`font-mono`). `--text-display` / `--text-title` clamps.
-- Utilities: `.eyebrow` (mono, 11px, uppercase, 0.16em), `.link-underline` (animated), `.leader` (dot leader), `[data-reveal]` + `.is-in` reveal system (IntersectionObserver in `components/reveal-init.tsx`, `html.js` class set inline in layout).
-- No rounded corners on buttons/images; hairline borders (`border-line`); no card soup. Exactly one terracotta band per page (ReviewQuote on home, CTA on /menu).
-- Section pattern: `components/section-header.tsx` (roman index + eyebrow + title + lede), underline inputs in `components/field.tsx`.
+- Art direction: "WildCrumb warmth" — playful, rounded, photo-forward. Full-bleed rounded hero panels, floating glass chips, pill buttons/nav, soft cream fields.
+- Palette: `--primary: #17707E` teal, `--accent: #E6B450` honey, `--background: #FFF8EB` cream, `--surface: #F4E8D3` sand, `--surface-dark: #E9D9BF`, `--line: #E4D5BD`, `--muted: #5C6B62`, ink `#0F2B26`.
+- Type: Fredoka display (`font-serif`, weights 400–700; headings default 600), Inter body (`font-sans`), IBM Plex Mono only for codes (`font-mono`). `--text-display` / `--text-title` clamps.
+- Utilities: `.eyebrow` (Fredoka, 11px, uppercase, 0.14em), `.glass` / `.glass-dark` (blurred chips over photos), `.link-underline` (animated), `.leader` (dot leader), `[data-reveal]` + `.is-in` reveal system (IntersectionObserver in `components/reveal-init.tsx`, `html.js` class set inline in layout).
+- Shapes: rounded-2xl/3xl panels and images, rounded-full buttons, chips, fields and nav. One teal band per page (ReviewQuote on home, CTA on /menu).
+- Section pattern: `components/section-header.tsx` (round roman index chip + eyebrow + title + lede), rounded inputs in `components/field.tsx`.
 
 ## Project Structure
 ```

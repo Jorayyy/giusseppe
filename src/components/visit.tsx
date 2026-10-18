@@ -26,25 +26,27 @@ export default async function Visit() {
             <OpenPill hours={hours} />
           </div>
 
-          <table className="mt-6 w-full max-w-lg text-sm" data-reveal>
-            <caption className="sr-only">Opening hours</caption>
-            <tbody className="divide-y divide-line">
-              {HOURS_ORDER.map((day) => (
-                <tr key={day} className={day === today ? "text-foreground" : "text-muted"}>
-                  <th scope="row" className="py-3.5 pr-4 text-left font-normal">
-                    <span className="inline-flex items-center gap-2.5">
-                      <span
-                        className={`h-1.5 w-1.5 rounded-full ${day === today ? "bg-primary" : "bg-transparent"}`}
-                        aria-hidden
-                      />
-                      {day}
-                    </span>
-                  </th>
-                  <td className="py-3.5 text-right tabular-nums">{formatDay(day)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="mt-6 max-w-lg rounded-3xl border border-line bg-white/60 px-5 py-2" data-reveal>
+            <table className="w-full text-sm">
+              <caption className="sr-only">Opening hours</caption>
+              <tbody className="divide-y divide-line">
+                {HOURS_ORDER.map((day) => (
+                  <tr key={day} className={day === today ? "text-foreground" : "text-muted"}>
+                    <th scope="row" className="py-3.5 pr-4 text-left font-normal">
+                      <span className="inline-flex items-center gap-2.5">
+                        <span
+                          className={`h-1.5 w-1.5 rounded-full ${day === today ? "bg-primary" : "bg-transparent"}`}
+                          aria-hidden
+                        />
+                        {day}
+                      </span>
+                    </th>
+                    <td className="py-3.5 text-right tabular-nums">{formatDay(day)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <div className="mt-10 max-w-lg space-y-4 text-sm text-muted" data-reveal>
             <p className="flex items-start gap-3">
@@ -61,7 +63,7 @@ export default async function Visit() {
         </div>
 
         <figure className="lg:col-span-6" data-reveal style={{ transitionDelay: "120ms" }}>
-          <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-surface">
             <Image
               src="/photos/interior-2.jpg"
               alt="Tables set for service at Giuseppe's"
@@ -73,12 +75,12 @@ export default async function Visit() {
               href={r.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute bottom-5 left-5 bg-foreground px-5 py-3 text-sm font-medium text-background transition-colors hover:bg-primary"
+              className="absolute bottom-5 left-5 rounded-full bg-foreground/90 px-5 py-3 text-sm font-semibold text-background backdrop-blur transition-colors hover:bg-primary hover:text-white"
             >
               Get directions →
             </a>
           </div>
-          <figcaption className="mt-4 font-serif text-sm italic text-muted">{r.address}</figcaption>
+          <figcaption className="mt-4 font-serif text-sm text-muted">{r.address}</figcaption>
         </figure>
       </div>
     </section>

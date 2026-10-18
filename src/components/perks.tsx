@@ -9,7 +9,7 @@ type WalletItem = { code: string; description: string | null; date: string };
 const WALLET_KEY = "giuseppe_my_vouchers";
 
 const inputClass =
-  "min-w-0 w-full border-b border-stone-300 bg-transparent pb-2 text-[15px] text-foreground outline-none transition-colors placeholder:text-stone-400 focus:border-primary";
+  "min-w-0 w-full rounded-2xl border border-line bg-white/80 px-4 py-3 text-[15px] text-foreground outline-none transition-colors placeholder:text-stone-400 focus:border-primary";
 
 function StampDots({ stamps }: { stamps: number }) {
   return (
@@ -152,14 +152,14 @@ export default function Perks() {
               <button
                 type="submit"
                 disabled={loyaltyBusy}
-                className="shrink-0 bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-colors hover:bg-primary disabled:opacity-50"
+                className="shrink-0 rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background transition-colors hover:bg-primary hover:text-white disabled:opacity-50"
               >
                 Check
               </button>
             </form>
 
             {card && (
-              <div className="mt-6 max-w-md border border-line bg-background p-5">
+              <div className="mt-6 max-w-md rounded-3xl border border-line bg-background/70 p-5">
                 <StampDots stamps={card.stamps} />
                 <div className="mt-4 flex items-center justify-between gap-4 text-xs text-muted">
                   <span>
@@ -218,7 +218,7 @@ export default function Perks() {
               <button
                 type="submit"
                 disabled={voucherBusy}
-                className="shrink-0 bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-colors hover:bg-primary disabled:opacity-50"
+                className="shrink-0 rounded-full bg-foreground p-3 text-sm font-semibold text-background transition-colors hover:bg-primary hover:text-white disabled:opacity-50"
                 aria-label="Redeem"
               >
                 <Gift className="h-4 w-4" />
@@ -236,7 +236,7 @@ export default function Perks() {
                 {wallet.map((w, i) => (
                   <li
                     key={`${w.code}-${i}`}
-                    className="border border-line bg-background px-3 py-1 font-mono text-[11px] text-foreground"
+                    className="rounded-full border border-line bg-background/70 px-3 py-1 font-mono text-[11px] text-foreground"
                   >
                     {w.code}
                     <span className="ml-2 text-stone-400">{w.date}</span>

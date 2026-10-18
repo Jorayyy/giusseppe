@@ -89,7 +89,7 @@ export default async function MenuHighlights() {
                 style={{ transitionDelay: `${i * 90}ms` }}
                 className="group"
               >
-                <div className="relative aspect-[3/4] overflow-hidden bg-surface-dark">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-[1.75rem] bg-surface-dark">
                   <Image
                     src={dish.photo}
                     alt={dish.alt}
@@ -101,7 +101,9 @@ export default async function MenuHighlights() {
                 <div className="mt-5 flex items-baseline gap-3">
                   <h3 className="font-serif text-2xl text-foreground">{item.name}</h3>
                   <span className="leader" aria-hidden />
-                  <span className="text-sm font-medium text-primary">{item.price}</span>
+                  <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
+                    {item.price}
+                  </span>
                 </div>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{item.desc}</p>
               </article>
@@ -110,19 +112,21 @@ export default async function MenuHighlights() {
         </div>
 
         <ul
-          className="mt-16 max-w-2xl divide-y divide-line border-y border-line"
+          className="mt-14 max-w-2xl divide-y divide-line rounded-3xl border border-line bg-background/60 px-6 py-2"
           data-reveal
         >
           {rowItems.map((item) => (
             <li key={item.name} className="flex items-baseline py-4">
-              <span className="font-mono text-[13px] text-foreground">
+              <span className="font-mono text-[13px] font-medium text-foreground">
                 {item.name}
                 {item.popular && (
-                  <span className="eyebrow ml-3 align-middle text-accent">Popular</span>
+                  <span className="eyebrow ml-3 rounded-full bg-accent/20 px-2 py-0.5 align-middle text-foreground">
+                    Popular
+                  </span>
                 )}
               </span>
               <span className="leader" aria-hidden />
-              <span className="font-mono text-[13px] text-primary">{item.price}</span>
+              <span className="font-mono text-[13px] font-medium text-primary">{item.price}</span>
             </li>
           ))}
         </ul>

@@ -7,40 +7,42 @@ export default async function ReviewQuote() {
   const r = await getRestaurant();
 
   return (
-    <section className="bg-primary">
-      <div className="mx-auto max-w-3xl px-6 py-24 text-center md:py-32">
-        <p className="eyebrow text-white/55" data-reveal>
-          From the guest book
-        </p>
-
-        <div className="mt-6 flex justify-center gap-1.5 text-accent" aria-hidden data-reveal>
-          {Array.from({ length: 5 }).map((_, i) => (
-            <span key={i} className="text-sm">
-              ★
-            </span>
-          ))}
-        </div>
-
-        <blockquote
-          className="mt-8 font-serif text-[clamp(1.75rem,3.6vw,2.75rem)] leading-[1.15] text-white"
-          data-reveal
-          style={{ transitionDelay: "80ms" }}
-        >
-          &ldquo;{quote.text}&rdquo;
-        </blockquote>
-
-        <div className="mt-10" data-reveal style={{ transitionDelay: "160ms" }}>
-          <p className="eyebrow text-white/55">
-            {quote.name} · Google · {r.rating} from {r.reviewCount} reviews
+    <section className="px-3 py-3 sm:px-5">
+      <div className="mx-auto max-w-[1400px] rounded-[2.5rem] bg-primary">
+        <div className="mx-auto max-w-3xl px-6 py-20 text-center md:py-28">
+          <p className="eyebrow text-white/55" data-reveal>
+            From the guest book
           </p>
-          <a
-            href={r.googleReviewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link-underline mt-6 inline-block text-sm font-medium text-white"
+
+          <div className="mt-6 flex justify-center gap-1.5 text-accent" aria-hidden data-reveal>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <span key={i} className="text-sm">
+                ★
+              </span>
+            ))}
+          </div>
+
+          <blockquote
+            className="mt-8 font-serif text-[clamp(1.75rem,3.6vw,2.75rem)] leading-[1.15] text-white"
+            data-reveal
+            style={{ transitionDelay: "80ms" }}
           >
-            Read the reviews on Google →
-          </a>
+            &ldquo;{quote.text}&rdquo;
+          </blockquote>
+
+          <div className="mt-10" data-reveal style={{ transitionDelay: "160ms" }}>
+            <p className="eyebrow text-white/55">
+              {quote.name} · Google · {r.rating} from {r.reviewCount} reviews
+            </p>
+            <a
+              href={r.googleReviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-block rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20"
+            >
+              Read the reviews on Google →
+            </a>
+          </div>
         </div>
       </div>
     </section>

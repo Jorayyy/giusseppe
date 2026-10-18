@@ -107,7 +107,7 @@ export default function AdminSalesPage() {
           <button
             key={r}
             onClick={() => setRange(r)}
-            className={`flex items-center gap-2 border px-4 py-2 font-mono text-xs uppercase tracking-[0.1em] transition-colors ${
+            className={`flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-[0.1em] transition-colors ${
               range === r
                 ? "border-foreground bg-foreground text-background"
                 : "border-line bg-white text-muted hover:border-foreground hover:text-foreground"
@@ -127,7 +127,7 @@ export default function AdminSalesPage() {
       </div>
 
       {!hasData && (
-        <div className="border border-dashed border-line bg-white">
+        <div className="rounded-3xl border border-dashed border-line bg-white">
           <EmptyState
             title="No sales recorded yet"
             description="Sales records saved through the API will appear here. Try another date range, or add today's numbers."
@@ -138,7 +138,7 @@ export default function AdminSalesPage() {
       {hasData && (
         <>
           <div className="grid gap-6 lg:grid-cols-2">
-            <div className="border border-line bg-white p-6">
+            <div className="rounded-3xl border border-line bg-white p-6">
               <h3 className="font-serif text-xl text-foreground">Revenue Trend</h3>
               <p className="eyebrow mt-1 text-stone-400">
                 {range === "today" ? "Today's" : range === "week" ? "This week's" : "This month's"} daily breakdown
@@ -162,7 +162,7 @@ export default function AdminSalesPage() {
               </div>
             </div>
 
-            <div className="border border-line bg-white p-6">
+            <div className="rounded-3xl border border-line bg-white p-6">
               <h3 className="font-serif text-xl text-foreground">Top 5 Items</h3>
               <div className="mt-5 space-y-4">
                 {data.topItems.slice(0, 5).map((item, idx) => {
@@ -188,7 +188,7 @@ export default function AdminSalesPage() {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-2">
-            <div className="border border-line bg-white p-6">
+            <div className="rounded-3xl border border-line bg-white p-6">
               <h3 className="font-serif text-xl text-foreground">Category Performance</h3>
               <div className="mt-5 space-y-4">
                 {data.categoryData.map((cat, idx) => {
@@ -214,7 +214,7 @@ export default function AdminSalesPage() {
               </div>
             </div>
 
-            <div className="border border-line bg-white p-6">
+            <div className="rounded-3xl border border-line bg-white p-6">
               <h3 className="flex items-center gap-2 font-serif text-xl text-foreground">
                 <Clock className="h-4 w-4 text-primary" />
                 Hourly Traffic Pattern
@@ -244,7 +244,7 @@ export default function AdminSalesPage() {
             </div>
           </div>
 
-          <div className="border border-line bg-white p-6">
+          <div className="rounded-3xl border border-line bg-white p-6">
             <h3 className="font-serif text-xl text-foreground">Sales by Category</h3>
             <div className="mt-5 flex flex-col items-center gap-8 sm:flex-row">
               <div className="relative h-48 w-48 shrink-0">

@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Fredoka, Inter, IBM_Plex_Mono } from "next/font/google";
 import RevealInit from "@/components/reveal-init";
 import "./globals.css";
 
-const instrument = Instrument_Serif({
-  variable: "--font-instrument",
+const fredoka = Fredoka({
+  variable: "--font-fredoka",
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
 });
 
 const inter = Inter({
@@ -30,7 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${instrument.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${fredoka.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <script

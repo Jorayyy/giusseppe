@@ -49,13 +49,13 @@ export default function Gallery() {
           lede="Shot at our tables, not in a studio — the food, the room, and a few regulars."
         />
 
-        <div className="mt-14 grid grid-cols-3 gap-2" data-reveal>
+        <div className="mt-14 grid grid-cols-3 gap-3" data-reveal>
           {photos.map((photo, i) => (
             <button
               key={`${photo}-${i}`}
               type="button"
               onClick={() => setIdx(i)}
-              className={`group relative overflow-hidden bg-surface ${i === 0 ? "col-span-2 row-span-2" : "aspect-square"}`}
+              className={`group relative overflow-hidden rounded-2xl bg-surface ${i === 0 ? "col-span-2 row-span-2 rounded-[2rem]" : "aspect-square"}`}
               aria-label={`Open photo ${i + 1}`}
             >
               <Image
@@ -85,7 +85,7 @@ export default function Gallery() {
               e.stopPropagation();
               close();
             }}
-            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center text-white/70 transition hover:text-white"
+            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur transition hover:bg-white/20 hover:text-white"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -97,7 +97,7 @@ export default function Gallery() {
               e.stopPropagation();
               prev();
             }}
-            className="absolute left-3 z-10 flex h-12 w-12 items-center justify-center text-white/70 transition hover:text-white md:left-8"
+            className="absolute left-3 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur transition hover:bg-white/20 hover:text-white md:left-8"
             aria-label="Previous photo"
           >
             <ChevronLeft className="h-7 w-7" />
@@ -120,7 +120,7 @@ export default function Gallery() {
               e.stopPropagation();
               next();
             }}
-            className="absolute right-3 z-10 flex h-12 w-12 items-center justify-center text-white/70 transition hover:text-white md:right-8"
+            className="absolute right-3 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur transition hover:bg-white/20 hover:text-white md:right-8"
             aria-label="Next photo"
           >
             <ChevronRight className="h-7 w-7" />

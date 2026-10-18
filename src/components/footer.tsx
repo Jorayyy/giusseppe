@@ -8,8 +8,8 @@ export default async function Footer() {
   const friSat = hours.Friday;
 
   return (
-    <footer className="bg-foreground text-stone-400">
-      <div className="mx-auto grid max-w-[1240px] gap-12 px-6 py-20 md:grid-cols-12 md:py-24">
+    <footer className="mx-3 mb-3 overflow-hidden rounded-[2.5rem] bg-foreground text-stone-400 sm:mx-5">
+      <div className="mx-auto grid max-w-[1240px] gap-12 px-8 py-16 md:grid-cols-12 md:py-20">
         <div className="md:col-span-5">
           <p className="font-serif text-3xl text-background">
             Giuseppe<span className="text-primary">’s</span>
@@ -93,7 +93,7 @@ export default async function Footer() {
       </div>
 
       <div className="border-t border-stone-800">
-        <div className="mx-auto flex max-w-[1240px] flex-col gap-2 px-6 py-6 text-xs text-stone-600 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-[1240px] flex-col gap-2 px-8 py-6 text-xs text-stone-600 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {r.name} · {r.address}</p>
           <p>Photos by our guests &amp; the Giuseppe&apos;s team.</p>
         </div>

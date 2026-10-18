@@ -121,7 +121,7 @@ export default function SettingsEditorPage() {
         }
       />
 
-      <div className="border border-line bg-white p-6">
+      <div className="rounded-3xl border border-line bg-white p-6">
         <div className="mb-5 flex items-center gap-3 border-b border-line pb-4">
           <Store className="h-5 w-5 text-primary" />
           <div>
@@ -153,7 +153,7 @@ export default function SettingsEditorPage() {
         </div>
       </div>
 
-      <div className="border border-line bg-white p-6">
+      <div className="rounded-3xl border border-line bg-white p-6">
         <div className="mb-5 flex items-center gap-3 border-b border-line pb-4">
           <Phone className="h-5 w-5 text-primary" />
           <div>
@@ -179,7 +179,7 @@ export default function SettingsEditorPage() {
         </div>
       </div>
 
-      <div className="border border-line bg-white p-6">
+      <div className="rounded-3xl border border-line bg-white p-6">
         <div className="mb-5 flex items-center gap-3 border-b border-line pb-4">
           <Globe className="h-5 w-5 text-primary" />
           <div>
@@ -202,7 +202,7 @@ export default function SettingsEditorPage() {
         </div>
       </div>
 
-      <div className="border border-line bg-white p-6">
+      <div className="rounded-3xl border border-line bg-white p-6">
         <h3 className="font-serif text-xl text-foreground">Preview</h3>
         <div className="mt-4 border border-line bg-background p-6">
           <p className="font-serif text-3xl text-foreground">

@@ -229,7 +229,7 @@ export default function MenuEditorPage() {
 
       <div className="space-y-4">
         {Object.entries(menu).map(([cat, items]) => (
-          <div key={cat} className="border border-line bg-white">
+          <div key={cat} className="rounded-3xl border border-line bg-white">
             <div className="flex items-center justify-between px-4 py-3">
               <button
                 onClick={() => toggleCategory(cat)}
@@ -279,7 +279,7 @@ export default function MenuEditorPage() {
                             </button>
                           </div>
                           {item.image && (
-                            <div className="h-16 w-16 overflow-hidden border border-line">
+                            <div className="h-16 w-16 overflow-hidden rounded-xl border border-line">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
                             </div>
@@ -342,7 +342,7 @@ export default function MenuEditorPage() {
                 </div>
                 <button
                   onClick={() => addItem(cat)}
-                  className="flex w-full items-center justify-center gap-2 border-t border-dashed border-line py-3 text-sm font-medium text-muted transition-colors hover:bg-surface hover:text-primary"
+                  className="flex w-full items-center justify-center gap-2 rounded-b-3xl border-t border-dashed border-line py-3 text-sm font-medium text-muted transition-colors hover:bg-surface hover:text-primary"
                 >
                   <Plus className="h-4 w-4" /> Add Item
                 </button>
@@ -353,7 +353,7 @@ export default function MenuEditorPage() {
       </div>
 
       {showNewCategory ? (
-        <div className="flex items-center gap-3 border border-line bg-white p-4">
+        <div className="flex items-center gap-3 rounded-3xl border border-line bg-white p-4">
           <input
             value={newCategoryName}
             onChange={(e) => setNewCategoryName(e.target.value)}
@@ -379,7 +379,7 @@ export default function MenuEditorPage() {
       ) : (
         <button
           onClick={() => setShowNewCategory(true)}
-          className="flex w-full items-center justify-center gap-2 border border-dashed border-line py-4 text-sm font-medium text-muted transition-colors hover:border-primary hover:text-primary"
+          className="flex w-full items-center justify-center gap-2 rounded-full border border-dashed border-line py-4 text-sm font-medium text-muted transition-colors hover:border-primary hover:text-primary"
         >
           <Plus className="h-4 w-4" /> Add Category
         </button>

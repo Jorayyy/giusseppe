@@ -93,11 +93,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div className="flex min-h-screen items-center justify-center bg-background px-6">
         <div className="w-full max-w-sm">
+          <Link href="/" className="mb-10 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-primary">
+            <ChevronLeft className="h-4 w-4" /> Back to site
+          </Link>
           <p className="eyebrow text-stone-400">Giuseppe&apos;s / Owner</p>
-          <h1 className="mt-3 font-serif text-4xl text-foreground">Owner access</h1>
+          <h1 className="mt-3 font-serif text-5xl text-foreground">Owner access</h1>
           <p className="mt-2 text-sm text-muted">Enter the owner password to open the dashboard.</p>
 
-          <form onSubmit={handleLogin} className="mt-10">
+          <form onSubmit={handleLogin} className="mt-10 rounded-3xl border border-line bg-white/70 p-6">
             <label className="block">
               <span className="eyebrow text-stone-400">Password</span>
               <input
@@ -105,20 +108,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
-                className="mt-2 w-full border-b border-stone-300 bg-transparent pb-2 text-[15px] text-foreground outline-none transition-colors placeholder:text-stone-400 focus:border-primary"
+                className="mt-2 w-full rounded-full border border-line bg-white px-4 py-3 text-[15px] text-foreground outline-none transition-colors placeholder:text-stone-400 focus:border-primary"
                 autoFocus
               />
             </label>
             {error && <p className="mt-2 text-xs font-medium text-red-600">{error}</p>}
-            <button type="submit" className="mt-6 w-full bg-foreground py-3 text-sm font-medium text-background transition-colors hover:bg-primary">
+            <button type="submit" className="mt-4 w-full rounded-full bg-foreground py-3 text-sm font-semibold text-background transition-colors hover:bg-primary hover:text-white">
               Sign in
             </button>
-            <Link
-              href="/"
-              className="mt-6 flex items-center justify-center gap-1.5 text-sm text-muted transition-colors hover:text-primary"
-            >
-              <ChevronLeft className="h-4 w-4" /> Back to site
-            </Link>
           </form>
         </div>
       </div>
@@ -133,7 +130,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
         <span className="font-serif text-lg text-background">
-          Giuseppe<span className="text-primary">’s</span>
+          Giuseppe<span className="text-accent">’s</span>
         </span>
         <span className="eyebrow ml-2 text-stone-500">Admin</span>
       </header>
@@ -146,14 +143,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           }`}
         >
           <div className="flex h-full flex-col">
-            <div className="border-b border-stone-800 px-5 py-6">
+            <div className="border-b border-stone-800 px-6 py-6">
               <p className="font-serif text-2xl text-background">
-                Giuseppe<span className="text-primary">’s</span>
+                Giuseppe<span className="text-accent">’s</span>
               </p>
               <p className="eyebrow mt-1 text-stone-500">Owner Dashboard</p>
             </div>
 
-            <nav className="flex-1 py-4">
+            <nav className="flex-1 space-y-1 py-4">
               {NAV_ITEMS.map((item) => {
                 const isActive = pathname === item.href;
                 const showBadge = item.href === "/admin/messages" && unreadMessages > 0;
@@ -162,16 +159,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     key={item.href}
                     href={item.href}
                     onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center gap-3 border-l-2 px-5 py-3 font-mono text-[12px] uppercase tracking-[0.12em] transition-colors ${
+                    className={`mx-3 flex items-center gap-3 rounded-full px-4 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] transition-colors ${
                       isActive
-                        ? "border-primary bg-white/5 text-background"
-                        : "border-transparent text-stone-400 hover:bg-white/5 hover:text-background"
+                        ? "bg-primary text-white"
+                        : "text-stone-400 hover:bg-white/5 hover:text-background"
                     }`}
                   >
-                    <item.icon className={`h-4 w-4 ${isActive ? "text-primary" : "text-stone-500"}`} />
+                    <item.icon className={`h-4 w-4 ${isActive ? "text-white" : "text-stone-500"}`} />
                     {item.label}
                     {showBadge && (
-                      <span className="ml-auto flex h-5 min-w-5 items-center justify-center bg-primary px-1.5 text-[10px] font-medium text-background">
+                      <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-semibold text-foreground">
                         {unreadMessages}
                       </span>
                     )}
@@ -180,18 +177,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               })}
             </nav>
 
-            <div className="border-t border-stone-800 py-3">
+            <div className="space-y-1 border-t border-stone-800 py-3">
               <Link
                 href="/"
                 target="_blank"
-                className="flex items-center gap-3 px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] text-stone-400 transition-colors hover:text-background"
+                className="mx-3 flex items-center gap-3 rounded-full px-4 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] text-stone-400 transition-colors hover:bg-white/5 hover:text-background"
               >
                 <Eye className="h-4 w-4 text-stone-500" />
                 View Site
               </Link>
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center gap-3 px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] text-stone-400 transition-colors hover:text-red-400"
+                className="mx-3 flex w-[calc(100%-1.5rem)] items-center gap-3 rounded-full px-4 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] text-stone-400 transition-colors hover:bg-white/5 hover:text-red-400"
               >
                 <LogOut className="h-4 w-4 text-stone-500" />
                 Sign Out

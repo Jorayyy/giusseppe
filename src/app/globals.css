@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fbf7f0;
-  --foreground: #1c1917;
-  --primary: #b4522e;
-  --primary-light: #96411f;
-  --accent: #c9a96e;
-  --accent-light: #d9c08c;
-  --surface: #f3ece1;
-  --surface-dark: #e9dfcf;
-  --line: #e4dacb;
-  --muted: #78716c;
+  --background: #fff8eb;
+  --foreground: #0f2b26;
+  --primary: #17707e;
+  --primary-light: #0f555f;
+  --accent: #e6b450;
+  --accent-light: #f2cd73;
+  --surface: #f4e8d3;
+  --surface-dark: #e9d9bf;
+  --line: #e4d5bd;
+  --muted: #5c6b62;
 }
 
 @theme inline {
@@ -25,19 +25,19 @@
   --color-line: var(--line);
   --color-muted: var(--muted);
   --font-sans: var(--font-inter);
-  --font-serif: var(--font-instrument);
+  --font-serif: var(--font-fredoka);
   --font-mono: var(--font-plex-mono);
-  --text-display: clamp(2.9rem, 8.5vw, 6.25rem);
-  --text-display--line-height: 0.98;
-  --text-display--letter-spacing: -0.025em;
-  --text-title: clamp(2rem, 4vw, 3.25rem);
-  --text-title--line-height: 1.04;
-  --text-title--letter-spacing: -0.02em;
+  --text-display: clamp(3rem, 9vw, 7rem);
+  --text-display--line-height: 0.92;
+  --text-display--letter-spacing: -0.03em;
+  --text-title: clamp(2rem, 4.5vw, 3.5rem);
+  --text-title--line-height: 1;
+  --text-title--letter-spacing: -0.025em;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 6rem;
+  scroll-padding-top: 7rem;
 }
 
 body {
@@ -47,18 +47,41 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+}
+
 ::selection {
   background: var(--primary);
   color: var(--background);
 }
 
 .eyebrow {
-  font-family: var(--font-plex-mono), ui-monospace, monospace;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-family: var(--font-fredoka), var(--font-inter), sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   line-height: 1.4;
+}
+
+.glass {
+  background: rgb(255 255 255 / 0.6);
+  border: 1px solid rgb(255 255 255 / 0.65);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.glass-dark {
+  background: rgb(15 43 38 / 0.55);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .leader {
@@ -84,7 +107,7 @@ body {
 
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(18px);
   transition:
     opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);

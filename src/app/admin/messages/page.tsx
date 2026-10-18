@@ -156,7 +156,7 @@ export default function AdminMessagesPage() {
             className={`${fieldClass} pl-10`}
           />
         </div>
-        <div className="flex border border-line bg-white p-1">
+        <div className="flex rounded-full border border-line bg-white p-1">
           {(["all", "unread", "bookings", "phone"] as const).map((f) => (
             <button
               key={f}
@@ -164,7 +164,7 @@ export default function AdminMessagesPage() {
                 setFilter(f);
                 setPhoneFilter("");
               }}
-              className={`px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] transition-colors ${
+              className={`rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] transition-colors ${
                 filter === f ? "bg-foreground text-background" : "text-muted hover:text-foreground"
               }`}
             >
@@ -190,7 +190,7 @@ export default function AdminMessagesPage() {
       {loading ? (
         <Spinner />
       ) : filteredConversations.length === 0 ? (
-        <div className="border border-line bg-white">
+        <div className="rounded-3xl border border-line bg-white">
           <EmptyState
             icon={<MessageSquare className="h-8 w-8" />}
             title={filter === "bookings" ? "No booking requests yet" : "No messages yet"}
@@ -204,7 +204,7 @@ export default function AdminMessagesPage() {
             const booking = isConvBooking ? parseBooking(lastMsg.content) : null;
 
             return (
-              <div key={conv.phone} className="overflow-hidden border border-line bg-white">
+              <div key={conv.phone} className="overflow-hidden rounded-3xl border border-line bg-white">
                 <button
                   onClick={() => setExpandedPhone(expandedPhone === conv.phone ? null : conv.phone)}
                   className="flex w-full items-center gap-3 p-4 text-left transition-colors hover:bg-surface"

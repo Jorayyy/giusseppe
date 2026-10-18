@@ -34,11 +34,11 @@ export default async function MenuPage() {
     <>
       <Navbar />
       <main className="bg-background">
-        <header className="border-b border-line">
-          <div className="mx-auto max-w-4xl px-6 py-24 md:py-32">
-            <p className="eyebrow text-stone-400">{r.name} / The menu</p>
-            <h1 className="mt-6 font-serif text-display text-foreground">The menu</h1>
-            <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-muted">
+        <header className="px-3 pt-3 sm:px-5">
+          <div className="mx-auto max-w-[1240px] rounded-[2.5rem] bg-surface px-6 py-16 sm:px-12 md:py-24">
+            <p className="eyebrow text-stone-500">{r.name} / The menu</p>
+            <h1 className="mt-4 font-serif text-display text-foreground">The menu</h1>
+            <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-muted">
               Wood-fired pizza, handmade pasta, and everything we&apos;d order ourselves. Kitchen
               open daily for lunch and dinner.
             </p>
@@ -48,8 +48,10 @@ export default async function MenuPage() {
         <div className="mx-auto max-w-4xl px-6 py-20 md:py-24">
           {categories.map(([category, items], ci) => (
             <section key={category} className="mb-16 last:mb-0" data-reveal>
-              <div className="flex items-baseline gap-4 border-b border-line pb-4">
-                <span className="eyebrow text-primary">{ROMAN[ci] ?? ci + 1}</span>
+              <div className="flex items-baseline gap-3 border-b border-line pb-4">
+                <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-primary px-2 text-[11px] font-semibold text-background">
+                  {ROMAN[ci] ?? ci + 1}
+                </span>
                 <h2 className="font-serif text-3xl text-foreground">{category}</h2>
               </div>
 
@@ -81,18 +83,20 @@ export default async function MenuPage() {
           ))}
         </div>
 
-        <section className="bg-primary">
-          <div className="mx-auto max-w-4xl px-6 py-20 text-center md:py-24">
-            <p className="eyebrow text-white/55">From the pastry counter</p>
-            <p className="mt-5 font-serif text-[clamp(1.75rem,3.5vw,2.75rem)] italic text-white">
-              Save room for the tiramisu.
-            </p>
-            <Link
-              href="/#reserve"
-              className="mt-8 inline-block bg-white px-7 py-3.5 text-sm font-medium text-foreground transition-colors hover:bg-background"
-            >
-              Book a table
-            </Link>
+        <section className="px-3 pb-3 sm:px-5">
+          <div className="mx-auto max-w-[1400px] rounded-[2.5rem] bg-primary">
+            <div className="mx-auto max-w-4xl px-6 py-16 text-center md:py-20">
+              <p className="eyebrow text-white/60">From the pastry counter</p>
+              <p className="mt-4 font-serif text-[clamp(1.75rem,3.5vw,2.75rem)] text-white">
+                Save room for the tiramisu.
+              </p>
+              <Link
+                href="/#reserve"
+                className="mt-8 inline-block rounded-full bg-background px-7 py-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-accent hover:text-foreground"
+              >
+                Book a table
+              </Link>
+            </div>
           </div>
         </section>
 

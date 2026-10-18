@@ -65,7 +65,7 @@ export default function QrPage() {
 
             <button
               onClick={() => window.print()}
-              className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-primary py-3 text-sm font-semibold text-white hover:bg-black print:hidden"
+              className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-primary py-3 text-sm font-semibold text-white hover:bg-primary-light print:hidden"
             >
               <Printer className="h-4 w-4" /> Print this QR
             </button>
@@ -93,7 +93,7 @@ export default function QrPage() {
               </a>
             </div>
 
-            <div className="rounded-2xl border border-primary bg-gradient-to-br from-surface to-orange-50 p-6 print:border-primary-light">
+            <div className="rounded-2xl border border-primary bg-gradient-to-br from-surface to-accent/20 p-6 print:border-primary-light">
               <h3 className="font-serif font-semibold text-primary">How to use</h3>
               <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-6 text-primary/80">
                 <li>Print this QR on sturdy paper or sticker.</li>

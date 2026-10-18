@@ -262,7 +262,7 @@ export default function VouchersPage() {
       </div>
 
       {showAdd ? (
-        <div className="border border-line bg-white p-5">
+        <div className="rounded-3xl border border-line bg-white p-5">
           <div className="mb-4 flex items-center justify-between border-b border-line pb-3">
             <h3 className="font-serif text-xl text-foreground">New Voucher</h3>
             <button onClick={() => setShowAdd(false)} className="p-1 text-stone-400 hover:text-foreground">
@@ -327,7 +327,7 @@ export default function VouchersPage() {
       ) : (
         <button
           onClick={() => setShowAdd(true)}
-          className="flex w-full items-center justify-center gap-2 border border-dashed border-line py-4 text-sm font-medium text-muted transition-colors hover:border-primary hover:text-primary"
+          className="flex w-full items-center justify-center gap-2 rounded-full border border-dashed border-line py-4 text-sm font-medium text-muted transition-colors hover:border-primary hover:text-primary"
         >
           <Plus className="h-4 w-4" /> Add Voucher
         </button>

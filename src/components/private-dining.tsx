@@ -55,7 +55,7 @@ export default function PrivateDining() {
     <section id="private-dining" className="border-t border-line bg-background">
       <div className="mx-auto grid max-w-[1240px] items-start gap-14 px-6 py-24 md:py-32 lg:grid-cols-12 lg:gap-20">
         <figure className="lg:col-span-5" data-reveal>
-          <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-surface">
             <Image
               src="/photos/interior-1.jpg"
               alt="The dining room ready for a private event"
@@ -64,7 +64,7 @@ export default function PrivateDining() {
               className="object-cover"
             />
           </div>
-          <figcaption className="mt-4 font-serif text-sm italic text-muted">
+          <figcaption className="mt-4 font-serif text-sm text-muted">
             The whole room, yours for the evening.
           </figcaption>
         </figure>
@@ -116,7 +116,7 @@ export default function PrivateDining() {
               <button
                 type="submit"
                 disabled={status === "sending" || status === "sent"}
-                className="bg-foreground px-7 py-3.5 text-sm font-medium text-background transition-colors hover:bg-primary disabled:opacity-60"
+                className="rounded-full bg-foreground px-7 py-3.5 text-sm font-semibold text-background transition-colors hover:bg-primary hover:text-white disabled:opacity-60"
               >
                 {status === "sending" ? "Sending…" : status === "sent" ? "Enquiry sent" : "Send enquiry"}
               </button>

@@ -237,7 +237,7 @@ export default function AdminWaitlistPage() {
         <Stat label="Avg Wait" value={`${avgWait}m`} icon={<Clock className="h-4 w-4" />} />
       </div>
 
-      <div className="border border-line bg-white">
+      <div className="rounded-3xl border border-line bg-white">
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <h2 className="font-serif text-xl text-foreground">Current Queue</h2>
           {entries.length > 0 && <p className="eyebrow text-stone-400">Auto-removes after 2 hours</p>}

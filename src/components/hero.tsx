@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Flame, Wheat, Martini, MapPin } from "lucide-react";
 import { getHours } from "@/lib/site";
 
 export default async function Hero() {
@@ -11,58 +12,78 @@ export default async function Hero() {
       ? `${monday.open.replace(":00", "")} – ${(friday.close2 || friday.close).replace(":00", "")}`
       : "11 AM – late";
 
+  const chips = [
+    { icon: Flame, label: "Wood-fired oven", position: "left-[6%] top-[20%]" },
+    { icon: Wheat, label: "Handmade pasta", position: "right-[7%] top-[34%]" },
+    { icon: Martini, label: "Cocktails till late", position: "left-[10%] top-[48%]" },
+  ];
+
   return (
-    <section className="grid border-b border-line lg:grid-cols-[1.05fr_0.95fr]">
-      <div className="flex flex-col justify-center px-6 py-20 sm:px-10 lg:min-h-[calc(100svh-5rem)] lg:py-28 lg:pl-[max(1.5rem,calc((100vw-1240px)/2+1.5rem))] lg:pr-16">
-        <p className="eyebrow text-stone-400">Cucina Italiana · Tacloban City</p>
-
-        <h1 className="mt-6 font-serif text-[clamp(2.5rem,4.8vw,4.25rem)] leading-[1.0] tracking-[-0.02em] text-foreground">
-          Wood-fired pizza, handmade pasta,{" "}
-          <em className="italic text-primary">and a warm Leyte welcome.</em>
-        </h1>
-
-        <p className="mt-7 max-w-md text-[15px] leading-relaxed text-muted">
-          An Italian osteria on Avenida Veteranos — dough proofed slowly and fired in the wood
-          oven, pasta rolled by hand, and cocktails poured till late.
-        </p>
-
-        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <a
-            href="#reserve"
-            className="bg-foreground px-7 py-3.5 text-sm font-medium text-background transition-colors hover:bg-primary"
-          >
-            Reserve a table
-          </a>
-          <Link href="/menu" className="link-underline text-sm font-medium text-foreground">
-            See the menu →
-          </Link>
-        </div>
-
-        <dl className="mt-16 grid max-w-lg grid-cols-3 gap-6 border-t border-line pt-6">
-          <div>
-            <dt className="eyebrow text-stone-400">Open daily</dt>
-            <dd className="mt-2 font-serif text-lg text-foreground">{hoursLabel}</dd>
-          </div>
-          <div>
-            <dt className="eyebrow text-stone-400">The kitchen</dt>
-            <dd className="mt-2 font-serif text-lg text-foreground">Wood-fired</dd>
-          </div>
-          <div>
-            <dt className="eyebrow text-stone-400">Find us</dt>
-            <dd className="mt-2 font-serif text-lg text-foreground">Avenida Veteranos</dd>
-          </div>
-        </dl>
-      </div>
-
-      <div className="relative min-h-[52svh] border-line lg:min-h-0 lg:border-l">
+    <section className="px-3 pt-3 sm:px-5">
+      <div className="relative mx-auto min-h-[88svh] max-w-[1400px] overflow-hidden rounded-[2.5rem] bg-foreground">
         <Image
           src="/photos/hero.jpg"
           alt="The dining room at Giuseppe's, Tacloban City"
           fill
           priority
-          sizes="(min-width: 1024px) 50vw, 100vw"
+          sizes="100vw"
           className="object-cover"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/25 to-foreground/15" />
+
+        {chips.map((chip, i) => (
+          <div
+            key={chip.label}
+            className={`absolute hidden items-center gap-2.5 lg:flex ${chip.position}`}
+            style={{ animationDelay: `${i * 200}ms` }}
+          >
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-foreground/90 text-background shadow-lg">
+              <chip.icon className="h-5 w-5" />
+            </span>
+            <span className="glass-dark rounded-full px-4 py-2 text-sm font-medium text-white">
+              {chip.label}
+            </span>
+          </div>
+        ))}
+
+        <div className="relative z-10 flex min-h-[88svh] flex-col justify-end px-6 pb-10 pt-28 sm:px-12 sm:pb-14">
+          <p className="eyebrow text-white/70">Cucina Italiana · Tacloban City</p>
+
+          <h1 className="mt-4 max-w-4xl font-serif text-[clamp(2.9rem,8vw,6.5rem)] font-bold leading-[0.92] tracking-[-0.03em] text-white">
+            Wood-fired pizza.
+            <br />
+            <span className="text-accent-light">Handmade pasta.</span>
+          </h1>
+
+          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/75">
+            An Italian osteria on Avenida Veteranos — slow-proofed dough, pasta rolled by hand, and
+            cocktails poured until late.
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <a
+              href="#reserve"
+              className="rounded-full bg-background px-7 py-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-primary hover:text-white"
+            >
+              Reserve a table
+            </a>
+            <Link
+              href="/menu"
+              className="glass-dark inline-flex items-center rounded-full px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/25"
+            >
+              See the menu
+            </Link>
+          </div>
+
+          <div className="mt-10 flex flex-wrap gap-2">
+            <span className="glass-dark inline-flex items-center rounded-full px-4 py-2 text-xs font-medium text-white/90">
+              Open daily {hoursLabel}
+            </span>
+            <span className="glass-dark inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-medium text-white/90">
+              <MapPin className="h-3.5 w-3.5" /> Avenida Veteranos
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   );

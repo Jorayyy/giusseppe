@@ -86,13 +86,13 @@ export default function ImageUpload({
     <div className={className}>
       {displaySrc && !uploading ? (
         <div className="group relative">
-          <div className="h-32 w-full overflow-hidden border border-line bg-surface">
+          <div className="h-32 w-full overflow-hidden rounded-2xl border border-line bg-surface">
             <img src={displaySrc} alt="Preview" className="h-full w-full object-cover" />
           </div>
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center bg-foreground text-background opacity-0 transition-opacity group-hover:opacity-100"
+            className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-foreground text-background opacity-0 transition-opacity group-hover:opacity-100"
             aria-label="Remove image"
           >
             <X className="h-4 w-4" />
@@ -109,7 +109,7 @@ export default function ImageUpload({
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
           disabled={uploading}
-          className={`flex w-full flex-col items-center justify-center gap-2 border border-dashed px-4 py-8 transition-colors ${
+          className={`flex w-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed px-4 py-8 transition-colors ${
             dragOver
               ? "border-primary bg-surface"
               : "border-line bg-white hover:border-primary"
@@ -146,3 +146,4 @@ export default function ImageUpload({
     </div>
   );
 }
+
