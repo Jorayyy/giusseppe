@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BarChart3, DollarSign, ShoppingBag, Crown, RefreshCw, Download, Clock, Calendar } from "lucide-react";
+import { BarChart3, PhilippinePeso, ShoppingBag, Crown, RefreshCw, Download, Clock, Calendar } from "lucide-react";
 import { buildSalesData, formatPeso, type SalesData, type SalesRecord } from "@/lib/sales-data";
 import { PageHeader, Stat, EmptyState, Spinner, btnPrimary, btnSecondary } from "@/components/admin/ui";
 
@@ -120,7 +120,7 @@ export default function AdminSalesPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Total Revenue" value={formatPeso(data.totalRevenue)} icon={<DollarSign className="h-4 w-4" />} />
+        <Stat label="Total Revenue" value={formatPeso(data.totalRevenue)} icon={<PhilippinePeso className="h-4 w-4" />} />
         <Stat label="Total Orders" value={data.totalOrders.toLocaleString()} icon={<ShoppingBag className="h-4 w-4" />} />
         <Stat label="Avg Order Value" value={formatPeso(data.avgOrderValue)} icon={<BarChart3 className="h-4 w-4" />} />
         <Stat label="Top Item" value={data.topItem.name} hint={`${data.topItem.count} sold`} icon={<Crown className="h-4 w-4" />} />

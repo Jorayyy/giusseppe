@@ -138,7 +138,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <span className="eyebrow ml-2 text-stone-500">Admin</span>
       </header>
 
-      <div className="flex">
+      <div className="flex min-h-screen">
         {/* Sidebar */}
         <aside
           className={`fixed inset-y-0 left-0 z-30 w-64 bg-foreground transition-transform lg:static lg:block lg:translate-x-0 ${

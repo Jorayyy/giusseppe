@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Save, Store, Phone, MapPin, DollarSign, Globe, RotateCcw } from "lucide-react";
+import { Save, Store, Phone, MapPin, PhilippinePeso, Globe, RotateCcw } from "lucide-react";
 import { PageHeader, Toast, fieldClass, btnPrimary, btnSecondary } from "@/components/admin/ui";
 
 const DEFAULT_SETTINGS = {
@@ -138,7 +138,7 @@ export default function SettingsEditorPage() {
           />
           <Field
             label="Price Range"
-            icon={<DollarSign className="h-3 w-3" />}
+            icon={<PhilippinePeso className="h-3 w-3" />}
             value={settings.priceRange}
             onChange={(v) => updateField("priceRange", v)}
             placeholder="₱500–2,000"
