@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { Metadata } from "next";
-import { Star, Phone } from "lucide-react";
+import { Phone, Star } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { getMenu } from "@/lib/menu";
 import { getRestaurant } from "@/lib/site";
 
 export const revalidate = 60;
+
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 
 export async function generateMetadata(): Promise<Metadata> {
   const r = await getRestaurant();
@@ -32,45 +34,45 @@ export default async function MenuPage() {
     <>
       <Navbar />
       <main className="bg-background">
-        <header className="border-b border-stone-200/70">
-          <div className="mx-auto max-w-4xl px-6 py-16 text-center md:py-24">
-            <p className="eyebrow text-primary">{r.name} · Tacloban City</p>
-            <h1 className="mt-4 font-serif text-display text-stone-900">The menu</h1>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-stone-600">
-              Wood-fired pizza, handmade pasta, and everything we&apos;d order ourselves.
-              Kitchen open daily for lunch and dinner.
+        <header className="border-b border-line">
+          <div className="mx-auto max-w-4xl px-6 py-24 md:py-32">
+            <p className="eyebrow text-stone-400">{r.name} / The menu</p>
+            <h1 className="mt-6 font-serif text-display text-foreground">The menu</h1>
+            <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-muted">
+              Wood-fired pizza, handmade pasta, and everything we&apos;d order ourselves. Kitchen
+              open daily for lunch and dinner.
             </p>
           </div>
         </header>
 
-        <div className="mx-auto max-w-4xl px-6 py-16 md:py-20">
-          {categories.map(([category, items]) => (
+        <div className="mx-auto max-w-4xl px-6 py-20 md:py-24">
+          {categories.map(([category, items], ci) => (
             <section key={category} className="mb-16 last:mb-0" data-reveal>
-              <div className="flex items-center gap-4">
-                <h2 className="font-serif text-title text-stone-900">{category}</h2>
-                <span className="h-px flex-1 bg-stone-300" aria-hidden />
+              <div className="flex items-baseline gap-4 border-b border-line pb-4">
+                <span className="eyebrow text-primary">{ROMAN[ci] ?? ci + 1}</span>
+                <h2 className="font-serif text-3xl text-foreground">{category}</h2>
               </div>
 
-              <div className="mt-8 grid gap-x-12 gap-y-7 md:grid-cols-2">
+              <div className="grid gap-x-14 md:grid-cols-2">
                 {items.map((item) => (
-                  <div key={item.name}>
+                  <div key={item.name} className="border-b border-line/60 py-5">
                     <div className="flex items-baseline gap-3">
-                      <h3 className="font-serif text-lg font-medium text-stone-900">
+                      <h3 className="font-serif text-lg text-foreground">
                         {item.name}
                         {item.popular && (
                           <Star
-                            className="ml-1.5 inline-block h-3.5 w-3.5 fill-primary text-primary align-baseline"
+                            className="ml-1.5 inline-block h-3.5 w-3.5 fill-accent align-baseline text-accent"
                             aria-label="Popular"
                           />
                         )}
                       </h3>
                       <span className="leader" aria-hidden />
-                      <span className="text-sm font-semibold tabular-nums text-primary">
+                      <span className="text-sm font-medium tabular-nums text-primary">
                         {item.price}
                       </span>
                     </div>
                     {item.desc && (
-                      <p className="mt-1.5 text-sm leading-relaxed text-stone-500">{item.desc}</p>
+                      <p className="mt-1.5 text-sm leading-relaxed text-muted">{item.desc}</p>
                     )}
                   </div>
                 ))}
@@ -80,29 +82,30 @@ export default async function MenuPage() {
         </div>
 
         <section className="bg-primary">
-          <div className="mx-auto max-w-4xl px-6 py-14 text-center">
-            <p className="font-serif text-2xl italic text-white md:text-3xl">
+          <div className="mx-auto max-w-4xl px-6 py-20 text-center md:py-24">
+            <p className="eyebrow text-white/55">From the pastry counter</p>
+            <p className="mt-5 font-serif text-[clamp(1.75rem,3.5vw,2.75rem)] italic text-white">
               Save room for the tiramisu.
             </p>
             <Link
               href="/#reserve"
-              className="mt-6 inline-block rounded-md bg-white px-6 py-3 text-sm font-semibold text-stone-900 transition-colors hover:bg-stone-100"
+              className="mt-8 inline-block bg-white px-7 py-3.5 text-sm font-medium text-foreground transition-colors hover:bg-background"
             >
               Book a table
             </Link>
           </div>
         </section>
 
-        <footer className="border-t border-stone-200/70">
-          <div className="mx-auto flex max-w-4xl flex-col items-center gap-3 px-6 py-10 text-center">
-            <p className="text-sm text-stone-500">
-              Prices in Philippine Pesos. Menu subject to availability.
+        <footer className="border-t border-line">
+          <div className="mx-auto flex max-w-4xl flex-col items-center gap-3 px-6 py-12 text-center">
+            <p className="eyebrow text-stone-400">
+              Prices in Philippine Pesos · Menu subject to availability
             </p>
-            <p className="text-sm text-stone-500">
+            <p className="text-sm text-muted">
               Reservations &amp; takeout:{" "}
               <a
                 href={r.phoneHref}
-                className="link-underline inline-flex items-center gap-1.5 font-semibold text-primary"
+                className="link-underline inline-flex items-center gap-1.5 font-medium text-primary"
               >
                 <Phone className="h-3.5 w-3.5" />
                 {r.phone}

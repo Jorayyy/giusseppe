@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FFFBF5;
-  --foreground: #292524;
-  --primary: #B4522E;
-  --primary-light: #97401F;
-  --accent: #C9A96E;
-  --accent-light: #D4BC8A;
-  --surface: #F7F1E8;
-  --surface-dark: #EFE7D9;
+  --background: #fbf7f0;
+  --foreground: #1c1917;
+  --primary: #b4522e;
+  --primary-light: #96411f;
+  --accent: #c9a96e;
+  --accent-light: #d9c08c;
+  --surface: #f3ece1;
+  --surface-dark: #e9dfcf;
+  --line: #e4dacb;
+  --muted: #78716c;
 }
 
 @theme inline {
@@ -20,23 +22,29 @@
   --color-accent-light: var(--accent-light);
   --color-surface: var(--surface);
   --color-surface-dark: var(--surface-dark);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
   --font-sans: var(--font-inter);
-  --font-serif: var(--font-playfair);
-  --text-display: clamp(3rem, 8vw, 5.5rem);
-  --text-display--line-height: 1.05;
-  --text-title: clamp(2.25rem, 4vw, 3.25rem);
-  --text-title--line-height: 1.1;
+  --font-serif: var(--font-instrument);
+  --font-mono: var(--font-plex-mono);
+  --text-display: clamp(2.9rem, 8.5vw, 6.25rem);
+  --text-display--line-height: 0.98;
+  --text-display--letter-spacing: -0.025em;
+  --text-title: clamp(2rem, 4vw, 3.25rem);
+  --text-title--line-height: 1.04;
+  --text-title--letter-spacing: -0.02em;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 6rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
@@ -45,10 +53,20 @@ body {
 }
 
 .eyebrow {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
   font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.leader {
+  align-self: flex-end;
+  flex: 1;
+  height: 0;
+  margin: 0 0.75rem 0.35rem;
+  border-bottom: 1px dotted var(--line);
 }
 
 .link-underline {
@@ -62,14 +80,6 @@ body {
 .link-underline:hover,
 .link-underline:focus-visible {
   background-size: 100% 1px;
-}
-
-.leader {
-  align-self: flex-end;
-  flex: 1;
-  height: 0;
-  margin: 0 0.75rem 0.35rem;
-  border-bottom: 1px dotted #d6d3d1;
 }
 
 .js [data-reveal] {

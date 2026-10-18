@@ -20,11 +20,12 @@ npx prisma db push  # Sync schema (needs DATABASE_URL reachable)
 No test suite.
 
 ## Design System (globals.css)
-- Palette: `--primary: #B4522E` terracotta, `--accent: #C9A96E` gold, `--background: #FFFBF5`, `--surface: #F7F1E8`, stone neutrals. No green/blue/purple.
-- Type: `--text-display` / `--text-title` clamps; Playfair Display + Inter.
-- Utilities: `.eyebrow` (11px uppercase 0.14em), `.link-underline` (animated), `.leader` (dot leader), `[data-reveal]` + `.is-in` reveal system (IntersectionObserver in `components/reveal-init.tsx`, `html.js` class set inline in layout).
-- Buttons `rounded-md`, images `rounded-sm`, no card soup. Exactly one terracotta band per page.
-- Section pattern: `components/section-header.tsx` (eyebrow + title + lede), underline inputs in `components/field.tsx`.
+- Art direction: "Osteria Editoriale" — Italian editorial minimalism (type-first, paper field, sharp edges).
+- Palette: `--primary: #B4522E` terracotta, `--accent: #C9A96E` gold, `--background: #FBF7F0` paper, `--surface: #F3ECE1`, `--line: #E4DACB` hairlines, stone neutrals. Terracotta is the only filled band; gold only for tiny details (stars). No green/blue/purple.
+- Type: Instrument Serif display (`font-serif`, weight 400 only), Inter body (`font-sans`), IBM Plex Mono labels (`font-mono`). `--text-display` / `--text-title` clamps.
+- Utilities: `.eyebrow` (mono, 11px, uppercase, 0.16em), `.link-underline` (animated), `.leader` (dot leader), `[data-reveal]` + `.is-in` reveal system (IntersectionObserver in `components/reveal-init.tsx`, `html.js` class set inline in layout).
+- No rounded corners on buttons/images; hairline borders (`border-line`); no card soup. Exactly one terracotta band per page (ReviewQuote on home, CTA on /menu).
+- Section pattern: `components/section-header.tsx` (roman index + eyebrow + title + lede), underline inputs in `components/field.tsx`.
 
 ## Project Structure
 ```

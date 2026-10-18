@@ -8,6 +8,9 @@ type WalletItem = { code: string; description: string | null; date: string };
 
 const WALLET_KEY = "giuseppe_my_vouchers";
 
+const inputClass =
+  "min-w-0 w-full border-b border-stone-300 bg-transparent pb-2 text-[15px] text-foreground outline-none transition-colors placeholder:text-stone-400 focus:border-primary";
+
 function StampDots({ stamps }: { stamps: number }) {
   return (
     <div className="flex flex-wrap gap-1.5" aria-label={`${stamps} of 10 stamps`}>
@@ -15,10 +18,10 @@ function StampDots({ stamps }: { stamps: number }) {
         <span
           key={i}
           className={`flex h-6 w-6 items-center justify-center rounded-full border text-[10px] ${
-            i < stamps ? "border-primary bg-primary text-white" : "border-stone-300 text-stone-400"
+            i < stamps ? "border-primary bg-primary text-background" : "border-line text-stone-400"
           }`}
         >
-          {i < stamps ? <Star className="h-3 w-3 fill-current" /> : i + 1}
+          {i < stamps ? <Star className="h-3 w-3 fill-accent text-accent" /> : i + 1}
         </span>
       ))}
     </div>
@@ -38,7 +41,6 @@ export default function Perks() {
   const [wallet, setWallet] = useState<WalletItem[]>([]);
 
   useEffect(() => {
-    // defer past hydration so server and client first paint match
     const t = setTimeout(() => {
       try {
         const raw = localStorage.getItem(WALLET_KEY);
@@ -127,41 +129,39 @@ export default function Perks() {
   }
 
   return (
-    <section id="perks" className="border-t border-stone-200/70 bg-white">
-      <div className="mx-auto max-w-[1200px] px-6 py-16 md:py-20">
-        <div className="grid gap-12 md:grid-cols-2 md:gap-0 md:divide-x md:divide-stone-200/70">
+    <section id="perks" className="border-t border-line bg-surface">
+      <div className="mx-auto max-w-[1240px] px-6 py-20 md:py-28">
+        <div className="grid gap-14 md:grid-cols-2 md:gap-0 md:divide-x md:divide-line">
           {/* Loyalty */}
-          <div className="md:pr-12" data-reveal>
-            <p className="eyebrow text-primary">Loyalty card</p>
-            <h2 className="mt-3 font-serif text-2xl font-semibold text-stone-900">
-              Ten stamps, one reward
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-stone-500">
+          <div className="md:pr-14" data-reveal>
+            <p className="eyebrow text-stone-400">Giuseppe&apos;s / Loyalty</p>
+            <h2 className="mt-4 font-serif text-3xl text-foreground">Ten stamps, one reward</h2>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
               Check your card, add today&apos;s stamp — every tenth visit is on the house.
             </p>
 
-            <form onSubmit={checkCard} className="mt-6 flex max-w-md gap-3">
+            <form onSubmit={checkCard} className="mt-8 flex max-w-md items-end gap-3">
               <input
                 type="tel"
                 placeholder="Your mobile number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="min-w-0 flex-1 rounded-md border border-stone-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors placeholder:text-stone-400 focus:border-primary"
+                className={inputClass}
                 aria-label="Mobile number"
               />
               <button
                 type="submit"
                 disabled={loyaltyBusy}
-                className="shrink-0 rounded-md border border-stone-900 px-4 py-2.5 text-sm font-semibold text-stone-900 transition hover:bg-stone-900 hover:text-white disabled:opacity-50"
+                className="shrink-0 bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-colors hover:bg-primary disabled:opacity-50"
               >
                 Check
               </button>
             </form>
 
             {card && (
-              <div className="mt-6 max-w-md rounded-md bg-surface p-4">
+              <div className="mt-6 max-w-md border border-line bg-background p-5">
                 <StampDots stamps={card.stamps} />
-                <div className="mt-3 flex items-center justify-between text-xs text-stone-600">
+                <div className="mt-4 flex items-center justify-between gap-4 text-xs text-muted">
                   <span>
                     {card.stamps}/10 stamps
                     {card.rewards > 0 && ` · ${card.rewards} reward${card.rewards > 1 ? "s" : ""} ready`}
@@ -170,20 +170,20 @@ export default function Perks() {
                     type="button"
                     onClick={() => addStamp(false)}
                     disabled={loyaltyBusy}
-                    className="font-semibold text-primary hover:underline disabled:opacity-50"
+                    className="link-underline shrink-0 font-medium text-primary disabled:opacity-50"
                   >
                     + Add today&apos;s stamp
                   </button>
                 </div>
               </div>
             )}
-            {loyaltyMsg && <p className="mt-3 text-sm text-stone-600">{loyaltyMsg}</p>}
+            {loyaltyMsg && <p className="mt-3 text-sm text-muted">{loyaltyMsg}</p>}
             {card === null && phone.trim() !== "" && (
               <button
                 type="button"
                 onClick={() => addStamp(true)}
                 disabled={loyaltyBusy}
-                className="mt-4 text-sm font-semibold text-primary hover:underline disabled:opacity-50"
+                className="link-underline mt-4 text-sm font-medium text-primary disabled:opacity-50"
               >
                 Start my card →
               </button>
@@ -191,22 +191,20 @@ export default function Perks() {
           </div>
 
           {/* Vouchers */}
-          <div className="md:pl-12" data-reveal style={{ transitionDelay: "90ms" }}>
-            <p className="eyebrow text-primary">Gift vouchers</p>
-            <h2 className="mt-3 font-serif text-2xl font-semibold text-stone-900">
-              Have a voucher?
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-stone-500">
+          <div className="md:pl-14" data-reveal style={{ transitionDelay: "90ms" }}>
+            <p className="eyebrow text-stone-400">Giuseppe&apos;s / Gift vouchers</p>
+            <h2 className="mt-4 font-serif text-3xl text-foreground">Have a voucher?</h2>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
               Enter the code from your gift to redeem it at the table.
             </p>
 
-            <form onSubmit={redeemVoucher} className="mt-6 flex max-w-md flex-col gap-3 sm:flex-row">
+            <form onSubmit={redeemVoucher} className="mt-8 flex max-w-md flex-col items-end gap-3 sm:flex-row">
               <input
                 type="text"
                 placeholder="VOUCHER CODE"
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
-                className="min-w-0 flex-1 rounded-md border border-stone-300 bg-white px-3.5 py-2.5 text-sm uppercase tracking-wider outline-none transition-colors placeholder:text-stone-400 focus:border-primary"
+                className={`${inputClass} font-mono uppercase tracking-wider`}
                 aria-label="Voucher code"
               />
               <input
@@ -214,21 +212,21 @@ export default function Perks() {
                 placeholder="Mobile"
                 value={voucherPhone}
                 onChange={(e) => setVoucherPhone(e.target.value)}
-                className="min-w-0 rounded-md border border-stone-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors placeholder:text-stone-400 focus:border-primary sm:w-36"
+                className={`${inputClass} sm:w-36`}
                 aria-label="Mobile number"
               />
               <button
                 type="submit"
                 disabled={voucherBusy}
-                className="shrink-0 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-light disabled:opacity-50"
+                className="shrink-0 bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-colors hover:bg-primary disabled:opacity-50"
+                aria-label="Redeem"
               >
                 <Gift className="h-4 w-4" />
-                <span className="sr-only">Redeem</span>
               </button>
             </form>
 
             {voucherMsg && (
-              <p className={`mt-3 text-sm font-medium ${voucherMsg.ok ? "text-emerald-700" : "text-red-600"}`}>
+              <p className={`mt-3 text-sm font-medium ${voucherMsg.ok ? "text-primary" : "text-red-600"}`}>
                 {voucherMsg.text}
               </p>
             )}
@@ -238,10 +236,10 @@ export default function Perks() {
                 {wallet.map((w, i) => (
                   <li
                     key={`${w.code}-${i}`}
-                    className="rounded-full border border-stone-200 bg-surface px-3 py-1 text-xs font-medium text-stone-700"
+                    className="border border-line bg-background px-3 py-1 font-mono text-[11px] text-foreground"
                   >
                     {w.code}
-                    <span className="ml-2 font-normal text-stone-400">{w.date}</span>
+                    <span className="ml-2 text-stone-400">{w.date}</span>
                   </li>
                 ))}
               </ul>

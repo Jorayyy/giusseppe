@@ -61,24 +61,25 @@ export default async function MenuHighlights() {
   ).filter(Boolean) as MenuItem[];
 
   return (
-    <section id="highlights" className="border-y border-stone-200/70 bg-white">
-      <div className="mx-auto max-w-[1200px] px-6 py-20 md:py-28">
+    <section id="highlights" className="border-t border-line bg-surface">
+      <div className="mx-auto max-w-[1240px] px-6 py-24 md:py-32">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeader
+            index="II"
             eyebrow="From the kitchen"
             title="Guests keep coming back for these"
             lede="Three signatures and a few old favorites — the full card runs a lot longer."
           />
           <Link
             href="/menu"
-            className="link-underline shrink-0 pb-2 text-sm font-semibold text-primary"
+            className="link-underline shrink-0 pb-2 text-sm font-medium text-primary"
             data-reveal
           >
             See the full menu →
           </Link>
         </div>
 
-        <div className="mt-14 grid gap-8 sm:grid-cols-3">
+        <div className="mt-16 grid gap-10 sm:grid-cols-3">
           {FEATURED.map((dish, i) => {
             const item = findItem(menu, dish.name) ?? dish.fallback;
             return (
@@ -88,39 +89,40 @@ export default async function MenuHighlights() {
                 style={{ transitionDelay: `${i * 90}ms` }}
                 className="group"
               >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-stone-100">
+                <div className="relative aspect-[3/4] overflow-hidden bg-surface-dark">
                   <Image
                     src={dish.photo}
                     alt={dish.alt}
                     fill
                     sizes="(min-width: 640px) 33vw, 100vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   />
                 </div>
-                <div className="mt-4 flex items-baseline gap-3">
-                  <h3 className="font-serif text-xl font-semibold text-stone-900">{item.name}</h3>
+                <div className="mt-5 flex items-baseline gap-3">
+                  <h3 className="font-serif text-2xl text-foreground">{item.name}</h3>
                   <span className="leader" aria-hidden />
-                  <span className="text-sm font-semibold text-primary">{item.price}</span>
+                  <span className="text-sm font-medium text-primary">{item.price}</span>
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-stone-500">{item.desc}</p>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{item.desc}</p>
               </article>
             );
           })}
         </div>
 
-        <ul className="mt-14 max-w-2xl divide-y divide-stone-200/70 border-t border-stone-200/70" data-reveal>
+        <ul
+          className="mt-16 max-w-2xl divide-y divide-line border-y border-line"
+          data-reveal
+        >
           {rowItems.map((item) => (
             <li key={item.name} className="flex items-baseline py-4">
-              <span className="font-serif text-lg text-stone-900">
+              <span className="font-mono text-[13px] text-foreground">
                 {item.name}
                 {item.popular && (
-                  <span className="ml-2 align-middle text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
-                    Popular
-                  </span>
+                  <span className="eyebrow ml-3 align-middle text-accent">Popular</span>
                 )}
               </span>
               <span className="leader" aria-hidden />
-              <span className="text-sm font-semibold text-stone-900">{item.price}</span>
+              <span className="font-mono text-[13px] text-primary">{item.price}</span>
             </li>
           ))}
         </ul>

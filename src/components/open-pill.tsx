@@ -19,9 +19,9 @@ export default function OpenPill({ hours = HOURS }: { hours?: Hours }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] ${open ? "text-emerald-700" : "text-stone-500"}`}
+      className={`eyebrow inline-flex items-center gap-2 ${open ? "text-primary" : "text-muted"}`}
     >
-      <span className={`h-1.5 w-1.5 rounded-full ${open ? "bg-emerald-500" : "bg-stone-400"}`} />
+      <span className={`h-1.5 w-1.5 rounded-full ${open ? "bg-primary" : "bg-stone-400"}`} />
       {open ? "Open now" : "Closed now"}
     </span>
   );

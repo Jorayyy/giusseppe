@@ -59,16 +59,21 @@ export default function Reserve() {
   }
 
   return (
-    <section id="reserve" className="bg-white">
-      <div className="mx-auto max-w-2xl px-6 py-20 md:py-28">
-        <SectionHeader
-          align="center"
-          eyebrow="Reservations"
-          title="Book a table"
-          lede="Send a request and we'll confirm by phone — Friday and Saturday nights fill up fast."
-        />
+    <section id="reserve" className="border-t border-line bg-surface">
+      <div className="mx-auto grid max-w-[1240px] gap-12 px-6 py-24 md:py-32 lg:grid-cols-12 lg:gap-20">
+        <div className="lg:col-span-5">
+          <SectionHeader
+            index="V"
+            eyebrow="Reservations"
+            title="Book a table"
+            lede="Send a request and we'll confirm by phone. Friday and Saturday nights fill up fast."
+          />
+          <p className="mt-8 max-w-sm border-t border-line pt-6 font-serif text-lg italic text-muted">
+            Prefer to talk it through? Call the restaurant and we&apos;ll find you a seat.
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="mt-12 grid gap-8 sm:grid-cols-2" data-reveal>
+        <form onSubmit={handleSubmit} className="grid gap-8 sm:grid-cols-2 lg:col-span-7" data-reveal>
           <Field
             label="Date"
             type="date"
@@ -107,11 +112,11 @@ export default function Reserve() {
             />
           </div>
 
-          <div className="sm:col-span-2 flex flex-col items-center gap-4 pt-2">
+          <div className="flex flex-col items-start gap-4 pt-2 sm:col-span-2">
             <button
               type="submit"
               disabled={status === "sending" || status === "sent"}
-              className="w-full rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-primary-light disabled:opacity-60 sm:w-auto"
+              className="bg-foreground px-7 py-3.5 text-sm font-medium text-background transition-colors hover:bg-primary disabled:opacity-60"
             >
               {status === "sending"
                 ? "Sending…"
@@ -121,7 +126,7 @@ export default function Reserve() {
             </button>
 
             {status === "sent" && (
-              <p className="flex items-center gap-2 text-sm font-medium text-emerald-700">
+              <p className="flex items-center gap-2 text-sm font-medium text-primary">
                 <Check className="h-4 w-4" />
                 Request received — we&apos;ll call to confirm.
               </p>

@@ -52,10 +52,10 @@ export default function PrivateDining() {
   }
 
   return (
-    <section id="private-dining" className="bg-background">
-      <div className="mx-auto grid max-w-[1200px] items-start gap-12 px-6 py-20 md:py-28 lg:grid-cols-12 lg:gap-16">
+    <section id="private-dining" className="border-t border-line bg-background">
+      <div className="mx-auto grid max-w-[1240px] items-start gap-14 px-6 py-24 md:py-32 lg:grid-cols-12 lg:gap-20">
         <figure className="lg:col-span-5" data-reveal>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-sm">
+          <div className="relative aspect-[4/5] overflow-hidden bg-surface">
             <Image
               src="/photos/interior-1.jpg"
               alt="The dining room ready for a private event"
@@ -64,10 +64,14 @@ export default function PrivateDining() {
               className="object-cover"
             />
           </div>
+          <figcaption className="mt-4 font-serif text-sm italic text-muted">
+            The whole room, yours for the evening.
+          </figcaption>
         </figure>
 
         <div className="lg:col-span-7">
           <SectionHeader
+            index="VI"
             eyebrow="Private dining & catering"
             title="Celebrate with us"
             lede="Birthdays, christmases, company lunches, whole-room bookings — tell us the occasion and we'll take care of the rest."
@@ -108,17 +112,17 @@ export default function PrivateDining() {
               />
             </div>
 
-            <div className="sm:col-span-2 flex flex-col items-start gap-4">
+            <div className="flex flex-col items-start gap-4 sm:col-span-2">
               <button
                 type="submit"
                 disabled={status === "sending" || status === "sent"}
-                className="rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-primary-light disabled:opacity-60"
+                className="bg-foreground px-7 py-3.5 text-sm font-medium text-background transition-colors hover:bg-primary disabled:opacity-60"
               >
                 {status === "sending" ? "Sending…" : status === "sent" ? "Enquiry sent" : "Send enquiry"}
               </button>
 
               {status === "sent" && (
-                <p className="flex items-center gap-2 text-sm font-medium text-emerald-700">
+                <p className="flex items-center gap-2 text-sm font-medium text-primary">
                   <Check className="h-4 w-4" />
                   Thanks — we&apos;ll get back to you within a day.
                 </p>

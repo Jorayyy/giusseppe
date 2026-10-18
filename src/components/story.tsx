@@ -6,46 +6,55 @@ export default async function Story() {
   const r = await getRestaurant();
   const stats = [
     { value: `${r.rating}`, label: `${r.reviewCount} Google reviews` },
-    { value: "★", label: r.priceRange },
-    { value: "Daily", label: "11 AM – late" },
+    { value: r.priceRange, label: "Average spend" },
+    { value: "Daily", label: "Lunch & dinner" },
   ];
 
   return (
     <section id="story" className="bg-background">
-      <div className="mx-auto grid max-w-[1200px] items-center gap-12 px-6 py-20 md:py-28 lg:grid-cols-12 lg:gap-16">
+      <div className="mx-auto grid max-w-[1240px] items-start gap-14 px-6 py-24 md:py-32 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-7">
           <SectionHeader
+            index="I"
             eyebrow="Our story"
             title="A little Italy on Avenida Veteranos"
           />
-          <div className="mt-6 max-w-xl space-y-4 text-base leading-relaxed text-stone-600" data-reveal>
+
+          <div
+            className="mt-8 gap-8 text-[15px] leading-relaxed text-muted md:columns-2 [&>p]:mb-4"
+            data-reveal
+          >
             <p>
               Giuseppe&apos;s has been serving Tacloban proper Italian cooking — dough proofed
-              slowly and fired in a wood oven, pasta made by hand, and recipes that don&apos;t
-              rush anything. The room is warm, brick walls and all, and the welcome is pure Leyte.
+              slowly and fired in a wood oven, pasta made by hand, and recipes that don&apos;t rush
+              anything.
             </p>
             <p>
-              Come for Sunday lunch with the family, date night with a carafe of wine, or
-              cocktails at the bar. Dogs are welcome outside, high chairs are always ready, and
-              somebody&apos;s grandmother is usually at table five.
+              The room is warm, brick walls and all, and the welcome is pure Leyte. Come for Sunday
+              lunch with the family, date night with a carafe of wine, or cocktails at the bar.
+            </p>
+            <p>
+              Dogs are welcome outside, high chairs are always ready, and somebody&apos;s
+              grandmother is usually at table five.
             </p>
           </div>
 
-          <dl className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-stone-200 pt-8" data-reveal>
+          <dl
+            className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-line pt-8"
+            data-reveal
+          >
             {stats.map((stat) => (
               <div key={stat.label}>
                 <dt className="sr-only">{stat.label}</dt>
-                <dd className="font-serif text-2xl font-semibold text-stone-900">{stat.value}</dd>
-                <dd className="mt-1 text-xs uppercase tracking-[0.1em] text-stone-500">
-                  {stat.label}
-                </dd>
+                <dd className="font-serif text-2xl text-foreground">{stat.value}</dd>
+                <dd className="eyebrow mt-2 text-stone-400">{stat.label}</dd>
               </div>
             ))}
           </dl>
         </div>
 
         <figure className="lg:col-span-5" data-reveal style={{ transitionDelay: "120ms" }}>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-sm">
+          <div className="relative aspect-[4/5] overflow-hidden bg-surface">
             <Image
               src="/photos/3.jpg"
               alt="Guests enjoying lunch at Giuseppe's"
@@ -54,7 +63,7 @@ export default async function Story() {
               className="object-cover"
             />
           </div>
-          <figcaption className="mt-3 font-serif text-sm italic text-stone-500">
+          <figcaption className="mt-4 font-serif text-sm italic text-muted">
             Lunch service on Avenida Veteranos.
           </figcaption>
         </figure>

@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes, TextareaHTMLAttributes, SelectHTMLAttributes } from "react";
 
 const inputBase =
-  "mt-2 w-full border-b border-stone-300 bg-transparent pb-2 text-[15px] text-stone-900 outline-none transition-colors placeholder:text-stone-400 focus:border-primary";
+  "mt-2 w-full border-b border-stone-300 bg-transparent pb-2 text-[15px] text-foreground outline-none transition-colors placeholder:text-stone-400 focus:border-primary";
 
 export function Field({
   label,
